@@ -1,7 +1,7 @@
 import { mocked } from 'jest-mock'
 
 import { StandardVocabularyItem, UserVocabularyItem } from '../../models/VocabularyItem'
-import { getWords } from '../../services/CmsApi'
+import { getWords, getWordsForKey } from '../../services/CmsApi'
 import { StorageCache } from '../../services/Storage'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { loadAllWords } from '../useLoadAllWords'
@@ -16,6 +16,7 @@ describe('useLoadAllWords', () => {
 
   beforeEach(() => {
     storageCache = StorageCache.createDummy()
+    mocked(getWordsForKey).mockImplementation(async () => [])
   })
 
   it('should return concatenation', async () => {
@@ -45,5 +46,38 @@ describe('useLoadAllWords', () => {
     await storageCache.setItem('userVocabulary', [])
     const response = await loadAllWords(storageCache)
     expect(response).toHaveLength(3)
+  })
+
+  describe('when a catalog was redeemed', () => {
+    const catalogVocabularyMock: StandardVocabularyItem[] = new VocabularyItemBuilder(2)
+      .build()
+      .map((item, index) => ({ ...item, id: { ...item.id, id: 100 + index }, apiKey: 'telc_key' }))
+
+    it('should request the words of every redeemed catalog and append them', async () => {
+      mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
+      mocked(getWordsForKey).mockImplementation(async () => catalogVocabularyMock)
+      await storageCache.setItem('userVocabulary', [])
+      await storageCache.setItem('catalogs', [
+        { apiKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc', jobIds: [7] },
+      ])
+
+      const response = await loadAllWords(storageCache)
+
+      expect(getWordsForKey).toHaveBeenCalledWith('telc_key')
+      expect(response).toHaveLength(lunesStandardVocabularyMock.length + catalogVocabularyMock.length)
+    })
+
+    it('should not return a word twice if the key also selects public words', async () => {
+      mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
+      mocked(getWordsForKey).mockImplementation(async () => lunesStandardVocabularyMock)
+      await storageCache.setItem('userVocabulary', [])
+      await storageCache.setItem('catalogs', [
+        { apiKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc', jobIds: [7] },
+      ])
+
+      const response = await loadAllWords(storageCache)
+
+      expect(response).toHaveLength(lunesStandardVocabularyMock.length)
+    })
   })
 })

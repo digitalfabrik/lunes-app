@@ -42,6 +42,7 @@ type VocabularyItem = {
     sentence: string
     audio: string
   }
+  apiKey?: string
 }
 
 export type StandardVocabularyItem = {
@@ -56,6 +57,16 @@ export const pronunciationOrWord = ({ word, pronunciation }: VocabularyItem): st
 
 export const isUserVocabularyItem = (vocabularyItem: VocabularyItem): vocabularyItem is UserVocabularyItem =>
   vocabularyItem.id.type === VocabularyItemTypes.UserCreated
+
+export const serializeVocabularyItemId = (vocabularyItemId: VocabularyItemId): string => {
+  if (vocabularyItemId.type === VocabularyItemTypes.UserCreated) {
+    return `${vocabularyItemId.type}:${vocabularyItemId.index}`
+  }
+  if (vocabularyItemId.type === VocabularyItemTypes.Protected) {
+    return `${vocabularyItemId.type}:${vocabularyItemId.protectedId}`
+  }
+  return `${vocabularyItemId.type}:${vocabularyItemId.id}`
+}
 
 export const areVocabularyItemIdsEqual = (
   vocabularyItemId1: VocabularyItemId,

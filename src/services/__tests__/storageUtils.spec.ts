@@ -16,7 +16,9 @@ import {
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
   getInstallationId,
+  apiKeyForJob,
   pushSelectedJob,
+  upsertCatalog,
   removeCustomDiscipline,
   removeFavorite,
   removeJobFromNotMigrated,
@@ -646,6 +648,36 @@ describe('storageUtils', () => {
       await storageCache.setItem('installationId', installationId)
       await expect(getInstallationId(storageCache)).resolves.toEqual(installationId)
       expect(storageCache.getItem('installationId')).toBe(installationId)
+    })
+  })
+
+  describe('catalogs', () => {
+    const catalog = { apiKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc', jobIds: [7, 8] }
+
+    describe('upsertCatalog', () => {
+      it('should store a redeemed partner', async () => {
+        await upsertCatalog(storageCache, catalog)
+
+        expect(storageCache.getItem('catalogs')).toEqual([catalog])
+      })
+
+      it('should replace the entry when the same key is redeemed again', async () => {
+        await upsertCatalog(storageCache, catalog)
+        await upsertCatalog(storageCache, { ...catalog, jobIds: [7, 8, 9] })
+
+        expect(storageCache.getItem('catalogs')).toHaveLength(1)
+        expect(storageCache.getItem('catalogs')[0]?.jobIds).toEqual([7, 8, 9])
+      })
+    })
+
+    describe('apiKeyForJob', () => {
+      it('should find the key of the partner covering the job', () => {
+        expect(apiKeyForJob([catalog], { type: 'standard', id: 8 })).toBe('telc_key')
+      })
+
+      it('should return undefined for a public job', () => {
+        expect(apiKeyForJob([catalog], { type: 'standard', id: 1 })).toBeUndefined()
+      })
     })
   })
 })

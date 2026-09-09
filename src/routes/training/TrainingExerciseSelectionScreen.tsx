@@ -103,7 +103,7 @@ export type TrainingExerciseSelectionScreenProps = {
 const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExerciseSelectionScreenProps): ReactElement => {
   const { job } = route.params
 
-  const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByJob(job.id)
+  const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByJob(job)
 
   const renderListItem = ({ item }: { item: TrainingExercise }): ReactElement | null => {
     const isDisabled =

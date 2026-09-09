@@ -24,6 +24,7 @@ const Endpoints = {
   word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
+  catalog: (catalogCode: string) => `content-areas/${catalogCode}`,
   analyticsEvent: 'analytics/events',
   analyticsExport: (installationId: string) => `analytics/export/${installationId}/`,
   analyticsDelete: (installationId: string) => `analytics/data/${installationId}/`,
@@ -59,22 +60,39 @@ type JobResponse = {
   migrated: boolean
 }
 
-const transformJobsResponse = ({ id, name, icon, number_units: numberUnits, migrated }: JobResponse): StandardJob => ({
+const transformJobResponse = (
+  { id, name, icon, number_units: numberUnits, migrated }: JobResponse,
+  apiKey: string | undefined,
+): StandardJob => ({
   id: { type: 'standard', id },
   name,
   icon,
   numberOfUnits: numberUnits,
   migrated,
+  apiKey,
 })
 
 export const getJobs = async (): Promise<StandardJob[]> => {
   const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
-  return response.map(transformJobsResponse)
+  return response.map(job => transformJobResponse(job, undefined))
 }
 
-export const getJob = async (id: JobId): Promise<StandardJob> =>
+export const getJobsForKey = async (apiKey: string): Promise<StandardJob[]> => {
+  const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs, apiKey)
+  return response.map(job => transformJobResponse(job, apiKey))
+}
+
+type CatalogResponse = {
+  name: string
+  shortName: string
+}
+
+export const getCatalog = async (catalogCode: string): Promise<CatalogResponse> =>
+  getFromEndpoint<CatalogResponse>(Endpoints.catalog(catalogCode))
+
+export const getJob = async (id: JobId, apiKey?: string): Promise<StandardJob> =>
   id.type === 'standard'
-    ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id)))
+    ? transformJobResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id), apiKey), apiKey)
     : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms
 
 type UnitResponse = {
@@ -85,27 +103,25 @@ type UnitResponse = {
   number_words: number
 }
 
-const transformUnitsResponse = ({
-  id,
-  title,
-  description,
-  icon: iconUrl,
-  number_words: numberWords,
-}: UnitResponse): StandardUnit => ({
+const transformUnitsResponse = (
+  { id, title, description, icon: iconUrl, number_words: numberWords }: UnitResponse,
+  apiKey: string | undefined,
+): StandardUnit => ({
   id: { id, type: 'standard' },
   title,
   description,
   iconUrl,
   numberWords,
+  apiKey,
 })
 
-export const getUnitsOfJob = async (jobId: JobId): Promise<StandardUnit[]> => {
+export const getUnitsOfJob = async (jobId: JobId, apiKey?: string): Promise<StandardUnit[]> => {
   if (jobId.type !== 'standard') {
     // TODO: Add support back to the cms
     return Promise.reject(new Error(NetworkError))
   }
-  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId))
-  return response.map(transformUnitsResponse)
+  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId), apiKey)
+  return response.map(unit => transformUnitsResponse(unit, apiKey))
 }
 
 type SponsorResponse = {
@@ -151,7 +167,7 @@ type WordResponse = {
   pronunciation: string
 }
 
-const transformWordResponse = (response: WordResponse): StandardVocabularyItem => {
+const transformWordResponse = (response: WordResponse, apiKey: string | undefined): StandardVocabularyItem => {
   const { id, word, article, images, audio, pronunciation, alternative_words: alternativeWords } = response
   return {
     id: { type: VocabularyItemTypes.Standard, id },
@@ -165,6 +181,7 @@ const transformWordResponse = (response: WordResponse): StandardVocabularyItem =
     })),
     // The CMS sends an empty string for words that need no special pronunciation
     pronunciation: pronunciation || undefined,
+    apiKey,
     exampleSentence:
       response.example_sentence !== null && response.example_sentence_audio !== null
         ? { sentence: response.example_sentence, audio: response.example_sentence_audio }
@@ -174,28 +191,34 @@ const transformWordResponse = (response: WordResponse): StandardVocabularyItem =
 
 export const getWords = async (): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.words)
-  return response.map(transformWordResponse)
+  return response.map(word => transformWordResponse(word, undefined))
+}
+
+export const getWordsForKey = async (apiKey: string): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words, apiKey)
+  return response.map(word => transformWordResponse(word, apiKey))
 }
 
 export const getWordById = async (
   id: StandardVocabularyId | ProtectedVocabularyId,
+  apiKey?: string,
 ): Promise<StandardVocabularyItem> => {
   if (id.type === VocabularyItemTypes.Protected) {
     // TODO: Add support for protected vocabulary back to the cms
     return Promise.reject(new Error(NetworkError))
   }
-  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id))
-  return transformWordResponse(response)
+  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id), apiKey)
+  return transformWordResponse(response, apiKey)
 }
 
-export const getWordsByUnit = async (unitId: StandardUnitId): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId))
-  return response.map(transformWordResponse)
+export const getWordsByUnit = async (unitId: StandardUnitId, apiKey?: string): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId), apiKey)
+  return response.map(word => transformWordResponse(word, apiKey))
 }
 
-export const getWordsByJob = async (jobId: StandardJobId): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId))
-  return response.map(transformWordResponse)
+export const getWordsByJob = async (jobId: StandardJobId, apiKey?: string): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId), apiKey)
+  return response.map(word => transformWordResponse(word, apiKey))
 }
 
 type AnalyticsEventPostData = Omit<AnalyticsEvent, 'payload'> & {

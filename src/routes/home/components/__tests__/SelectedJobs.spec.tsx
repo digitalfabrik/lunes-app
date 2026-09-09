@@ -69,4 +69,28 @@ describe('SelectedJobs', () => {
     expect(getByTestId('navigate-left')).toBeDefined()
     expect(queryByTestId('navigate-right')).toBeNull()
   })
+
+  describe('when a job belongs to a redeemed catalog', () => {
+    const catalogJob = { ...mockJobs()[0]!, id: { type: 'standard' as const, id: 42 }, name: 'telc Band 1' }
+
+    it('should offer the training modes for a catalog job', async () => {
+      const storageCache = StorageCache.createDummy()
+      await storageCache.setItem('selectedJobs', [42])
+      await storageCache.setItem('catalogs', [
+        { apiKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc', jobIds: [42] },
+      ])
+      mocked(getJob).mockResolvedValue({ ...catalogJob, apiKey: 'telc_key' })
+      const navigateToTrainingExerciseSelection = jest.fn()
+
+      const { getByText, getByTestId } = renderWithStorageCache(
+        storageCache,
+        <SelectedJobs {...defaultProps} navigateToTrainingExerciseSelection={navigateToTrainingExerciseSelection} />,
+      )
+
+      await waitFor(() => expect(getByText('telc Band 1')).toBeDefined())
+
+      fireEvent.press(getByTestId('start-training-button'))
+      expect(navigateToTrainingExerciseSelection).toHaveBeenCalled()
+    })
+  })
 })

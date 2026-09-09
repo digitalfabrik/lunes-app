@@ -1,8 +1,10 @@
-import { StandardJobId } from '../models/Job'
+import { StandardJob } from '../models/Job'
 import { StandardVocabularyItem } from '../models/VocabularyItem'
 import { getWordsByJob } from '../services/CmsApi'
-import { Return, useLoadAsync } from './useLoadAsync'
+import useLoadAsync, { Return } from './useLoadAsync'
 
-const useLoadWordsByJob = (jobId: StandardJobId): Return<StandardVocabularyItem[]> => useLoadAsync(getWordsByJob, jobId)
+const loadWordsByJob = async ({ job }: { job: StandardJob }) => getWordsByJob(job.id, job.apiKey)
+
+const useLoadWordsByJob = (job: StandardJob): Return<StandardVocabularyItem[]> => useLoadAsync(loadWordsByJob, { job })
 
 export default useLoadWordsByJob

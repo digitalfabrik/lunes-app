@@ -16,6 +16,7 @@ type Unit = {
   description: string
   iconUrl: string | null
   numberWords: number
+  apiKey?: string
 }
 
 export type StandardUnit = {

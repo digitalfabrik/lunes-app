@@ -16,6 +16,7 @@ type Job = {
   icon: string | null
   numberOfUnits: number
   migrated: boolean
+  apiKey?: string
 }
 
 export type StandardJob = Job & { id: StandardJobId }

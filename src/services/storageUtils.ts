@@ -2,6 +2,7 @@ import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { StandardExerciseKey, Favorite } from '../constants/data'
+import Catalog from '../models/Catalog'
 import { StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
@@ -58,6 +59,14 @@ export const pushSelectedJob = async (
   }
 }
 
+export const apiKeyForJob = (catalogs: readonly Catalog[], jobId: StandardJobId): string | undefined =>
+  catalogs.find(catalog => catalog.jobIds.includes(jobId.id))?.apiKey
+
+export const upsertCatalog = async (storageCache: StorageCache, catalog: Catalog): Promise<void> => {
+  const catalogs = storageCache.getItem('catalogs').filter(({ apiKey }) => apiKey !== catalog.apiKey)
+  await storageCache.setItem('catalogs', [...catalogs, catalog])
+}
+
 export const removeSelectedJob = async (storageCache: StorageCache, jobId: StandardJobId): Promise<number[]> => {
   const jobs = storageCache.getItem('selectedJobs')
   if (jobs === null) {
@@ -70,7 +79,7 @@ export const removeSelectedJob = async (storageCache: StorageCache, jobId: Stand
   await removeJobFromNotMigrated(storageCache, jobId.id)
 
   try {
-    const jobWords = await getWordsByJob(jobId)
+    const jobWords = await getWordsByJob(jobId, apiKeyForJob(storageCache.getItem('catalogs'), jobId))
     await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(jobWords.map(word => word.id))
   } catch {
     // If the cleanup fails, the words from this job remain in the repetition list

@@ -112,7 +112,7 @@ export type GetNextExerciseParams = {
   Calculates the next exercise that needs to be done for a profession
   */
 export const getNextExercise = async ({ progress, job }: GetNextExerciseParams): Promise<NextExercise> => {
-  const units = await getUnitsOfJob(job.id)
+  const units = await getUnitsOfJob(job.id, job.apiKey)
   if (!units.length) {
     throw new Error(`No units for id ${JSON.stringify(job.id)}`)
   }
@@ -140,7 +140,7 @@ export const getProgress = async (progress: Progress, job: Job | null): Promise<
   if (!job) {
     return 0
   }
-  const units = await getUnitsOfJob(job.id)
+  const units = await getUnitsOfJob(job.id, job.apiKey)
   if (units.length === 0) {
     return 0
   }
@@ -189,12 +189,12 @@ export const matchAlternative = (vocabularyItem: VocabularyItem, searchString: s
     normalizeString(alternative.word).includes(normalizeSearchString(searchString)),
   ).length > 0
 
+const germanCollator = new Intl.Collator('de-DE', { sensitivity: 'base', usage: 'sort' })
+
 export const getSortedAndFilteredVocabularyItems = <T extends VocabularyItem>(
   vocabularyItems: readonly T[] | null,
   searchString: string,
 ): T[] => {
-  const collator = new Intl.Collator('de-De', { sensitivity: 'base', usage: 'sort' })
-
   const normalizedSearchString = normalizeSearchString(searchString)
 
   const getNouns = (word: string): string => {
@@ -206,7 +206,7 @@ export const getSortedAndFilteredVocabularyItems = <T extends VocabularyItem>(
     item =>
       normalizeString(item.word).includes(normalizedSearchString) || matchAlternative(item, normalizedSearchString),
   )
-  return filteredVocabularyItems?.sort((a, b) => collator.compare(getNouns(a.word), getNouns(b.word))) ?? []
+  return filteredVocabularyItems?.sort((a, b) => germanCollator.compare(getNouns(a.word), getNouns(b.word))) ?? []
 }
 
 export const willNextExerciseUnlock = (previousScore: number | undefined, score: number): boolean =>
@@ -216,6 +216,9 @@ export const willNextExerciseUnlock = (previousScore: number | undefined, score:
 export const millisecondsToDays = (milliseconds: number): number => milliseconds / (24 * 60 * 60 * 1000)
 /* eslint-disable-next-line no-magic-numbers */
 export const milliSecondsToHours = (milliseconds: number): number => milliseconds / (60 * 60 * 1000)
+
+export const sortJobsByName = (jobs: StandardJob[]): StandardJob[] =>
+  Array.from(jobs).sort((first, second) => germanCollator.compare(first.name, second.name))
 
 export const searchJobs = (jobs: StandardJob[] | null, searchKey: string): StandardJob[] | undefined =>
   jobs?.filter(job => normalizeString(job.name).includes(normalizeString(searchKey)))

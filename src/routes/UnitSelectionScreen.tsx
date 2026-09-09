@@ -28,7 +28,7 @@ type UnitSelectionScreenProps = {
 
 const UnitSelectionScreen = ({ route, navigation }: UnitSelectionScreenProps): ReactElement => {
   const { job } = route.params
-  const { data: units, error, loading, refresh } = useLoadUnits(job.id)
+  const { data: units, error, loading, refresh } = useLoadUnits(job)
 
   const handleNavigation = (selectedItem: StandardUnit): void => {
     navigation.navigate('StandardExercises', {
