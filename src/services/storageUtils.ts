@@ -1,7 +1,7 @@
 import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { StandardExerciseKey, Favorite } from '../constants/data'
+import { StandardExerciseKey, Favorite, VocabularyNote } from '../constants/data'
 import { StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
@@ -405,6 +405,40 @@ export const removeFavorite = async (storageCache: StorageCache, favorite: Favor
   await storageCache.setItem('favorites', newFavorites)
 }
 
+const notesExcludingWord = (vocabularyNotes: readonly VocabularyNote[], wordId: VocabularyItemId): VocabularyNote[] =>
+  vocabularyNotes.filter(note => !areVocabularyItemIdsEqual(note.wordId, wordId))
+
+export const getVocabularyNote = (
+  vocabularyNotes: readonly VocabularyNote[],
+  wordId: VocabularyItemId,
+): VocabularyNote | undefined => vocabularyNotes.find(note => areVocabularyItemIdsEqual(note.wordId, wordId))
+
+export const saveVocabularyNote = async (
+  storageCache: StorageCache,
+  wordId: VocabularyItemId,
+  text: string,
+): Promise<void> => {
+  const trimmedText = text.trim()
+  if (trimmedText.length === 0) {
+    return
+  }
+
+  const vocabularyNotes = storageCache.getItem('vocabularyNotes')
+  await storageCache.setItem('vocabularyNotes', [
+    ...notesExcludingWord(vocabularyNotes, wordId),
+    { wordId, text: trimmedText },
+  ])
+}
+
+export const deleteVocabularyNote = async (storageCache: StorageCache, wordId: VocabularyItemId): Promise<void> => {
+  const vocabularyNotes = storageCache.getItem('vocabularyNotes')
+  // deleteUserVocabularyItem also calls this for words that never had a note
+  if (getVocabularyNote(vocabularyNotes, wordId) === undefined) {
+    return
+  }
+  await storageCache.setItem('vocabularyNotes', notesExcludingWord(vocabularyNotes, wordId))
+}
+
 export const incrementNextUserVocabularyId = async (storageCache: StorageCache): Promise<UserVocabularyId> => {
   const nextId = storageCache.getItem('nextUserVocabularyId')
   await storageCache.setItem('nextUserVocabularyId', nextId + 1)
@@ -448,6 +482,7 @@ export const deleteUserVocabularyItem = async (
     }),
   )
   await removeFavorite(storageCache, userVocabularyItem.id)
+  await deleteVocabularyNote(storageCache, userVocabularyItem.id)
   await RepetitionService.fromStorageCache(storageCache).removeWordNodeCard(userVocabularyItem.id)
   await storageCache.setItem('userVocabulary', userVocabulary)
 }

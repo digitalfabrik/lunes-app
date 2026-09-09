@@ -1,6 +1,7 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useCallback } from 'react'
+import { ScrollView } from 'react-native'
 import { useTheme } from 'styled-components/native'
 
 import { PenIcon } from '../../assets/images'
@@ -46,7 +47,9 @@ const VocabularyDetailScreen = ({ route }: VocabularyDetailScreenProps): ReactEl
 
   return (
     <RouteWrapper>
-      <VocabularyDetail vocabularyItem={vocabularyItem} />
+      <ScrollView>
+        <VocabularyDetail vocabularyItem={vocabularyItem} />
+      </ScrollView>
     </RouteWrapper>
   )
 }

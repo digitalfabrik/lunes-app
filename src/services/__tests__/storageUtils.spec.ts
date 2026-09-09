@@ -13,9 +13,12 @@ import {
   addJobToNotMigrated,
   addUserVocabularyItem,
   deleteUserVocabularyItem,
+  deleteVocabularyNote,
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
   getInstallationId,
+  getVocabularyNote,
+  saveVocabularyNote,
   pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
@@ -616,6 +619,69 @@ describe('storageUtils', () => {
       await deleteUserVocabularyItem(storageCache, userVocabularyItems[0]!)
       const updatedUserVocabulary = storageCache.getItem('userVocabulary')
       expect(updatedUserVocabulary).toHaveLength(0)
+    })
+
+    it('should delete the note of a deleted userVocabularyItem', async () => {
+      await addUserVocabularyItem(storageCache, userVocabularyItems[0]!)
+      await saveVocabularyNote(storageCache, userVocabularyItems[0]!.id, 'Auf der Baustelle gelernt')
+      expect(storageCache.getItem('vocabularyNotes')).toHaveLength(1)
+
+      await deleteUserVocabularyItem(storageCache, userVocabularyItems[0]!)
+
+      expect(storageCache.getItem('vocabularyNotes')).toHaveLength(0)
+    })
+  })
+
+  describe('vocabularyNotes', () => {
+    const vocabularyItems: VocabularyItem[] = new VocabularyItemBuilder(2).build()
+
+    it('should save a new note', async () => {
+      await saveVocabularyNote(storageCache, vocabularyItems[0]!.id, 'Klingt wie das englische Wort')
+
+      expect(storageCache.getItem('vocabularyNotes')).toEqual([
+        { wordId: vocabularyItems[0]!.id, text: 'Klingt wie das englische Wort' },
+      ])
+    })
+
+    it('should update the existing note instead of adding a second one', async () => {
+      await saveVocabularyNote(storageCache, vocabularyItems[0]!.id, 'Erste Notiz')
+      await saveVocabularyNote(storageCache, vocabularyItems[0]!.id, 'Zweite Notiz')
+
+      expect(storageCache.getItem('vocabularyNotes')).toEqual([
+        { wordId: vocabularyItems[0]!.id, text: 'Zweite Notiz' },
+      ])
+    })
+
+    it('should trim the note and reject a blank one', async () => {
+      await saveVocabularyNote(storageCache, vocabularyItems[0]!.id, '   \n  ')
+      expect(storageCache.getItem('vocabularyNotes')).toHaveLength(0)
+
+      await saveVocabularyNote(storageCache, vocabularyItems[0]!.id, '  Mit Leerzeichen  ')
+      expect(storageCache.getItem('vocabularyNotes')).toEqual([
+        { wordId: vocabularyItems[0]!.id, text: 'Mit Leerzeichen' },
+      ])
+    })
+
+    it('should not confuse a standard word with a user created word of the same number', async () => {
+      const standardId = { type: VocabularyItemTypes.Standard, id: 1 } as const
+      const userCreatedId = { type: VocabularyItemTypes.UserCreated, index: 1 } as const
+      await saveVocabularyNote(storageCache, standardId, 'Notiz zum Lunes-Wort')
+      await saveVocabularyNote(storageCache, userCreatedId, 'Notiz zum eigenen Wort')
+
+      const vocabularyNotes = storageCache.getItem('vocabularyNotes')
+
+      expect(vocabularyNotes).toHaveLength(2)
+      expect(getVocabularyNote(vocabularyNotes, standardId)?.text).toBe('Notiz zum Lunes-Wort')
+      expect(getVocabularyNote(vocabularyNotes, userCreatedId)?.text).toBe('Notiz zum eigenen Wort')
+    })
+
+    it('should delete only the note of the given word', async () => {
+      await saveVocabularyNote(storageCache, vocabularyItems[0]!.id, 'Bleibt')
+      await saveVocabularyNote(storageCache, vocabularyItems[1]!.id, 'Wird gelöscht')
+
+      await deleteVocabularyNote(storageCache, vocabularyItems[1]!.id)
+
+      expect(storageCache.getItem('vocabularyNotes')).toEqual([{ wordId: vocabularyItems[0]!.id, text: 'Bleibt' }])
     })
   })
 

@@ -99,6 +99,7 @@ const ResultIndicator = ({
     <WordResultIndicator
       isVisible={isFinished}
       isCorrect={isCorrect}
+      wordId={currentSentence.vocabularyItemId}
       label={resultLabel}
       content={correctAnswerContent}
       button={button}

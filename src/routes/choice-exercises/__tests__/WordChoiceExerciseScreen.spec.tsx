@@ -48,6 +48,7 @@ jest.spyOn(Image, 'prefetch').mockResolvedValue(true)
 jest.mock('react-native/Libraries/LogBox/Data/LogBoxData')
 
 jest.mock('../../../services/storageUtils', () => ({
+  ...jest.requireActual('../../../services/storageUtils'),
   saveExerciseProgress: jest.fn().mockResolvedValue(undefined),
 }))
 
@@ -118,6 +119,18 @@ describe('WordChoiceExerciseScreen', () => {
 
     expect(getByText(getLabels().exercises.next)).toBeVisible()
     expect(queryByText(getLabels().exercises.tryLater)).toBeNull()
+  })
+
+  it('should offer to add a note once an answer was given, right or wrong', async () => {
+    const { getByText, queryByText } = renderScreen()
+    expect(queryByText(getLabels().notes.add)).toBeNull()
+
+    fireEvent.press(getByText('Auto'))
+
+    await waitFor(() => {
+      expect(getByText(getLabels().exercises.solution)).toBeVisible()
+    })
+    expect(getByText(getLabels().notes.add)).toBeVisible()
   })
 
   it('should show solution in the bottom sheet when answer is incorrect', async () => {

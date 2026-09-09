@@ -3,6 +3,7 @@ import styled from 'styled-components/native'
 
 import VocabularyItem from '../models/VocabularyItem'
 import VocabularyItemImageSection from './VocabularyItemImageSection'
+import VocabularyNoteSection from './VocabularyNoteSection'
 import WordItem from './WordItem'
 
 const ItemContainer = styled.View`
@@ -20,6 +21,7 @@ const VocabularyDetail = ({ vocabularyItem }: VocabularyDetailProps): ReactEleme
     <VocabularyItemImageSection vocabularyItem={vocabularyItem} />
     <ItemContainer>
       <WordItem answer={{ word: vocabularyItem.word, article: vocabularyItem.article }} isPrimaryContent />
+      <VocabularyNoteSection wordId={vocabularyItem.id} />
     </ItemContainer>
   </>
 )

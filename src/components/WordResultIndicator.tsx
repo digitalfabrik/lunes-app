@@ -1,9 +1,11 @@
 import React, { ReactElement } from 'react'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 
 import { ThumbsDownIcon, ThumbsUpIcon } from '../../assets/images'
 import theme from '../constants/theme'
+import { VocabularyItemId } from '../models/VocabularyItem'
 import BottomSheet from './BottomSheet'
+import VocabularyNotePreview from './VocabularyNotePreview'
 import { HeadingText } from './text/Heading'
 import { Hint } from './text/Hint'
 
@@ -20,12 +22,20 @@ const BottomSheetRow = styled.View`
   gap: ${props => props.theme.spacings.sm};
 `
 
+const sheetContentInset = css`
+  align-self: stretch;
+  margin: 0 ${props => props.theme.spacings.xs};
+`
+
 const BottomSheetWordContainer = styled.View`
+  ${sheetContentInset};
   background-color: ${props => props.theme.colors.background};
   padding: ${props => props.theme.spacings.xs};
   border-radius: ${props => props.theme.spacings.xxs};
-  align-self: stretch;
-  margin: 0 ${props => props.theme.spacings.md};
+`
+
+const NoteContainer = styled.View`
+  ${sheetContentInset};
 `
 
 const FeedbackText = styled(Hint)`
@@ -38,6 +48,7 @@ type WordResultIndicatorProps = {
   isCorrect: boolean
   label: string
   content: ReactElement | null
+  wordId: VocabularyItemId
   button: ReactElement
   hint?: string
 }
@@ -46,6 +57,7 @@ const WordResultIndicator = ({
   isCorrect,
   label,
   content,
+  wordId,
   button,
   hint,
 }: WordResultIndicatorProps): ReactElement => {
@@ -61,6 +73,10 @@ const WordResultIndicator = ({
         </BottomSheetRow>
 
         {content && <BottomSheetWordContainer>{content}</BottomSheetWordContainer>}
+
+        <NoteContainer>
+          <VocabularyNotePreview wordId={wordId} />
+        </NoteContainer>
 
         {hint !== undefined && <FeedbackText>{hint}</FeedbackText>}
 

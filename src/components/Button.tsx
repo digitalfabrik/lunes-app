@@ -6,6 +6,7 @@ import styled, { css, useTheme } from 'styled-components/native'
 import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color } from '../constants/theme/colors'
 import { Subheading } from './text/Subheading'
+import { uppercase } from './text/uppercase'
 
 const BUTTON_WIDTH_RATIO = 0.7
 
@@ -51,8 +52,7 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
 export const Label = styled(Subheading)<ThemedLabelProps>`
   color: ${props => props.color};
   text-align: center;
-  letter-spacing: ${props => props.theme.fonts.capsLetterSpacing};
-  text-transform: uppercase;
+  ${uppercase};
   padding: ${props => `0 ${props.theme.spacings.xs}`};
 `
 
