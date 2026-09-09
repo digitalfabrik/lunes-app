@@ -11,12 +11,16 @@ rejects, and it never changes labels itself.
 This script always exits 0 so that LLM or network failures never block
 a merge. Errors are printed to stderr and visible in the CI log.
 
+Reviews are triggered by the GitHub Actions workflow in
+.github/workflows/llm-pr-review.yml, which reacts to the pull_request event and
+starts a review-only CircleCI pipeline.
+
 Required environment variables (injected by CircleCI):
-  CIRCLE_PULL_REQUEST      URL of the pull request associated with this
-                           build (e.g. https://github.com/org/repo/pull/123),
-                           only set when the current branch has an open PR.
-                           Not populated for forked-PR builds unless secrets
-                           are explicitly passed to fork builds.
+  LLM_REVIEW_PR_NUMBER     Number of the pull request to review, set from the
+                           `llm_review_pr_number` pipeline parameter by the
+                           GitHub Actions workflow. Empty on any pipeline that
+                           workflow did not start, in which case the review is
+                           skipped.
   CIRCLE_PROJECT_USERNAME  Repository owner (org or user)
   CIRCLE_PROJECT_REPONAME  Repository name
 
@@ -176,14 +180,6 @@ def warn(message):
     print(f"Warning: {message}", file=sys.stderr)
 
 
-def pr_number_from_url(pull_request_url):
-    """
-    Extracts the PR number from a CIRCLE_PULL_REQUEST URL, e.g.
-    "https://github.com/org/repo/pull/123" -> "123".
-    """
-    return pull_request_url.rstrip("/").rsplit("/", 1)[-1]
-
-
 def path_from_diff_header(header_line):
     """
     Extracts the file path from a "diff --git a/... b/..." header line,
@@ -246,18 +242,19 @@ def compress_diff(diff_text):
 
 def main():
     # -------------------------------------------------------------------------
-    # Step 0: Only act on builds associated with an open pull request
+    # Step 0: Determine which pull request to review
     # -------------------------------------------------------------------------
 
-    pull_request_url = os.environ.get("CIRCLE_PULL_REQUEST", "")
-    if not pull_request_url:
+    pr_number = os.environ.get("LLM_REVIEW_PR_NUMBER", "").strip()
+    if not pr_number:
         print(
-            "Skipping LLM review: no open pull request is associated with this "
-            "branch (CIRCLE_PULL_REQUEST is not set)."
+            "Skipping LLM review: LLM_REVIEW_PR_NUMBER is empty, so this "
+            "pipeline was not started by the review trigger in "
+            ".github/workflows/llm-pr-review.yml."
         )
         return
 
-    pr_number = pr_number_from_url(pull_request_url)
+    print(f"Reviewing PR #{pr_number}.")
 
     # -------------------------------------------------------------------------
     # Step 1: Read environment
