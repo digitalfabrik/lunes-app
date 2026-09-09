@@ -1,0 +1,6 @@
+issue_key: 1519
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Lange Wörter werden in den Wortlisten jetzt an den richtigen Stellen mit Bindestrich getrennt.

@@ -3508,6 +3508,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/hyphen@npm:^1":
+  version: 1.14.0
+  resolution: "@types/hyphen@npm:1.14.0"
+  checksum: a832dea8651fb96b2c89c6996ed09a8e4afac2530b8c5a3357faa912fd0e474db0bfc6d7312d2dba7bdefa0d17ad0462648f579e99fbf200b0720a07cba1071c
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.6
   resolution: "@types/istanbul-lib-coverage@npm:2.0.6"
@@ -7026,6 +7033,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hyphen@npm:^1.14.1":
+  version: 1.14.1
+  resolution: "hyphen@npm:1.14.1"
+  checksum: 347af725468eeb79fb7c2a42a494fd8cbf6d34d560bb6b2d49e777194dfceffa1d31b91e43d6fdec0ae3ab100b6fe6524656d51214e901389828a2e1d91657fb
+  languageName: node
+  linkType: hard
+
 "iconv-lite@npm:^0.7.0, iconv-lite@npm:^0.7.2, iconv-lite@npm:~0.7.0":
   version: 0.7.2
   resolution: "iconv-lite@npm:0.7.2"
@@ -8445,6 +8459,7 @@ __metadata:
     "@testing-library/jest-native": ^5.4.3
     "@testing-library/react-native": ^13.3.3
     "@trivago/prettier-plugin-sort-imports": ^4.3.0
+    "@types/hyphen": ^1
     "@types/jest": ^29.5.14
     "@types/node": ^24.13.3
     "@typescript-eslint/eslint-plugin": ^8.65.0
@@ -8463,6 +8478,7 @@ __metadata:
     eslint-plugin-prefer-arrow: ^1.2.3
     eslint-plugin-react: ^7.37.5
     eslint-plugin-react-hooks: ^7.1.1
+    hyphen: ^1.14.1
     jest: ^29.7.0
     normalize-strings: ^1.1.1
     patch-package: ^8.0.0
