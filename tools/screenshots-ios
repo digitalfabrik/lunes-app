@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OUTPUT_DIR="ios/fastlane/screenshots/de-DE"
-
 # Pin the simulator's status bar so screenshots are reproducible
 trap 'xcrun simctl status_bar booted clear' EXIT
 xcrun simctl status_bar booted override \
@@ -14,6 +12,4 @@ xcrun simctl status_bar booted override \
   --batteryState charged \
   --batteryLevel 100
 
-maestro --platform ios test \
-  --env OUTPUT_DIR="$OUTPUT_DIR" \
-  .maestro/screenshots.yaml
+tools/screenshots-run ios ios/fastlane/screenshots/de-DE

@@ -15,7 +15,7 @@ name: Lunes store screenshots
       id: 'loading'
     timeout: 15000
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/00_onboarding
+- takeScreenshot: 00_onboarding
 - tapOn: 'Überspringen'
 
 # Dismiss analytics-consent modal if it appears.
@@ -47,7 +47,7 @@ name: Lunes store screenshots
       id: 'loading'
     timeout: 15000
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/01_home
+- takeScreenshot: 01_home
 
 # Open the unit list (UnitSelection) for the first job.
 - tapOn:
@@ -77,7 +77,7 @@ name: Lunes store screenshots
 - tapOn:
     id: 'word-item'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/02_word_choice
+- takeScreenshot: 02_word_choice
 - tapOn: 'Nächstes Wort'
 
 # Exit out of the exercise back to the home stack root.
@@ -93,12 +93,12 @@ name: Lunes store screenshots
       id: 'loading'
     timeout: 15000
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/03_dictionary
+- takeScreenshot: 03_dictionary
 
 # 04 — Repetition tab.
 - tapOn: 'Vertiefen(,.*)?'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/04_repetition
+- takeScreenshot: 04_repetition
 
 # 05 — Image training exercise.
 # Two taps to reset to the home screen, one tap only goes back to the units screen
@@ -116,7 +116,7 @@ name: Lunes store screenshots
 - tapOn:
     id: 'imageOption'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/05_image_training
+- takeScreenshot: 05_image_training
 
 - tapOn: 'Übung beenden'
 - tapOn: 'Beenden'
@@ -125,7 +125,7 @@ name: Lunes store screenshots
 # 06 — Speech training
 - tapOn: 'Sprechstudio.*'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/06_speech_training
+- takeScreenshot: 06_speech_training
 
 - tapOn: 'Übung beenden'
 - tapOn: 'Beenden'
@@ -134,4 +134,4 @@ name: Lunes store screenshots
 # 07 — Sentence training
 - tapOn: 'Satzbausteine.*'
 - waitForAnimationToEnd
-- takeScreenshot: ${OUTPUT_DIR}/07_sentence_training
+- takeScreenshot: 07_sentence_training

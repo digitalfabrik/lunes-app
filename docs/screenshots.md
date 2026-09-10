@@ -18,6 +18,7 @@ One important note, Android only allows eight screenshots per language.
 To update the screenshots, the `maestro` command line tool needs to be installed.
 `maestro` is available via homebrew and nix, or can be downloaded directly.
 For more information, see the [docs](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli).
+Use the version CI pins in `.circleci/src/commands/install_maestro.yml`.
 
 ### Android
 
