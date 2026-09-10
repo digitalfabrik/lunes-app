@@ -4,6 +4,7 @@ import React from 'react'
 
 import { Favorite } from '../../constants/data'
 import { StorageCache } from '../../services/Storage'
+import { getLabels } from '../../services/helpers'
 import { isFavorite } from '../../services/storageUtils'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
 import { renderWithStorageCache } from '../../testing/render'
@@ -31,12 +32,14 @@ describe('FavoriteButton', () => {
     await storageCache.setItem('favorites', [])
     expect(isFavorite(storageCache.getItem('favorites'), favorite)).toBe(false)
 
-    const { getByTestId } = renderFavoriteButton()
+    const { getByTestId, getByLabelText } = renderFavoriteButton()
 
     await waitFor(() => expect(getByTestId('add')).toBeTruthy())
+    expect(getByLabelText(getLabels().favorites.add)).toBeTruthy()
     fireEvent.press(getByTestId('add'))
 
     await waitFor(() => expect(getByTestId('remove')).toBeTruthy())
+    expect(getByLabelText(getLabels().favorites.remove)).toBeTruthy()
     expect(isFavorite(storageCache.getItem('favorites'), favorite)).toBe(true)
   })
 
