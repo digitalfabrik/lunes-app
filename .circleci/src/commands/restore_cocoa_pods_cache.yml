@@ -6,6 +6,9 @@ steps:
         - 3-pods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
         - 3-pods-{{ arch }}-
   - run:
+      name: Install CMake
+      command: brew install cmake
+  - run:
       name: '[CP] Install CocoaPods'
       command: bundle exec pod install
       working_directory: ios
