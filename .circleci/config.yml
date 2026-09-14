@@ -149,6 +149,9 @@ commands:
                     - 3-pods-{{ arch }}-
                 name: Restore CocoaPods Cache
             - run:
+                command: brew install cmake
+                name: Install CMake
+            - run:
                 command: bundle exec pod install
                 name: '[CP] Install CocoaPods'
                 working_directory: ios
