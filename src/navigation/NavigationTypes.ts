@@ -109,6 +109,9 @@ export type RoutesParams = {
   SpeechTraining: {
     job: StandardJob
   }
+  Activation: {
+    code: string
+  }
 }
 
 export type Route = keyof RoutesParams
