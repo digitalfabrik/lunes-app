@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native'
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 import { LogBox } from 'react-native'
 import 'react-native-gesture-handler'
@@ -7,6 +7,7 @@ import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-c
 import { ThemeProvider } from 'styled-components/native'
 
 import theme from './constants/theme'
+import { RoutesParams } from './navigation/NavigationTypes'
 import Navigator from './navigation/Navigator'
 import ReducedMotionServiceProvider from './services/ReducedMotionService'
 import StorageProvider from './services/Storage'
@@ -15,6 +16,15 @@ import VolumeServiceProvider from './services/VolumeService'
 import { initSentry } from './services/sentry'
 
 LogBox.ignoreLogs(['NativeEventEmitter'])
+
+const deepLinking: LinkingOptions<RoutesParams> = {
+  prefixes: ['lunes://lunes.app', 'https://lunes.tuerantuer.org'],
+  config: {
+    screens: {
+      Activation: 'activation/:code',
+    },
+  },
+}
 
 const App = (): ReactElement => {
   initSentry()
@@ -29,7 +39,7 @@ const App = (): ReactElement => {
             <VolumeServiceProvider>
               <TtsServiceProvider>
                 <ReducedMotionServiceProvider>
-                  <NavigationContainer>
+                  <NavigationContainer linking={deepLinking}>
                     <Navigator />
                   </NavigationContainer>
                 </ReducedMotionServiceProvider>
