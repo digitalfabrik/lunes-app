@@ -9,6 +9,8 @@ We use deep linking to activate additional app content.
 This scheme has a trust association to our server and only works if `assetlinks.json` and `apple-app-site-association` files are properly deployed on our webserver.
 We need this scheme, because some mail clients and camera apps are not able to handle custom schemes.
 
+On iOS this additionally requires the `com.apple.developer.associated-domains` entitlement (`applinks:lunes.tuerantuer.org`, see `ios/Lunes/Lunes.entitlements`) and a matching Associated Domains capability on the App ID / provisioning profile. Without it, iOS never calls `application(_:continue:restorationHandler:)` and https links just open in Safari instead of the app.
+
 #### Example
 
 `https://lunes.tuerantuer.org/.well-known/assetlinks.json`
