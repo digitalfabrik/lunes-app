@@ -2,6 +2,7 @@ import { fireEvent, RenderAPI, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import { COLORS } from '../../constants/theme/colors'
+import { hyphenate } from '../../services/hyphenation'
 import render from '../../testing/render'
 import ListItem from '../ListItem'
 
@@ -89,6 +90,16 @@ describe('ListItem', () => {
 
     expect(onPress).not.toHaveBeenCalled()
     expect(arrowIcon.props.color).toBe(COLORS.primary)
+  })
+
+  describe('when the title is a long compound word', () => {
+    const longTitle = 'Dampfschifffahrtsgesellschaftskapitänsmütze'
+
+    it('should render it with soft hyphens while keeping the plain word accessible', () => {
+      const { getByLabelText } = render(<ListItem onPress={onPress} title={longTitle} />)
+
+      expect(getByLabelText(longTitle)).toHaveTextContent(hyphenate(longTitle))
+    })
   })
 
   it('should have correct background color', () => {

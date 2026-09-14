@@ -49,6 +49,7 @@ describe('UserVocabularyListScreen', () => {
 
     expect(getByText(`0 ${getLabels().general.word.plural}`)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.noWordsYet)).toBeDefined()
+    expect(getByText(getLabels().userVocabulary.list.noWordsYetHint)).toBeDefined()
     expect(getByText(getLabels().userVocabulary.list.create)).toBeDefined()
   })
 
