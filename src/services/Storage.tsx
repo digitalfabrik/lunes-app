@@ -4,6 +4,7 @@ import React, { createContext, ReactElement } from 'react'
 
 import { Favorite, Progress } from '../constants/data'
 import useLoadAsync from '../hooks/useLoadAsync'
+import ContentArea from '../models/ContentArea'
 import { UserVocabularyItem } from '../models/VocabularyItem'
 import { AnalyticsConsent } from './AnalyticsService'
 import { WordNodeCard } from './RepetitionService'
@@ -26,6 +27,7 @@ export type Storage = {
   // Unused, old feature
   // TODO: fully delete if we decide that this is not needed anymore
   customDisciplines: string[]
+  contentAreas: ContentArea[]
   userVocabulary: UserVocabularyItem[]
   nextUserVocabularyId: number
   favorites: Favorite[]
@@ -49,6 +51,7 @@ export const newDefaultStorage = (): Storage => ({
   progress: {},
   cmsUrlOverwrite: null,
   customDisciplines: [],
+  contentAreas: [],
   userVocabulary: [],
   nextUserVocabularyId: 1,
   favorites: [],
@@ -68,6 +71,7 @@ export const storageKeys: Record<StorageKey, string> = {
   progress: 'progress',
   cmsUrlOverwrite: 'cms',
   customDisciplines: 'customDisciplines',
+  contentAreas: 'contentAreas',
   userVocabulary: 'userVocabulary',
   nextUserVocabularyId: 'userVocabularyNextId',
   favorites: 'favorites-2',
@@ -202,6 +206,7 @@ export const loadStorageCache = async (): Promise<StorageCache> => {
     progress: getStorageItem('progress'),
     cmsUrlOverwrite: getStorageItem('cmsUrlOverwrite'),
     customDisciplines: getStorageItem('customDisciplines'),
+    contentAreas: getStorageItem('contentAreas'),
     userVocabulary: getStorageItem('userVocabulary'),
     nextUserVocabularyId: getStorageItem('nextUserVocabularyId'),
     favorites: getStorageItem('favorites'),
