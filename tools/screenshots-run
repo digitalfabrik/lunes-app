@@ -24,5 +24,6 @@ if [ "${#captured[@]}" -ne "$expected" ]; then
   exit 1
 fi
 
+mkdir -p "$OUTPUT_DIR"
 rm -f "$OUTPUT_DIR"/*.png
 cp "${captured[@]}" "$OUTPUT_DIR"/
