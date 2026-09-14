@@ -3,6 +3,7 @@ import { GestureResponderEvent } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
 import { ChevronRight } from '../../assets/images'
+import { hyphenated } from '../services/hyphenation'
 import { ContentSecondary } from './text/Content'
 
 export const GenericListItemContainer = styled.Pressable`
@@ -151,13 +152,7 @@ const ListItem = ({
   )
 
   const titleText =
-    typeof title === 'string' ? (
-      <Title pressed={pressed} numberOfLines={3}>
-        {title}
-      </Title>
-    ) : (
-      title
-    )
+    typeof title === 'string' ? <Title pressed={pressed} numberOfLines={3} {...hyphenated(title)} /> : title
 
   const titleToRender = beforeTitle ? (
     <Row>

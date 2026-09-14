@@ -43,7 +43,8 @@ import { StandardJob } from '../../models/Job'
 import VocabularyItem, { pronunciationOrWord, VocabularyItemTypes } from '../../models/VocabularyItem'
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
-import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
+import { getAtIndex, getLabels, moveToEnd, shuffleArray, stringifyVocabularyItem } from '../../services/helpers'
+import { hyphenated } from '../../services/hyphenation'
 import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -354,9 +355,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
   const wordContent = (
     <BottomSheetRow>
       {currentWord.audio !== null && <AudioPlayer audio={currentWord.audio} disabled={false} />}
-      <VocabularyWord>
-        {currentWord.article.value} {currentWord.word}
-      </VocabularyWord>
+      <VocabularyWord {...hyphenated(stringifyVocabularyItem(currentWord))} />
     </BottomSheetRow>
   )
 
