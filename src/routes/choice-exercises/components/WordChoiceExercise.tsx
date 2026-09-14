@@ -252,6 +252,7 @@ const WordChoiceExercise = ({
       <WordResultIndicator
         isVisible={selectedAnswer !== null}
         isCorrect={result === SIMPLE_RESULTS.correct}
+        wordId={vocabularyItem.id}
         label={
           result === SIMPLE_RESULTS.correct
             ? getLabels().exercises.training.sentence.correct

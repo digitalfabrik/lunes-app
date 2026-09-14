@@ -206,6 +206,7 @@
     },
     "back": "Zurück",
     "close": "Schließen",
+    "characterCount": "{{count}} von {{limit}} Zeichen",
     "plurals": "Plural",
     "noResults": "Es wurden leider keine Ergebnisse gefunden.",
     "error": {
@@ -326,6 +327,22 @@
       "clearJobs": "Clear selected jobs",
       "seedScreenshotData": "Load screenshot data"
     }
+  },
+  "notes": {
+    "heading": "Meine Notiz",
+    "newNote": "Neue Notiz",
+    "add": "Notiz hinzufügen",
+    "edit": "Notiz bearbeiten",
+    "delete": "Notiz löschen",
+    "languageHint": "Schreibe in jeder Sprache.",
+    "placeholder": "Schreibe deine Notiz - Beispiel, Merksatz oder Übersetzung …",
+    "emptyError": "Notiz kann nicht leer sein.",
+    "showMore": "Mehr anzeigen",
+    "deletionTitle": "Notiz löschen?",
+    "deletionWarning": "Möchtest du diese Notiz wirklich löschen? Das kann nicht rückgängig gemacht werden.",
+    "confirmDeletion": "Löschen",
+    "cancel": "Abbrechen",
+    "save": "Notiz speichern"
   },
   "sponsors": {
     "sponsors": "Unterstützer*innen",
