@@ -65,7 +65,7 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
   }
 
   const selectJob = async (job: StandardJob) => {
-    await pushSelectedJob(storageCache, job.id, job.migrated)
+    await pushSelectedJob(storageCache, job)
   }
 
   const unselectJob = async (job: StandardJob) => {

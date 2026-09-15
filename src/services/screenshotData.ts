@@ -25,7 +25,7 @@ const getWordNodeCards = async (storageCache: StorageCache): Promise<WordNodeCar
 }
 
 const getProgress = async (): Promise<Progress> => {
-  const units = await getUnitsOfJob({ type: 'standard', id: jobId })
+  const units = await getUnitsOfJob({ id: { type: 'standard', id: jobId } })
   const unitProgress = { [StandardExerciseKeys.wordChoiceExercise]: 1, [StandardExerciseKeys.vocabularyList]: 1 }
   return Object.fromEntries(units.map(unit => [unit.id.id, unitProgress]))
 }
@@ -36,7 +36,7 @@ export const seedScreenshotData = async (storageCache: StorageCache): Promise<vo
   Math.random = () => 0
   screenshotModeEnabled = true
   await storageCache.setItem('analyticsConsent', { consentGiven: false, consentDate: '2026-05-01' })
-  await storageCache.setItem('selectedJobs', [jobId])
+  await storageCache.setItem('selectedJobs', [{ id: jobId }])
   await storageCache.setItem('progress', await getProgress())
   await storageCache.setItem('favorites', [{ type: 'user-created', index: 1 }])
   await storageCache.setItem('wordNodeCards', await getWordNodeCards(storageCache))

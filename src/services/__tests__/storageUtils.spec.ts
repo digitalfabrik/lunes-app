@@ -12,6 +12,7 @@ import {
   addFavorite,
   addJobToNotMigrated,
   addUserVocabularyItem,
+  tokenForJob,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
@@ -63,7 +64,7 @@ describe('storageUtils', () => {
     it('should delete selectedProfession from array if exists', async () => {
       await storageCache.setItem(
         'selectedJobs',
-        selectedProfessions.map(item => item.id.id),
+        selectedProfessions.map(item => ({ id: item.id.id })),
       )
       expect(storageCache.getItem('selectedJobs')).toHaveLength(selectedProfessions.length)
       await removeSelectedJob(storageCache, mockJobs()[0]!.id)
@@ -71,21 +72,27 @@ describe('storageUtils', () => {
     })
 
     it('should not delete selectedProfession from array if not exists', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[1]!.id.id])
+      await storageCache.setItem('selectedJobs', [{ id: mockJobs()[1]!.id.id }])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
       await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
     })
 
     it('should push selectedProfession to array', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+      await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
       expect(storageCache.getItem('selectedJobs')).toHaveLength(1)
-      await pushSelectedJob(storageCache, mockJobs()[1]!.id, mockJobs()[1]!.migrated)
+      await pushSelectedJob(storageCache, mockJobs()[1]!)
       expect(storageCache.getItem('selectedJobs')).toHaveLength(2)
     })
 
+    it('should store the content area token of the pushed job', async () => {
+      await pushSelectedJob(storageCache, { ...mockJobs()[0]!, token: 'telc_token' })
+
+      expect(storageCache.getItem('selectedJobs')).toEqual([{ id: 1, token: 'telc_token' }])
+    })
+
     it('should emit a job_selected add event when pushing a job', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
         job_id: mockJobs()[0]!.id.id,
@@ -94,7 +101,7 @@ describe('storageUtils', () => {
     })
 
     it('should emit a job_selected remove event when removing a job', async () => {
-      await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+      await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
       await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(jest.mocked(trackEvent)).toHaveBeenCalledWith(storageCache, {
         type: 'job_selected',
@@ -104,12 +111,12 @@ describe('storageUtils', () => {
     })
 
     it('should push selectedProfession to notMigratedSelectedJobs', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
     })
 
     it('should delete selectedProfession from notMigratedSelectedJobs', async () => {
-      await pushSelectedJob(storageCache, mockJobs()[0]!.id, mockJobs()[0]!.migrated)
+      await pushSelectedJob(storageCache, mockJobs()[0]!)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([1])
       await removeSelectedJob(storageCache, mockJobs()[0]!.id)
       expect(storageCache.getItem('notMigratedSelectedJobs')).toStrictEqual([])
@@ -533,6 +540,34 @@ describe('storageUtils', () => {
       })
     })
 
+    describe('should migrate from v7', () => {
+      it('should turn selected job ids into objects', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '7')
+        await AsyncStorage.setItem(storageKeys.selectedJobs, JSON.stringify([1, 2]))
+
+        const storageCache = await loadStorageCache()
+
+        expect(storageCache.getItem('selectedJobs')).toEqual([{ id: 1 }, { id: 2 }])
+      })
+
+      it('should leave already migrated selected jobs untouched', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '7')
+        await AsyncStorage.setItem(storageKeys.selectedJobs, JSON.stringify([{ id: 1, token: 'telc_token' }]))
+
+        const storageCache = await loadStorageCache()
+
+        expect(storageCache.getItem('selectedJobs')).toEqual([{ id: 1, token: 'telc_token' }])
+      })
+
+      it('should keep selectedJobs null if the startup screen was never completed', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '7')
+
+        const storageCache = await loadStorageCache()
+
+        expect(storageCache.getItem('selectedJobs')).toBeNull()
+      })
+    })
+
     describe('when version is unset and data is already fully migrated', () => {
       const alreadyMigratedWordNodeCard = {
         wordId: { type: VocabularyItemTypes.Standard, id: 1 },
@@ -646,6 +681,22 @@ describe('storageUtils', () => {
       await storageCache.setItem('installationId', installationId)
       await expect(getInstallationId(storageCache)).resolves.toEqual(installationId)
       expect(storageCache.getItem('installationId')).toBe(installationId)
+    })
+  })
+
+  describe('tokenForJob', () => {
+    const selectedJobs = [{ id: 7, token: 'telc_token' }, { id: 8 }]
+
+    it('should return the token stored with the selected job', () => {
+      expect(tokenForJob(selectedJobs, { type: 'standard', id: 7 })).toBe('telc_token')
+    })
+
+    it('should return undefined for a public job', () => {
+      expect(tokenForJob(selectedJobs, { type: 'standard', id: 8 })).toBeUndefined()
+    })
+
+    it('should return undefined if the job is not selected', () => {
+      expect(tokenForJob(selectedJobs, { type: 'standard', id: 9 })).toBeUndefined()
     })
   })
 })

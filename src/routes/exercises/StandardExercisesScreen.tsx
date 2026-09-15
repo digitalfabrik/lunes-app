@@ -65,7 +65,7 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
   const [feedback, setFeedback] = useState<ExerciseFeedback[]>([])
   const [isFeedbackSet, setIsFeedbackSet] = useState<boolean>(false)
   const isFocused = useIsFocused()
-  const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByUnit(unit.id)
+  const { data: vocabularyItems, error, loading, refresh } = useLoadWordsByUnit(unit)
 
   useEffect(() => {
     if (!isFeedbackSet) {

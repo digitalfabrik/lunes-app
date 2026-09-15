@@ -47,7 +47,7 @@ const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: J
     [allJobs, queryTerm],
   )
   const jobItems = filteredJobs?.map(item => {
-    const isSelected = selectedJobs?.includes(item.id.id)
+    const isSelected = selectedJobs?.some(job => job.id === item.id.id)
     return (
       <JobListItem
         key={item.id.id}

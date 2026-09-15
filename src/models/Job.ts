@@ -16,8 +16,14 @@ type Job = {
   icon: string | null
   numberOfUnits: number
   migrated: boolean
+  token?: string
 }
 
 export type StandardJob = Job & { id: StandardJobId }
+
+export type SelectedJob = {
+  id: number
+  token?: string
+}
 
 export default Job
