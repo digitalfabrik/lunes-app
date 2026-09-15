@@ -1,7 +1,7 @@
 import { mocked } from 'jest-mock'
 
 import { StandardVocabularyItem, UserVocabularyItem } from '../../models/VocabularyItem'
-import { getWords, getWordsWithKey } from '../../services/CmsApi'
+import { getWords, getWordsWithToken } from '../../services/CmsApi'
 import { StorageCache } from '../../services/Storage'
 import { reportError } from '../../services/sentry'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -18,7 +18,7 @@ describe('useLoadAllWords', () => {
 
   beforeEach(() => {
     storageCache = StorageCache.createDummy()
-    mocked(getWordsWithKey).mockImplementation(async () => [])
+    mocked(getWordsWithToken).mockImplementation(async () => [])
   })
 
   it('should return concatenation', async () => {
@@ -53,25 +53,25 @@ describe('useLoadAllWords', () => {
   describe('when a contentArea was redeemed', () => {
     const contentAreaVocabularyMock: StandardVocabularyItem[] = new VocabularyItemBuilder(2)
       .build()
-      .map((item, index) => ({ ...item, id: { ...item.id, id: 100 + index }, contentAreaKey: 'telc_key' }))
+      .map((item, index) => ({ ...item, id: { ...item.id, id: 100 + index }, contentAreaToken: 'telc_key' }))
 
     it('should request the words of every redeemed contentArea and append them', async () => {
       mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
-      mocked(getWordsWithKey).mockImplementation(async () => contentAreaVocabularyMock)
+      mocked(getWordsWithToken).mockImplementation(async () => contentAreaVocabularyMock)
       await storageCache.setItem('userVocabulary', [])
-      await storageCache.setItem('contentAreas', [{ accessKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
+      await storageCache.setItem('contentAreas', [{ token: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
 
       const response = await loadAllWords(storageCache)
 
-      expect(getWordsWithKey).toHaveBeenCalledWith('telc_key')
+      expect(getWordsWithToken).toHaveBeenCalledWith('telc_key')
       expect(response).toHaveLength(lunesStandardVocabularyMock.length + contentAreaVocabularyMock.length)
     })
 
     it('should not return a word twice if the key also selects public words', async () => {
       mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
-      mocked(getWordsWithKey).mockImplementation(async () => lunesStandardVocabularyMock)
+      mocked(getWordsWithToken).mockImplementation(async () => lunesStandardVocabularyMock)
       await storageCache.setItem('userVocabulary', [])
-      await storageCache.setItem('contentAreas', [{ accessKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
+      await storageCache.setItem('contentAreas', [{ token: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
 
       const response = await loadAllWords(storageCache)
 
@@ -80,9 +80,9 @@ describe('useLoadAllWords', () => {
 
     it('should keep the public and the user vocabulary if the key of a contentArea is rejected', async () => {
       mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
-      mocked(getWordsWithKey).mockRejectedValue(new Error('unauthorized'))
+      mocked(getWordsWithToken).mockRejectedValue(new Error('unauthorized'))
       await storageCache.setItem('userVocabulary', userVocabularyMock)
-      await storageCache.setItem('contentAreas', [{ accessKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
+      await storageCache.setItem('contentAreas', [{ token: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
 
       const response = await loadAllWords(storageCache)
 

@@ -1,5 +1,5 @@
 import VocabularyItem, { serializeVocabularyItemId, StandardVocabularyItem } from '../models/VocabularyItem'
-import { getWords, getWordsWithKey } from '../services/CmsApi'
+import { getWords, getWordsWithToken } from '../services/CmsApi'
 import { StorageCache } from '../services/Storage'
 import { reportError } from '../services/sentry'
 import { Return, useLoadAsync } from './useLoadAsync'
@@ -17,9 +17,9 @@ const withoutDuplicateIds = (vocabularyItems: VocabularyItem[]): VocabularyItem[
   })
 }
 
-const wordsOfContentArea = async (accessKey: string): Promise<StandardVocabularyItem[]> => {
+const wordsOfContentArea = async (token: string): Promise<StandardVocabularyItem[]> => {
   try {
-    return await getWordsWithKey(accessKey)
+    return await getWordsWithToken(token)
   } catch (error) {
     // An unreachable content area must not take the public and the user vocabulary down with it
     reportError(error)
@@ -31,7 +31,7 @@ export const loadAllWords = async (storageCache: StorageCache): Promise<Vocabula
   const contentAreas = storageCache.getItem('contentAreas')
   const [lunesStandardVocabulary, contentAreaVocabulary] = await Promise.all([
     getWords(),
-    Promise.all(contentAreas.map(({ accessKey }) => wordsOfContentArea(accessKey))),
+    Promise.all(contentAreas.map(({ token }) => wordsOfContentArea(token))),
   ])
   const userVocabulary = storageCache.getItem('userVocabulary')
   return withoutDuplicateIds([...lunesStandardVocabulary, ...contentAreaVocabulary.flat(), ...userVocabulary])

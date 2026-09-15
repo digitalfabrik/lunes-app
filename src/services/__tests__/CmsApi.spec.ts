@@ -1,11 +1,11 @@
 import { mocked } from 'jest-mock'
 
-import { getJob, getJobs, getUnitsOfJob, getWords, getWordsWithKey } from '../CmsApi'
+import { getJob, getJobs, getUnitsOfJob, getWords, getWordsWithToken } from '../CmsApi'
 import { getFromEndpoint } from '../axios'
 
 jest.mock('../axios')
 
-const accessKey = 'telc_key'
+const token = 'telc_key'
 
 const jobResponse = {
   id: 7,
@@ -45,7 +45,7 @@ describe('CmsApi', () => {
       const jobs = await getJobs()
 
       expect(getFromEndpoint).toHaveBeenCalledWith('jobs')
-      expect(jobs[0]?.contentAreaKey).toBeUndefined()
+      expect(jobs[0]?.contentAreaToken).toBeUndefined()
     })
   })
 
@@ -53,10 +53,10 @@ describe('CmsApi', () => {
     it('should pass the key on and stamp it onto the job', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce(jobResponse)
 
-      const job = await getJob({ type: 'standard', id: 7 }, accessKey)
+      const job = await getJob({ type: 'standard', id: 7 }, token)
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7', accessKey)
-      expect(job.contentAreaKey).toBe(accessKey)
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7', token)
+      expect(job.contentAreaToken).toBe(token)
     })
   })
 
@@ -64,10 +64,10 @@ describe('CmsApi', () => {
     it('should pass the key on and stamp it onto every unit', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([unitResponse])
 
-      const units = await getUnitsOfJob({ type: 'standard', id: 7 }, accessKey)
+      const units = await getUnitsOfJob({ type: 'standard', id: 7 }, token)
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7/units', accessKey)
-      expect(units[0]?.contentAreaKey).toBe(accessKey)
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7/units', token)
+      expect(units[0]?.contentAreaToken).toBe(token)
     })
 
     it('should not send a key for public content', async () => {
@@ -76,7 +76,7 @@ describe('CmsApi', () => {
       const units = await getUnitsOfJob({ type: 'standard', id: 7 })
 
       expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7/units', undefined)
-      expect(units[0]?.contentAreaKey).toBeUndefined()
+      expect(units[0]?.contentAreaToken).toBeUndefined()
     })
   })
 
@@ -87,18 +87,18 @@ describe('CmsApi', () => {
       const words = await getWords()
 
       expect(getFromEndpoint).toHaveBeenCalledWith('words')
-      expect(words[0]?.contentAreaKey).toBeUndefined()
+      expect(words[0]?.contentAreaToken).toBeUndefined()
     })
   })
 
-  describe('getWordsWithKey', () => {
+  describe('getWordsWithToken', () => {
     it('should request the words with the key and stamp it onto every word', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([wordResponse])
 
-      const words = await getWordsWithKey(accessKey)
+      const words = await getWordsWithToken(token)
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('words', accessKey)
-      expect(words[0]?.contentAreaKey).toBe(accessKey)
+      expect(getFromEndpoint).toHaveBeenCalledWith('words', token)
+      expect(words[0]?.contentAreaToken).toBe(token)
     })
   })
 })

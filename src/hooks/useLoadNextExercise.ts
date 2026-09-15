@@ -9,7 +9,7 @@ import useStorage from './useStorage'
 
 export const loadNextExercise = async (progress: Progress, job: Job): Promise<NextExerciseData> => {
   const { unit, exerciseKey } = await getNextExercise({ progress, job })
-  const vocabularyItems = await getWordsByUnit(unit.id, unit.contentAreaKey)
+  const vocabularyItems = await getWordsByUnit(unit.id, unit.contentAreaToken)
   return {
     vocabularyItems,
     jobTitle: job.name,

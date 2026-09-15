@@ -112,7 +112,7 @@ export type GetNextExerciseParams = {
   Calculates the next exercise that needs to be done for a profession
   */
 export const getNextExercise = async ({ progress, job }: GetNextExerciseParams): Promise<NextExercise> => {
-  const units = await getUnitsOfJob(job.id, job.contentAreaKey)
+  const units = await getUnitsOfJob(job.id, job.contentAreaToken)
   if (!units.length) {
     throw new Error(`No units for id ${JSON.stringify(job.id)}`)
   }
@@ -140,7 +140,7 @@ export const getProgress = async (progress: Progress, job: Job | null): Promise<
   if (!job) {
     return 0
   }
-  const units = await getUnitsOfJob(job.id, job.contentAreaKey)
+  const units = await getUnitsOfJob(job.id, job.contentAreaToken)
   if (units.length === 0) {
     return 0
   }

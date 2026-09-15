@@ -61,14 +61,14 @@ type JobResponse = {
 
 const transformJobResponse = (
   { id, name, icon, number_units: numberUnits, migrated }: JobResponse,
-  accessKey: string | undefined,
+  token: string | undefined,
 ): StandardJob => ({
   id: { type: 'standard', id },
   name,
   icon,
   numberOfUnits: numberUnits,
   migrated,
-  contentAreaKey: accessKey,
+  contentAreaToken: token,
 })
 
 export const getJobs = async (): Promise<StandardJob[]> => {
@@ -76,9 +76,9 @@ export const getJobs = async (): Promise<StandardJob[]> => {
   return response.map(job => transformJobResponse(job, undefined))
 }
 
-export const getJob = async (id: JobId, accessKey?: string): Promise<StandardJob> =>
+export const getJob = async (id: JobId, token?: string): Promise<StandardJob> =>
   id.type === 'standard'
-    ? transformJobResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id), accessKey), accessKey)
+    ? transformJobResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id), token), token)
     : // TODO: remove (#1539)
       Promise.reject(new Error(NetworkError))
 
@@ -92,23 +92,23 @@ type UnitResponse = {
 
 const transformUnitResponse = (
   { id, title, description, icon: iconUrl, number_words: numberWords }: UnitResponse,
-  accessKey: string | undefined,
+  token: string | undefined,
 ): StandardUnit => ({
   id: { id, type: 'standard' },
   title,
   description,
   iconUrl,
   numberWords,
-  contentAreaKey: accessKey,
+  contentAreaToken: token,
 })
 
-export const getUnitsOfJob = async (jobId: JobId, accessKey?: string): Promise<StandardUnit[]> => {
+export const getUnitsOfJob = async (jobId: JobId, token?: string): Promise<StandardUnit[]> => {
   // TODO: remove (#1539)
   if (jobId.type !== 'standard') {
     return Promise.reject(new Error(NetworkError))
   }
-  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId), accessKey)
-  return response.map(unit => transformUnitResponse(unit, accessKey))
+  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId), token)
+  return response.map(unit => transformUnitResponse(unit, token))
 }
 
 type SponsorResponse = {
@@ -154,7 +154,7 @@ type WordResponse = {
   pronunciation: string
 }
 
-const transformWordResponse = (response: WordResponse, accessKey: string | undefined): StandardVocabularyItem => {
+const transformWordResponse = (response: WordResponse, token: string | undefined): StandardVocabularyItem => {
   const { id, word, article, images, audio, pronunciation, alternative_words: alternativeWords } = response
   return {
     id: { type: VocabularyItemTypes.Standard, id },
@@ -168,7 +168,7 @@ const transformWordResponse = (response: WordResponse, accessKey: string | undef
     })),
     // The CMS sends an empty string for words that need no special pronunciation
     pronunciation: pronunciation || undefined,
-    contentAreaKey: accessKey,
+    contentAreaToken: token,
     exampleSentence:
       response.example_sentence !== null && response.example_sentence_audio !== null
         ? { sentence: response.example_sentence, audio: response.example_sentence_audio }
@@ -181,31 +181,31 @@ export const getWords = async (): Promise<StandardVocabularyItem[]> => {
   return response.map(word => transformWordResponse(word, undefined))
 }
 
-export const getWordsWithKey = async (accessKey: string): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words, accessKey)
-  return response.map(word => transformWordResponse(word, accessKey))
+export const getWordsWithToken = async (token: string): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words, token)
+  return response.map(word => transformWordResponse(word, token))
 }
 
 export const getWordById = async (
   id: StandardVocabularyId | ProtectedVocabularyId,
-  accessKey?: string,
+  token?: string,
 ): Promise<StandardVocabularyItem> => {
   // TODO: remove (#1539)
   if (id.type === VocabularyItemTypes.Protected) {
     return Promise.reject(new Error(NetworkError))
   }
-  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id), accessKey)
-  return transformWordResponse(response, accessKey)
+  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id), token)
+  return transformWordResponse(response, token)
 }
 
-export const getWordsByUnit = async (unitId: StandardUnitId, accessKey?: string): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId), accessKey)
-  return response.map(word => transformWordResponse(word, accessKey))
+export const getWordsByUnit = async (unitId: StandardUnitId, token?: string): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId), token)
+  return response.map(word => transformWordResponse(word, token))
 }
 
-export const getWordsByJob = async (jobId: StandardJobId, accessKey?: string): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId), accessKey)
-  return response.map(word => transformWordResponse(word, accessKey))
+export const getWordsByJob = async (jobId: StandardJobId, token?: string): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId), token)
+  return response.map(word => transformWordResponse(word, token))
 }
 
 type AnalyticsEventPostData = Omit<AnalyticsEvent, 'payload'> & {
