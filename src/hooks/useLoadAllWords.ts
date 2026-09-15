@@ -17,9 +17,9 @@ const withoutDuplicateIds = (vocabularyItems: VocabularyItem[]): VocabularyItem[
   })
 }
 
-const wordsOfContentArea = async (apiKey: string): Promise<StandardVocabularyItem[]> => {
+const wordsOfContentArea = async (accessKey: string): Promise<StandardVocabularyItem[]> => {
   try {
-    return await getWordsWithKey(apiKey)
+    return await getWordsWithKey(accessKey)
   } catch (error) {
     // An unreachable content area must not take the public and the user vocabulary down with it
     reportError(error)
@@ -31,7 +31,7 @@ export const loadAllWords = async (storageCache: StorageCache): Promise<Vocabula
   const contentAreas = storageCache.getItem('contentAreas')
   const [lunesStandardVocabulary, contentAreaVocabulary] = await Promise.all([
     getWords(),
-    Promise.all(contentAreas.map(({ apiKey }) => wordsOfContentArea(apiKey))),
+    Promise.all(contentAreas.map(({ accessKey }) => wordsOfContentArea(accessKey))),
   ])
   const userVocabulary = storageCache.getItem('userVocabulary')
   return withoutDuplicateIds([...lunesStandardVocabulary, ...contentAreaVocabulary.flat(), ...userVocabulary])

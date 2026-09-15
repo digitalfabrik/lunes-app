@@ -1,5 +1,5 @@
 type ContentArea = {
-  apiKey: string
+  accessKey: string
   name: string
   shortName: string
 }

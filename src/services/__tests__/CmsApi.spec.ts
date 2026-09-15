@@ -5,7 +5,7 @@ import { getFromEndpoint } from '../axios'
 
 jest.mock('../axios')
 
-const apiKey = 'telc_key'
+const accessKey = 'telc_key'
 
 const jobResponse = {
   id: 7,
@@ -53,10 +53,10 @@ describe('CmsApi', () => {
     it('should pass the key on and stamp it onto the job', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce(jobResponse)
 
-      const job = await getJob({ type: 'standard', id: 7 }, apiKey)
+      const job = await getJob({ type: 'standard', id: 7 }, accessKey)
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7', apiKey)
-      expect(job.contentAreaKey).toBe(apiKey)
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7', accessKey)
+      expect(job.contentAreaKey).toBe(accessKey)
     })
   })
 
@@ -64,10 +64,10 @@ describe('CmsApi', () => {
     it('should pass the key on and stamp it onto every unit', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([unitResponse])
 
-      const units = await getUnitsOfJob({ type: 'standard', id: 7 }, apiKey)
+      const units = await getUnitsOfJob({ type: 'standard', id: 7 }, accessKey)
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7/units', apiKey)
-      expect(units[0]?.contentAreaKey).toBe(apiKey)
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7/units', accessKey)
+      expect(units[0]?.contentAreaKey).toBe(accessKey)
     })
 
     it('should not send a key for public content', async () => {
@@ -95,10 +95,10 @@ describe('CmsApi', () => {
     it('should request the words with the key and stamp it onto every word', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([wordResponse])
 
-      const words = await getWordsWithKey(apiKey)
+      const words = await getWordsWithKey(accessKey)
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('words', apiKey)
-      expect(words[0]?.contentAreaKey).toBe(apiKey)
+      expect(getFromEndpoint).toHaveBeenCalledWith('words', accessKey)
+      expect(words[0]?.contentAreaKey).toBe(accessKey)
     })
   })
 })

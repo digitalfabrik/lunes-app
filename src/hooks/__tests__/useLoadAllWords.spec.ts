@@ -59,7 +59,7 @@ describe('useLoadAllWords', () => {
       mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
       mocked(getWordsWithKey).mockImplementation(async () => contentAreaVocabularyMock)
       await storageCache.setItem('userVocabulary', [])
-      await storageCache.setItem('contentAreas', [{ apiKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
+      await storageCache.setItem('contentAreas', [{ accessKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
 
       const response = await loadAllWords(storageCache)
 
@@ -71,7 +71,7 @@ describe('useLoadAllWords', () => {
       mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
       mocked(getWordsWithKey).mockImplementation(async () => lunesStandardVocabularyMock)
       await storageCache.setItem('userVocabulary', [])
-      await storageCache.setItem('contentAreas', [{ apiKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
+      await storageCache.setItem('contentAreas', [{ accessKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
 
       const response = await loadAllWords(storageCache)
 
@@ -82,7 +82,7 @@ describe('useLoadAllWords', () => {
       mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)
       mocked(getWordsWithKey).mockRejectedValue(new Error('unauthorized'))
       await storageCache.setItem('userVocabulary', userVocabularyMock)
-      await storageCache.setItem('contentAreas', [{ apiKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
+      await storageCache.setItem('contentAreas', [{ accessKey: 'telc_key', name: 'telc gGmbH', shortName: 'telc' }])
 
       const response = await loadAllWords(storageCache)
 
