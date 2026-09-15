@@ -2,7 +2,7 @@ import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { StandardExerciseKey, Favorite } from '../constants/data'
-import { StandardJobId } from '../models/Job'
+import { SelectedJob, StandardJob, StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
   areVocabularyItemIdsEqual,
@@ -39,38 +39,37 @@ export const removeJobFromNotMigrated = async (storageCache: StorageCache, jobId
   }
 }
 
-export const pushSelectedJob = async (
-  storageCache: StorageCache,
-  { id }: StandardJobId,
-  migrated: boolean,
-): Promise<void> => {
-  let jobs = storageCache.getMutableItem('selectedJobs')
-  if (jobs === null) {
-    jobs = [id]
-  } else {
-    jobs.push(id)
-  }
+export const pushSelectedJob = async (storageCache: StorageCache, job: StandardJob): Promise<void> => {
+  const { id } = job.id
+  const jobs = storageCache.getMutableItem('selectedJobs') ?? []
+  jobs.push({ id, contentAreaToken: job.contentAreaToken })
   await storageCache.setItem('selectedJobs', jobs)
   trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'add' })
 
-  if (!migrated) {
+  if (!job.migrated) {
     await addJobToNotMigrated(storageCache, id)
   }
 }
 
-export const removeSelectedJob = async (storageCache: StorageCache, jobId: StandardJobId): Promise<number[]> => {
+export const contentAreaTokenForJob = (
+  selectedJobs: readonly SelectedJob[] | null,
+  jobId: StandardJobId,
+): string | undefined => selectedJobs?.find(job => job.id === jobId.id)?.contentAreaToken
+
+export const removeSelectedJob = async (storageCache: StorageCache, jobId: StandardJobId): Promise<SelectedJob[]> => {
   const jobs = storageCache.getItem('selectedJobs')
   if (jobs === null) {
     throw new Error('professions not set')
   }
-  const updatedJobs = jobs.filter(item => item !== jobId.id)
+  const removedJob = jobs.find(job => job.id === jobId.id)
+  const updatedJobs = jobs.filter(job => job.id !== jobId.id)
   await storageCache.setItem('selectedJobs', updatedJobs)
   trackEvent(storageCache, { type: 'job_selected', job_id: jobId.id, action: 'remove' })
 
   await removeJobFromNotMigrated(storageCache, jobId.id)
 
   try {
-    const jobWords = await getWordsByJob(jobId)
+    const jobWords = await getWordsByJob(jobId, removedJob?.contentAreaToken)
     await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(jobWords.map(word => word.id))
   } catch {
     // If the cleanup fails, the words from this job remain in the repetition list
@@ -324,6 +323,15 @@ export const migrate6To7 = async (): Promise<void> => {
   await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
 }
 
+// Selected jobs used to be plain ids; they now record which content area each job came from
+export const migrate7To8 = async (): Promise<void> => {
+  const selectedJobs = await getStorageItemOr<number[] | null>('selectedProfessions', null)
+  if (selectedJobs === null) {
+    return
+  }
+  await AsyncStorage.setItem('selectedProfessions', JSON.stringify(selectedJobs.map(id => ({ id }))))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem('cms')
@@ -370,6 +378,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough, no-magic-numbers
     case 6:
       await migrate6To7()
+    // eslint-disable-next-line no-fallthrough, no-magic-numbers
+    case 7:
+      await migrate7To8()
       break
   }
 

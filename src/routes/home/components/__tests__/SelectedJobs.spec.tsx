@@ -36,7 +36,7 @@ describe('SelectedJobs', () => {
 
   it('should show a single job card with edit and add icons', async () => {
     const storageCache = StorageCache.createDummy()
-    await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+    await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
     mocked(getJob).mockResolvedValue(mockJobs()[0]!)
 
     const { getByText, getByTestId } = renderWithStorageCache(storageCache, <SelectedJobs {...defaultProps} />)
@@ -49,7 +49,7 @@ describe('SelectedJobs', () => {
   it('should navigate between multiple jobs using arrow buttons', async () => {
     const [firstJob, secondJob] = mockJobs()
     const storageCache = StorageCache.createDummy()
-    await storageCache.setItem('selectedJobs', [firstJob!.id.id, secondJob!.id.id])
+    await storageCache.setItem('selectedJobs', [{ id: firstJob!.id.id }, { id: secondJob!.id.id }])
     mocked(getJob).mockImplementation(async jobId =>
       jobId.type === 'standard' && jobId.id === secondJob!.id.id ? secondJob! : firstJob!,
     )

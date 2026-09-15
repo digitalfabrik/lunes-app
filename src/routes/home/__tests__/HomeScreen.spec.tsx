@@ -32,7 +32,7 @@ describe('HomeScreen', () => {
   it('should render the first job by default', async () => {
     await storageCache.setItem(
       'selectedJobs',
-      mockJobs().map(item => item.id.id),
+      mockJobs().map(item => ({ id: item.id.id })),
     )
     mocked(getJob).mockImplementation(id =>
       id.type === 'load-protected'

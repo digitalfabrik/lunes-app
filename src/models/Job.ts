@@ -21,4 +21,9 @@ type Job = {
 
 export type StandardJob = Job & { id: StandardJobId }
 
+export type SelectedJob = {
+  id: number
+  contentAreaToken?: string
+}
+
 export default Job
