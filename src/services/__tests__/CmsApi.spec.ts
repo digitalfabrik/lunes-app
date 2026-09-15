@@ -1,6 +1,6 @@
 import { mocked } from 'jest-mock'
 
-import { getJob, getJobs, getUnitsOfJob, getWords, getWordsWithToken } from '../CmsApi'
+import { getJob, getJobs, getUnitsOfJob, getWords } from '../CmsApi'
 import { getFromEndpoint } from '../axios'
 
 jest.mock('../axios')
@@ -53,7 +53,7 @@ describe('CmsApi', () => {
     it('should pass the token on and stamp it onto the job', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce(jobResponse)
 
-      const job = await getJob({ type: 'standard', id: 7 }, token)
+      const job = await getJob({ id: { type: 'standard', id: 7 }, token })
 
       expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7', token)
       expect(job.token).toBe(token)
@@ -86,16 +86,14 @@ describe('CmsApi', () => {
 
       const words = await getWords()
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('words')
+      expect(getFromEndpoint).toHaveBeenCalledWith('words', undefined)
       expect(words[0]?.token).toBeUndefined()
     })
-  })
 
-  describe('getWordsWithToken', () => {
     it('should request the words with the token and stamp it onto every word', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([wordResponse])
 
-      const words = await getWordsWithToken(token)
+      const words = await getWords(token)
 
       expect(getFromEndpoint).toHaveBeenCalledWith('words', token)
       expect(words[0]?.token).toBe(token)

@@ -550,6 +550,15 @@ describe('storageUtils', () => {
         expect(storageCache.getItem('selectedJobs')).toEqual([{ id: 1 }, { id: 2 }])
       })
 
+      it('should leave already migrated selected jobs untouched', async () => {
+        await AsyncStorage.setItem(storageKeys.version, '7')
+        await AsyncStorage.setItem(storageKeys.selectedJobs, JSON.stringify([{ id: 1, token: 'telc_token' }]))
+
+        const storageCache = await loadStorageCache()
+
+        expect(storageCache.getItem('selectedJobs')).toEqual([{ id: 1, token: 'telc_token' }])
+      })
+
       it('should keep selectedJobs null if the startup screen was never completed', async () => {
         await AsyncStorage.setItem(storageKeys.version, '7')
 

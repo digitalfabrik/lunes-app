@@ -34,7 +34,7 @@ describe('HomeScreen', () => {
       'selectedJobs',
       mockJobs().map(item => ({ id: item.id.id })),
     )
-    mocked(getJob).mockImplementation(id =>
+    mocked(getJob).mockImplementation(({ id }) =>
       id.type === 'load-protected'
         ? Promise.reject()
         : Promise.resolve(mockJobs().find(item => item.id.id === id.id) as StandardJob),

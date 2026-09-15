@@ -3,8 +3,6 @@ import { StandardUnit } from '../models/Unit'
 import { getUnitsOfJob } from '../services/CmsApi'
 import { Return, useLoadAsync } from './useLoadAsync'
 
-const loadUnits = async ({ job }: { job: Job }) => getUnitsOfJob(job)
-
-const useLoadUnits = (job: Job): Return<StandardUnit[]> => useLoadAsync(loadUnits, { job })
+const useLoadUnits = (job: Job): Return<StandardUnit[]> => useLoadAsync(getUnitsOfJob, { id: job.id, token: job.token })
 
 export default useLoadUnits

@@ -59,7 +59,6 @@ export const removeSelectedJob = async (storageCache: StorageCache, jobId: Stand
   if (jobs === null) {
     throw new Error('professions not set')
   }
-  const removedJob = jobs.find(job => job.id === jobId.id)
   const updatedJobs = jobs.filter(job => job.id !== jobId.id)
   await storageCache.setItem('selectedJobs', updatedJobs)
   trackEvent(storageCache, { type: 'job_selected', job_id: jobId.id, action: 'remove' })
@@ -67,7 +66,7 @@ export const removeSelectedJob = async (storageCache: StorageCache, jobId: Stand
   await removeJobFromNotMigrated(storageCache, jobId.id)
 
   try {
-    const jobWords = await getWordsByJob({ id: jobId, token: removedJob?.token })
+    const jobWords = await getWordsByJob({ id: jobId, token: tokenForJob(jobs, jobId) })
     await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(jobWords.map(word => word.id))
   } catch {
     // If the cleanup fails, the words from this job remain in the repetition list
@@ -323,11 +322,12 @@ export const migrate6To7 = async (): Promise<void> => {
 
 // Selected jobs used to be plain ids; they now record which content area each job came from
 export const migrate7To8 = async (): Promise<void> => {
-  const selectedJobs = await getStorageItemOr<number[] | null>('selectedProfessions', null)
+  const selectedJobs = await getStorageItemOr<(number | SelectedJob)[] | null>('selectedProfessions', null)
   if (selectedJobs === null) {
     return
   }
-  await AsyncStorage.setItem('selectedProfessions', JSON.stringify(selectedJobs.map(id => ({ id }))))
+  const migratedJobs = selectedJobs.map(job => (typeof job === 'number' ? { id: job } : job))
+  await AsyncStorage.setItem('selectedProfessions', JSON.stringify(migratedJobs))
 }
 
 // Removes the cms url overwrite value in case it has changed between versions

@@ -17,7 +17,7 @@ export const loadFavorite = async ({ storageCache, favorite }: LoadFavoriteProps
     }
     return userCreatedFavorite
   }
-  return getWordById(favorite)
+  return getWordById({ id: favorite })
 }
 
 const useLoadFavorite = (favorite: Favorite): Return<VocabularyItem | null> => {

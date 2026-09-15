@@ -24,12 +24,12 @@ describe('useLoadJob', () => {
   it('should load a job of a content area with the token stored for it', async () => {
     renderHook(() => useLoadJob({ type: 'standard', id: 42 }), { wrapper })
 
-    await waitFor(() => expect(getJob).toHaveBeenCalledWith({ type: 'standard', id: 42 }, 'telc_token'))
+    await waitFor(() => expect(getJob).toHaveBeenCalledWith({ id: { type: 'standard', id: 42 }, token: 'telc_token' }))
   })
 
   it('should load a public job without a token', async () => {
     renderHook(() => useLoadJob({ type: 'standard', id: 1 }), { wrapper })
 
-    await waitFor(() => expect(getJob).toHaveBeenCalledWith({ type: 'standard', id: 1 }, undefined))
+    await waitFor(() => expect(getJob).toHaveBeenCalledWith({ id: { type: 'standard', id: 1 }, token: undefined }))
   })
 })

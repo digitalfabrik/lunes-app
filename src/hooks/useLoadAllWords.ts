@@ -1,5 +1,5 @@
 import VocabularyItem, { serializeVocabularyItemId, StandardVocabularyItem } from '../models/VocabularyItem'
-import { getWords, getWordsWithToken } from '../services/CmsApi'
+import { getWords } from '../services/CmsApi'
 import { StorageCache } from '../services/Storage'
 import { reportError } from '../services/sentry'
 import { Return, useLoadAsync } from './useLoadAsync'
@@ -19,7 +19,7 @@ const withoutDuplicateIds = (vocabularyItems: VocabularyItem[]): VocabularyItem[
 
 const wordsOfContentArea = async (token: string): Promise<StandardVocabularyItem[]> => {
   try {
-    return await getWordsWithToken(token)
+    return await getWords(token)
   } catch (error) {
     // An unreachable content area must not take the public and the user vocabulary down with it
     reportError(error)

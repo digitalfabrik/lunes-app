@@ -50,8 +50,8 @@ describe('SelectedJobs', () => {
     const [firstJob, secondJob] = mockJobs()
     const storageCache = StorageCache.createDummy()
     await storageCache.setItem('selectedJobs', [{ id: firstJob!.id.id }, { id: secondJob!.id.id }])
-    mocked(getJob).mockImplementation(async jobId =>
-      jobId.type === 'standard' && jobId.id === secondJob!.id.id ? secondJob! : firstJob!,
+    mocked(getJob).mockImplementation(async ({ id }) =>
+      id.type === 'standard' && id.id === secondJob!.id.id ? secondJob! : firstJob!,
     )
 
     const { getByText, getByTestId, queryByTestId } = renderWithStorageCache(

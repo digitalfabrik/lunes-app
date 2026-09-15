@@ -3,8 +3,7 @@ import { StandardVocabularyItem } from '../models/VocabularyItem'
 import { getWordsByJob } from '../services/CmsApi'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-const loadWordsByJob = async ({ job }: { job: StandardJob }) => getWordsByJob(job)
-
-const useLoadWordsByJob = (job: StandardJob): Return<StandardVocabularyItem[]> => useLoadAsync(loadWordsByJob, { job })
+const useLoadWordsByJob = (job: StandardJob): Return<StandardVocabularyItem[]> =>
+  useLoadAsync(getWordsByJob, { id: job.id, token: job.token })
 
 export default useLoadWordsByJob

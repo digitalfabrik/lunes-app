@@ -77,7 +77,7 @@ export const getJobs = async (): Promise<StandardJob[]> => {
   return response.map(job => transformJobResponse(job, undefined))
 }
 
-export const getJob = async (id: JobId, token?: string): Promise<StandardJob> =>
+export const getJob = async ({ id, token }: WithToken<JobId>): Promise<StandardJob> =>
   id.type === 'standard'
     ? transformJobResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id), token), token)
     : // TODO: remove (#1539)
@@ -177,20 +177,15 @@ const transformWordResponse = (response: WordResponse, token: string | undefined
   }
 }
 
-export const getWords = async (): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words)
-  return response.map(word => transformWordResponse(word, undefined))
-}
-
-export const getWordsWithToken = async (token: string): Promise<StandardVocabularyItem[]> => {
+export const getWords = async (token?: string): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.words, token)
   return response.map(word => transformWordResponse(word, token))
 }
 
-export const getWordById = async (
-  id: StandardVocabularyId | ProtectedVocabularyId,
-  token?: string,
-): Promise<StandardVocabularyItem> => {
+export const getWordById = async ({
+  id,
+  token,
+}: WithToken<StandardVocabularyId | ProtectedVocabularyId>): Promise<StandardVocabularyItem> => {
   // TODO: remove (#1539)
   if (id.type === VocabularyItemTypes.Protected) {
     return Promise.reject(new Error(NetworkError))
