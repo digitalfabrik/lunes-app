@@ -1,5 +1,6 @@
 import { Article, ARTICLES } from '../constants/data'
 import { NetworkError } from '../constants/endpoints'
+import { WithToken } from '../models/ContentArea'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
@@ -68,7 +69,7 @@ const transformJobResponse = (
   icon,
   numberOfUnits: numberUnits,
   migrated,
-  contentAreaToken: token,
+  token,
 })
 
 export const getJobs = async (): Promise<StandardJob[]> => {
@@ -99,15 +100,15 @@ const transformUnitResponse = (
   description,
   iconUrl,
   numberWords,
-  contentAreaToken: token,
+  token,
 })
 
-export const getUnitsOfJob = async (jobId: JobId, token?: string): Promise<StandardUnit[]> => {
+export const getUnitsOfJob = async ({ id, token }: WithToken<JobId>): Promise<StandardUnit[]> => {
   // TODO: remove (#1539)
-  if (jobId.type !== 'standard') {
+  if (id.type !== 'standard') {
     return Promise.reject(new Error(NetworkError))
   }
-  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId), token)
+  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(id), token)
   return response.map(unit => transformUnitResponse(unit, token))
 }
 
@@ -168,7 +169,7 @@ const transformWordResponse = (response: WordResponse, token: string | undefined
     })),
     // The CMS sends an empty string for words that need no special pronunciation
     pronunciation: pronunciation || undefined,
-    contentAreaToken: token,
+    token,
     exampleSentence:
       response.example_sentence !== null && response.example_sentence_audio !== null
         ? { sentence: response.example_sentence, audio: response.example_sentence_audio }
@@ -198,13 +199,13 @@ export const getWordById = async (
   return transformWordResponse(response, token)
 }
 
-export const getWordsByUnit = async (unitId: StandardUnitId, token?: string): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId), token)
+export const getWordsByUnit = async ({ id, token }: WithToken<StandardUnitId>): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(id), token)
   return response.map(word => transformWordResponse(word, token))
 }
 
-export const getWordsByJob = async (jobId: StandardJobId, token?: string): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId), token)
+export const getWordsByJob = async ({ id, token }: WithToken<StandardJobId>): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(id), token)
   return response.map(word => transformWordResponse(word, token))
 }
 

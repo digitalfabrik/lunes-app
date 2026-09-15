@@ -53,7 +53,7 @@ describe('useLoadAllWords', () => {
   describe('when a contentArea was redeemed', () => {
     const contentAreaVocabularyMock: StandardVocabularyItem[] = new VocabularyItemBuilder(2)
       .build()
-      .map((item, index) => ({ ...item, id: { ...item.id, id: 100 + index }, contentAreaToken: 'telc_key' }))
+      .map((item, index) => ({ ...item, id: { ...item.id, id: 100 + index }, token: 'telc_key' }))
 
     it('should request the words of every redeemed contentArea and append them', async () => {
       mocked(getWords).mockImplementation(async () => lunesStandardVocabularyMock)

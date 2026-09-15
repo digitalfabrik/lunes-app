@@ -16,7 +16,7 @@ type Unit = {
   description: string
   iconUrl: string | null
   numberWords: number
-  contentAreaToken?: string
+  token?: string
 }
 
 export type StandardUnit = {

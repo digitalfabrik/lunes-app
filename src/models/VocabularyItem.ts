@@ -42,7 +42,7 @@ type VocabularyItem = {
     sentence: string
     audio: string
   }
-  contentAreaToken?: string
+  token?: string
 }
 
 export type StandardVocabularyItem = {

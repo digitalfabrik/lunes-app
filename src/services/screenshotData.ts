@@ -25,7 +25,7 @@ const getWordNodeCards = async (storageCache: StorageCache): Promise<WordNodeCar
 }
 
 const getProgress = async (): Promise<Progress> => {
-  const units = await getUnitsOfJob({ type: 'standard', id: jobId })
+  const units = await getUnitsOfJob({ id: { type: 'standard', id: jobId } })
   const unitProgress = { [StandardExerciseKeys.wordChoiceExercise]: 1, [StandardExerciseKeys.vocabularyList]: 1 }
   return Object.fromEntries(units.map(unit => [unit.id.id, unitProgress]))
 }

@@ -42,7 +42,7 @@ export const removeJobFromNotMigrated = async (storageCache: StorageCache, jobId
 export const pushSelectedJob = async (storageCache: StorageCache, job: StandardJob): Promise<void> => {
   const { id } = job.id
   const jobs = storageCache.getMutableItem('selectedJobs') ?? []
-  jobs.push({ id, contentAreaToken: job.contentAreaToken })
+  jobs.push({ id, token: job.token })
   await storageCache.setItem('selectedJobs', jobs)
   trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'add' })
 
@@ -51,10 +51,8 @@ export const pushSelectedJob = async (storageCache: StorageCache, job: StandardJ
   }
 }
 
-export const contentAreaTokenForJob = (
-  selectedJobs: readonly SelectedJob[] | null,
-  jobId: StandardJobId,
-): string | undefined => selectedJobs?.find(job => job.id === jobId.id)?.contentAreaToken
+export const tokenForJob = (selectedJobs: readonly SelectedJob[] | null, jobId: StandardJobId): string | undefined =>
+  selectedJobs?.find(job => job.id === jobId.id)?.token
 
 export const removeSelectedJob = async (storageCache: StorageCache, jobId: StandardJobId): Promise<SelectedJob[]> => {
   const jobs = storageCache.getItem('selectedJobs')
@@ -69,7 +67,7 @@ export const removeSelectedJob = async (storageCache: StorageCache, jobId: Stand
   await removeJobFromNotMigrated(storageCache, jobId.id)
 
   try {
-    const jobWords = await getWordsByJob(jobId, removedJob?.contentAreaToken)
+    const jobWords = await getWordsByJob({ id: jobId, token: removedJob?.token })
     await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(jobWords.map(word => word.id))
   } catch {
     // If the cleanup fails, the words from this job remain in the repetition list

@@ -16,14 +16,14 @@ type Job = {
   icon: string | null
   numberOfUnits: number
   migrated: boolean
-  contentAreaToken?: string
+  token?: string
 }
 
 export type StandardJob = Job & { id: StandardJobId }
 
 export type SelectedJob = {
   id: number
-  contentAreaToken?: string
+  token?: string
 }
 
 export default Job

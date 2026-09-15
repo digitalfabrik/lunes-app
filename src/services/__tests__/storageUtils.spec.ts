@@ -12,7 +12,7 @@ import {
   addFavorite,
   addJobToNotMigrated,
   addUserVocabularyItem,
-  contentAreaTokenForJob,
+  tokenForJob,
   deleteUserVocabularyItem,
   editUserVocabularyItem,
   FAVORITES_KEY_VERSION_0,
@@ -86,9 +86,9 @@ describe('storageUtils', () => {
     })
 
     it('should store the content area token of the pushed job', async () => {
-      await pushSelectedJob(storageCache, { ...mockJobs()[0]!, contentAreaToken: 'telc_token' })
+      await pushSelectedJob(storageCache, { ...mockJobs()[0]!, token: 'telc_token' })
 
-      expect(storageCache.getItem('selectedJobs')).toEqual([{ id: 1, contentAreaToken: 'telc_token' }])
+      expect(storageCache.getItem('selectedJobs')).toEqual([{ id: 1, token: 'telc_token' }])
     })
 
     it('should emit a job_selected add event when pushing a job', async () => {
@@ -675,19 +675,19 @@ describe('storageUtils', () => {
     })
   })
 
-  describe('contentAreaTokenForJob', () => {
-    const selectedJobs = [{ id: 7, contentAreaToken: 'telc_token' }, { id: 8 }]
+  describe('tokenForJob', () => {
+    const selectedJobs = [{ id: 7, token: 'telc_token' }, { id: 8 }]
 
     it('should return the token stored with the selected job', () => {
-      expect(contentAreaTokenForJob(selectedJobs, { type: 'standard', id: 7 })).toBe('telc_token')
+      expect(tokenForJob(selectedJobs, { type: 'standard', id: 7 })).toBe('telc_token')
     })
 
     it('should return undefined for a public job', () => {
-      expect(contentAreaTokenForJob(selectedJobs, { type: 'standard', id: 8 })).toBeUndefined()
+      expect(tokenForJob(selectedJobs, { type: 'standard', id: 8 })).toBeUndefined()
     })
 
     it('should return undefined if the job is not selected', () => {
-      expect(contentAreaTokenForJob(selectedJobs, { type: 'standard', id: 9 })).toBeUndefined()
+      expect(tokenForJob(selectedJobs, { type: 'standard', id: 9 })).toBeUndefined()
     })
   })
 })

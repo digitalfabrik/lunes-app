@@ -39,66 +39,66 @@ describe('CmsApi', () => {
   beforeEach(jest.clearAllMocks)
 
   describe('getJobs', () => {
-    it('should request the public job list without a key', async () => {
+    it('should request the public job list without a token', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([jobResponse])
 
       const jobs = await getJobs()
 
       expect(getFromEndpoint).toHaveBeenCalledWith('jobs')
-      expect(jobs[0]?.contentAreaToken).toBeUndefined()
+      expect(jobs[0]?.token).toBeUndefined()
     })
   })
 
   describe('getJob', () => {
-    it('should pass the key on and stamp it onto the job', async () => {
+    it('should pass the token on and stamp it onto the job', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce(jobResponse)
 
       const job = await getJob({ type: 'standard', id: 7 }, token)
 
       expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7', token)
-      expect(job.contentAreaToken).toBe(token)
+      expect(job.token).toBe(token)
     })
   })
 
   describe('getUnitsOfJob', () => {
-    it('should pass the key on and stamp it onto every unit', async () => {
+    it('should pass the token on and stamp it onto every unit', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([unitResponse])
 
-      const units = await getUnitsOfJob({ type: 'standard', id: 7 }, token)
+      const units = await getUnitsOfJob({ id: { type: 'standard', id: 7 }, token })
 
       expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7/units', token)
-      expect(units[0]?.contentAreaToken).toBe(token)
+      expect(units[0]?.token).toBe(token)
     })
 
-    it('should not send a key for public content', async () => {
+    it('should not send a token for public content', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([unitResponse])
 
-      const units = await getUnitsOfJob({ type: 'standard', id: 7 })
+      const units = await getUnitsOfJob({ id: { type: 'standard', id: 7 } })
 
       expect(getFromEndpoint).toHaveBeenCalledWith('jobs/7/units', undefined)
-      expect(units[0]?.contentAreaToken).toBeUndefined()
+      expect(units[0]?.token).toBeUndefined()
     })
   })
 
   describe('getWords', () => {
-    it('should request the public words without a key', async () => {
+    it('should request the public words without a token', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([wordResponse])
 
       const words = await getWords()
 
       expect(getFromEndpoint).toHaveBeenCalledWith('words')
-      expect(words[0]?.contentAreaToken).toBeUndefined()
+      expect(words[0]?.token).toBeUndefined()
     })
   })
 
   describe('getWordsWithToken', () => {
-    it('should request the words with the key and stamp it onto every word', async () => {
+    it('should request the words with the token and stamp it onto every word', async () => {
       mocked(getFromEndpoint).mockResolvedValueOnce([wordResponse])
 
       const words = await getWordsWithToken(token)
 
       expect(getFromEndpoint).toHaveBeenCalledWith('words', token)
-      expect(words[0]?.contentAreaToken).toBe(token)
+      expect(words[0]?.token).toBe(token)
     })
   })
 })

@@ -3,7 +3,7 @@ import VocabularyItem from '../models/VocabularyItem'
 import { getWordsByUnit } from '../services/CmsApi'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-const loadWordsByUnit = async ({ unit }: { unit: StandardUnit }) => getWordsByUnit(unit.id, unit.contentAreaToken)
+const loadWordsByUnit = async ({ unit }: { unit: StandardUnit }) => getWordsByUnit(unit)
 
 const useLoadWordsByUnit = (unit: StandardUnit): Return<VocabularyItem[]> => useLoadAsync(loadWordsByUnit, { unit })
 
