@@ -309,7 +309,11 @@
     "title": "Wollen Sie den Inhalt hinzufügen?",
     "code": "Code",
     "add": "Hinzufügen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "error": {
+      "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
+      "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
+    }
   },
   "settings": {
     "settings": "Einstellungen",

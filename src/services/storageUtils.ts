@@ -2,6 +2,7 @@ import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { StandardExerciseKey, Favorite } from '../constants/data'
+import ContentArea from '../models/ContentArea'
 import { SelectedJob, StandardJob, StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
@@ -49,6 +50,11 @@ export const pushSelectedJob = async (storageCache: StorageCache, job: StandardJ
   if (!job.migrated) {
     await addJobToNotMigrated(storageCache, id)
   }
+}
+
+export const saveContentArea = async (storageCache: StorageCache, contentArea: ContentArea): Promise<void> => {
+  const contentAreas = storageCache.getItem('contentAreas').filter(({ id }) => id !== contentArea.id)
+  await storageCache.setItem('contentAreas', [...contentAreas, contentArea])
 }
 
 export const tokenForJob = (selectedJobs: readonly SelectedJob[] | null, jobId: StandardJobId): string | undefined =>

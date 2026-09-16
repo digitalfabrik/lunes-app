@@ -1,6 +1,8 @@
+import { isAxiosError } from 'axios'
+
 import { Article, ARTICLES } from '../constants/data'
-import { NetworkError } from '../constants/endpoints'
-import { WithToken } from '../models/ContentArea'
+import { InvalidContentAreaCodeError, NetworkError } from '../constants/endpoints'
+import ContentArea, { WithToken } from '../models/ContentArea'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
@@ -15,6 +17,8 @@ import { AnalyticsEvent, AnalyticsPayload } from './AnalyticsService'
 import { deleteFromEndpoint, getFromEndpoint, postToEndpoint } from './axios'
 import { log, reportError } from './sentry'
 
+const HTTP_STATUS_CODE_BAD_REQUEST = 400
+
 const Endpoints = {
   feedback: 'feedback',
   jobs: 'jobs',
@@ -25,6 +29,7 @@ const Endpoints = {
   word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
+  registerArea: 'areas/register/',
   analyticsEvent: 'analytics/events',
   analyticsExport: (installationId: string) => `analytics/export/${installationId}/`,
   analyticsDelete: (installationId: string) => `analytics/data/${installationId}/`,
@@ -75,6 +80,34 @@ const transformJobResponse = (
 export const getJobs = async (): Promise<StandardJob[]> => {
   const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
   return response.map(job => transformJobResponse(job, undefined))
+}
+
+type RegisterAreaRequest = {
+  code: string
+  installation_id?: string
+}
+
+type RegisterAreaResponse = {
+  token: string
+  area: {
+    id: number
+    name: string
+  }
+}
+
+export const registerContentArea = async (code: string, installationId?: string): Promise<ContentArea> => {
+  try {
+    const { data } = await postToEndpoint<RegisterAreaRequest, RegisterAreaResponse>(Endpoints.registerArea, {
+      code,
+      installation_id: installationId,
+    })
+    return { id: data.area.id, token: data.token, name: data.area.name }
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE_BAD_REQUEST) {
+      throw new Error(InvalidContentAreaCodeError)
+    }
+    throw error
+  }
 }
 
 export const getJob = async ({ id, token }: WithToken<JobId>): Promise<StandardJob> =>
