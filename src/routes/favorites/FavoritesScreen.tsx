@@ -4,14 +4,14 @@ import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 import RouteWrapper from '../../components/RouteWrapper'
+import VocabularyListItem from '../../components/VocabularyListItem'
 import { ContentSecondary } from '../../components/text/Content'
 import { SubheadingPrimary } from '../../components/text/Subheading'
-import { Favorite } from '../../constants/data'
+import useLoadAllWords from '../../hooks/useLoadAllWords'
 import useStorage from '../../hooks/useStorage'
-import VocabularyItem from '../../models/VocabularyItem'
+import VocabularyItem, { areVocabularyItemIdsEqual, serializeVocabularyItemId } from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
-import FavoriteItem from './components/FavoriteItem'
 
 type FavoritesScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Favorites'>
@@ -43,13 +43,18 @@ const EmptyStateSubtitle = styled.Text`
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
   const [favorites] = useStorage('favorites')
+  const { data: allWords } = useLoadAllWords()
+
+  const favoriteItems = favorites
+    .map(favorite => allWords?.find(word => areVocabularyItemIdsEqual(word.id, favorite)))
+    .filter((item): item is VocabularyItem => item !== undefined)
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
   }
 
-  const renderItem = ({ item }: { item: Favorite }): ReactElement => (
-    <FavoriteItem favorite={item} onPress={navigateToDetail} />
+  const renderItem = ({ item }: { item: VocabularyItem }): ReactElement => (
+    <VocabularyListItem vocabularyItem={item} onPress={() => navigateToDetail(item)} />
   )
 
   const { emptyState } = getLabels().favorites
@@ -60,14 +65,16 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
         <FlatList
           ListHeaderComponent={<ListHeader>{wordsDescription(favorites.length)}</ListHeader>}
           ListEmptyComponent={
-            <EmptyStateContainer>
-              <EmptyStateTitle>{emptyState.title}</EmptyStateTitle>
-              <EmptyStateSubtitle>{emptyState.subtitle}</EmptyStateSubtitle>
-            </EmptyStateContainer>
+            favorites.length === 0 ? (
+              <EmptyStateContainer>
+                <EmptyStateTitle>{emptyState.title}</EmptyStateTitle>
+                <EmptyStateSubtitle>{emptyState.subtitle}</EmptyStateSubtitle>
+              </EmptyStateContainer>
+            ) : null
           }
-          data={favorites}
+          data={favoriteItems}
           renderItem={renderItem}
-          keyExtractor={(item: Favorite) => JSON.stringify(item)}
+          keyExtractor={(item: VocabularyItem) => serializeVocabularyItemId(item.id)}
         />
       </Root>
     </RouteWrapper>

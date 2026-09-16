@@ -1,5 +1,7 @@
+import { mocked } from 'jest-mock'
 import React from 'react'
 
+import { getWords } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
@@ -8,6 +10,7 @@ import { renderWithStorageCache } from '../../../testing/render'
 import FavoritesScreen from '../FavoritesScreen'
 
 jest.mock('@react-navigation/native')
+jest.mock('../../../services/CmsApi')
 jest.mock('../../../components/FavoriteButton', () => () => {
   const { Text } = require('react-native')
   return <Text>FavoriteButton</Text>
@@ -25,6 +28,7 @@ describe('FavoritesScreen', () => {
 
   beforeEach(() => {
     storageCache = StorageCache.createDummy()
+    mocked(getWords).mockResolvedValue([])
   })
 
   it('should explain how to add favorites when there are none', () => {
