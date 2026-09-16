@@ -50,7 +50,7 @@ describe('useLoadAllWords', () => {
   })
 
   describe('when a contentArea was redeemed', () => {
-    const telc = { token: 'telc_token', name: 'telc gGmbH', shortName: 'telc' }
+    const telc = { id: 1, token: 'telc_token', name: 'telc gGmbH' }
     const contentAreaVocabularyMock: StandardVocabularyItem[] = new VocabularyItemBuilder(2)
       .build()
       .map((item, index) => ({ ...item, id: { ...item.id, id: 100 + index }, token: telc.token }))

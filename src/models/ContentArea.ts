@@ -1,7 +1,7 @@
 type ContentArea = {
+  id: number
   token: string
   name: string
-  shortName: string
 }
 
 export type WithToken<Id> = {
