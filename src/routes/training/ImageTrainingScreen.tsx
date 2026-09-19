@@ -37,6 +37,7 @@ import VocabularyItem, {
 import { Route, RoutesParams } from '../../navigation/NavigationTypes'
 import { trackEvent } from '../../services/AnalyticsService'
 import { getAtIndex, getLabels, moveToEnd, shuffleArray } from '../../services/helpers'
+import { hyphenated } from '../../services/hyphenation'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
@@ -277,7 +278,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
           <ContentText>
             {questionLabel} {word.article.value}{' '}
           </ContentText>
-          <ContentTextBold>{word.word}</ContentTextBold>
+          <ContentTextBold {...hyphenated(word.word)} />
           <ContentText>?</ContentText>
           <AudioPlayerContainer>
             <AudioPlayer disabled={word.audio === null} audio={word.audio ?? ''} />

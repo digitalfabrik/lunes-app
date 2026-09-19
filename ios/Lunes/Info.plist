@@ -8,6 +8,17 @@
         <string>mailto</string>
         <string>tel</string>
     </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>app.lunes</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>lunes</string>
+            </array>
+        </dict>
+    </array>
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>

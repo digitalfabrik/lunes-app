@@ -35,7 +35,8 @@ commands:
         steps:
             - run:
                 command: |
-                    curl -fsSL "https://get.maestro.mobile.dev" | bash
+                    # Pinned: takeScreenshot's output location moves between Maestro releases
+                    curl -fsSL "https://get.maestro.mobile.dev" | MAESTRO_VERSION=2.9.0 bash
                     echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> "$BASH_ENV"
                 name: Install Maestro
     notify:
@@ -148,6 +149,9 @@ commands:
                     - 3-pods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
                     - 3-pods-{{ arch }}-
                 name: Restore CocoaPods Cache
+            - run:
+                command: brew install cmake
+                name: Install CMake
             - run:
                 command: bundle exec pod install
                 name: '[CP] Install CocoaPods'
@@ -528,6 +532,8 @@ jobs:
     llm-pr-review:
         docker:
             - image: cimg/python:3.11
+        environment:
+            LLM_REVIEW_PR_NUMBER: << pipeline.parameters.llm_review_pr_number >>
         resource_class: small
         steps:
             - checkout
@@ -637,17 +643,22 @@ jobs:
             - checkout
             - attach_workspace:
                 at: .
+            - run:
+                command: |
+                    # app-toolbelt commits the files it is passed even when that leaves the tree identical to the base
+                    if [ -n "$(git status --porcelain -- android/fastlane/metadata/de-DE/images/phoneScreenshots ios/fastlane/screenshots/de-DE)" ]; then
+                      exit 0
+                    fi
+                    echo "Screenshots are unchanged, nothing to open a pull request for"
+                    circleci-agent step halt
+                name: Skip unchanged screenshots
             - restore_yarn_tools_cache
             - run:
                 command: |
-                    FILES=$(ls android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png ios/fastlane/screenshots/de-DE/*.png 2>/dev/null)
-                    count=$(echo "$FILES" | wc -w)
-                    if [ "$count" -eq 0 ]; then
-                      echo "No screenshots produced, nothing to commit"
-                      exit 1
-                    fi
                     # app-toolbelt commits files at the exact paths passed, so run from repo root (don't cd into tools)
-                    "$(yarn --cwd tools bin app-toolbelt)" v0 pr open-pr $FILES \
+                    "$(yarn --cwd tools bin app-toolbelt)" v0 pr open-pr \
+                      android/fastlane/metadata/de-DE/images/phoneScreenshots/*.png \
+                      ios/fastlane/screenshots/de-DE/*.png \
                       --private-key "${DELIVERINO_PRIVATE_KEY}" \
                       --owner "${CIRCLE_PROJECT_USERNAME}" \
                       --repo "${CIRCLE_PROJECT_REPONAME}" \
@@ -788,6 +799,9 @@ jobs:
                 root: .
             - notify
 parameters:
+    llm_review_pr_number:
+        default: ""
+        type: string
     run_browserstack_delivery:
         default: false
         type: boolean
@@ -802,6 +816,9 @@ parameters:
             - skip
         type: enum
     run_dev_delivery:
+        default: false
+        type: boolean
+    run_llm_review:
         default: false
         type: boolean
     run_promote:
@@ -846,11 +863,6 @@ workflows:
             - check:
                 context:
                     - mattermost
-            - llm-pr-review:
-                context:
-                    - mattermost
-                    - deliverino
-                    - digitalfabrik-llm-api
         when:
             and:
                 - << pipeline.parameters.run_commit >>
@@ -945,6 +957,14 @@ workflows:
                     - deliver_android
                     - deliver_ios
         when: << pipeline.parameters.run_dev_delivery >>
+    llm_review:
+        jobs:
+            - llm-pr-review:
+                context:
+                    - mattermost
+                    - deliverino
+                    - digitalfabrik-llm-api
+        when: << pipeline.parameters.run_llm_review >>
     promote:
         jobs:
             - promote_android:

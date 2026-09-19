@@ -3,5 +3,6 @@ steps:
   - run:
       name: Install Maestro
       command: |
-        curl -fsSL "https://get.maestro.mobile.dev" | bash
+        # Pinned: takeScreenshot's output location moves between Maestro releases
+        curl -fsSL "https://get.maestro.mobile.dev" | MAESTRO_VERSION=2.9.0 bash
         echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> "$BASH_ENV"

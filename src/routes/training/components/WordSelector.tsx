@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components/native'
 
 import PressableOpacity from '../../../components/PressableOpacity'
 import { ContentText } from '../../../components/text/Content'
+import { hyphenated } from '../../../services/hyphenation'
 
 type WordContainerState = 'enabled' | 'disabled' | 'wrong' | 'hidden'
 export type SelectedWord = { word: string; index: number; state: WordContainerState }
@@ -55,7 +56,7 @@ const WordsSelector = ({ words, onPress, testID }: WordSelectorProps): ReactElem
         disabled={state === 'disabled' || state === 'hidden'}
         testID='wordOption'
       >
-        <SingleWordContainer state={state}>{word}</SingleWordContainer>
+        <SingleWordContainer state={state} {...hyphenated(word)} />
       </PressableOpacity>
     ))}
   </WordsContainer>
