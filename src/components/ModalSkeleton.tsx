@@ -27,8 +27,12 @@ const IconRow = styled.View`
   align-items: flex-end;
 `
 
-const StyledPressable = styled(Pressable)`
-  flex: 1;
+const BackdropBehindContent = styled(Pressable)`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `
 
 type ModalSkeletonProps = {
@@ -60,24 +64,23 @@ const ModalSkeleton = ({ visible, onClose, testID, children }: ModalSkeletonProp
       accessibilityViewIsModal
       supportedOrientations={['landscape', 'portrait']}
     >
-      <StyledPressable onPress={handleBackdropPress} accessible={Platform.OS !== 'ios'}>
-        <Overlay>
-          <ModalContainer bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}>
-            <IconRow>
-              <Pressable onPress={onClose} accessibilityRole='button' accessibilityLabel={getLabels().general.close}>
-                <CloseIcon
-                  width={theme.spacingsPlain.md}
-                  height={theme.spacingsPlain.md}
-                  color={theme.colors.primary}
-                />
-              </Pressable>
-            </IconRow>
-            <ScrollView persistentScrollbar contentContainerStyle={{ alignItems: 'center' }}>
-              {children}
-            </ScrollView>
-          </ModalContainer>
-        </Overlay>
-      </StyledPressable>
+      <Overlay>
+        <BackdropBehindContent onPress={handleBackdropPress} accessible={false} />
+        <ModalContainer bottomPosition={isKeyboardIosVisible ? keyboardHeight : undefined}>
+          <IconRow>
+            <Pressable onPress={onClose} accessibilityRole='button' accessibilityLabel={getLabels().general.close}>
+              <CloseIcon width={theme.spacingsPlain.md} height={theme.spacingsPlain.md} color={theme.colors.primary} />
+            </Pressable>
+          </IconRow>
+          <ScrollView
+            persistentScrollbar
+            keyboardShouldPersistTaps='handled'
+            contentContainerStyle={{ alignItems: 'center' }}
+          >
+            {children}
+          </ScrollView>
+        </ModalContainer>
+      </Overlay>
     </RNModal>
   )
 }
