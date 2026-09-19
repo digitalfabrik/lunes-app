@@ -246,6 +246,7 @@
     "title": "Favoriten",
     "add": "Zu Favoriten hinzufügen",
     "remove": "Aus Favoriten entfernen",
+    "loadingError": "Einige deiner Favoriten konnten nicht geladen werden.",
     "emptyState": {
       "title": "Noch keine Favoriten gespeichert.",
       "subtitle": "Tippe bei einer Vokabel auf den Stern – zum Beispiel in der Wortliste, in der Suche oder in den Übungen. So merkst du sie dir hier für später und kannst sie unter „Vertiefen“ wiederholen."

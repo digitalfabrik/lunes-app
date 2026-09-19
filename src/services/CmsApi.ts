@@ -7,12 +7,7 @@ import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
-import {
-  ProtectedVocabularyId,
-  StandardVocabularyId,
-  StandardVocabularyItem,
-  VocabularyItemTypes,
-} from '../models/VocabularyItem'
+import { StandardVocabularyItem, VocabularyItemTypes } from '../models/VocabularyItem'
 import { AnalyticsEvent, AnalyticsPayload } from './AnalyticsService'
 import { deleteFromEndpoint, getFromEndpoint, postToEndpoint } from './axios'
 import { log, reportError } from './sentry'
@@ -26,7 +21,6 @@ const Endpoints = {
   unitsOfJob: (id: StandardJobId) => `jobs/${id.id}/units`,
   sponsors: 'sponsors',
   words: 'words',
-  word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
   registerArea: 'areas/register/',
@@ -213,18 +207,6 @@ const transformWordResponse = (response: WordResponse, token: string | undefined
 export const getWords = async (token?: string): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.words, token)
   return response.map(word => transformWordResponse(word, token))
-}
-
-export const getWordById = async ({
-  id,
-  token,
-}: WithToken<StandardVocabularyId | ProtectedVocabularyId>): Promise<StandardVocabularyItem> => {
-  // TODO: remove (#1539)
-  if (id.type === VocabularyItemTypes.Protected) {
-    return Promise.reject(new Error(NetworkError))
-  }
-  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id), token)
-  return transformWordResponse(response, token)
 }
 
 export const getWordsByUnit = async ({ id, token }: WithToken<StandardUnitId>): Promise<StandardVocabularyItem[]> => {

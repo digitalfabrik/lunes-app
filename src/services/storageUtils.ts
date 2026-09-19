@@ -420,6 +420,26 @@ export const removeFavorite = async (storageCache: StorageCache, favorite: Favor
   await storageCache.setItem('favorites', newFavorites)
 }
 
+// A standard or protected favorite missing from a response may just be unreachable, so only user created ones,
+// whose existence storage alone decides, may be pruned
+export const removeFavoritesOfDeletedUserVocabulary = async (storageCache: StorageCache): Promise<void> => {
+  const favorites = storageCache.getItem('favorites')
+  const userVocabulary = storageCache.getItem('userVocabulary')
+  const isDeleted = (favorite: Favorite): boolean =>
+    favorite.type === VocabularyItemTypes.UserCreated &&
+    !userVocabulary.some(item => areVocabularyItemIdsEqual(item.id, favorite))
+
+  const deletedFavorites = favorites.filter(isDeleted)
+  if (deletedFavorites.length === 0) {
+    return
+  }
+  await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(deletedFavorites)
+  await storageCache.setItem(
+    'favorites',
+    favorites.filter(favorite => !isDeleted(favorite)),
+  )
+}
+
 export const incrementNextUserVocabularyId = async (storageCache: StorageCache): Promise<UserVocabularyId> => {
   const nextId = storageCache.getItem('nextUserVocabularyId')
   await storageCache.setItem('nextUserVocabularyId', nextId + 1)

@@ -1,17 +1,22 @@
+import { useFocusEffect } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback, useMemo } from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
+import ErrorMessage from '../../components/ErrorMessage'
+import Loading from '../../components/Loading'
 import RouteWrapper from '../../components/RouteWrapper'
 import VocabularyListItem from '../../components/VocabularyListItem'
 import { ContentSecondary } from '../../components/text/Content'
 import { SubheadingPrimary } from '../../components/text/Subheading'
 import useLoadAllWords from '../../hooks/useLoadAllWords'
-import useStorage from '../../hooks/useStorage'
-import VocabularyItem, { areVocabularyItemIdsEqual, serializeVocabularyItemId } from '../../models/VocabularyItem'
+import useStorage, { useStorageCache } from '../../hooks/useStorage'
+import VocabularyItem, { serializeVocabularyItemId } from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { getLabels, wordsDescription } from '../../services/helpers'
+import { reportError } from '../../services/sentry'
+import { removeFavoritesOfDeletedUserVocabulary } from '../../services/storageUtils'
 
 type FavoritesScreenProps = {
   navigation: StackNavigationProp<RoutesParams, 'Favorites'>
@@ -43,11 +48,29 @@ const EmptyStateSubtitle = styled.Text`
 
 const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => {
   const [favorites] = useStorage('favorites')
-  const { data: allWords } = useLoadAllWords()
+  const [userVocabulary] = useStorage('userVocabulary')
+  const storageCache = useStorageCache()
+  const { data: allWords, error, loading, refresh } = useLoadAllWords()
 
-  const favoriteItems = favorites
-    .map(favorite => allWords?.find(word => areVocabularyItemIdsEqual(word.id, favorite)))
-    .filter((item): item is VocabularyItem => item !== undefined)
+  useFocusEffect(
+    useCallback(() => {
+      refresh()
+      removeFavoritesOfDeletedUserVocabulary(storageCache).catch(reportError)
+    }, [refresh, storageCache]),
+  )
+
+  // useLoadAllWords returns the user vocabulary as well, but only after a successful request
+  const favoriteItems = useMemo(() => {
+    const wordsById = new Map(
+      [...userVocabulary, ...(allWords ?? [])].map(word => [serializeVocabularyItemId(word.id), word]),
+    )
+    return favorites
+      .map(favorite => wordsById.get(serializeVocabularyItemId(favorite)))
+      .filter((item): item is VocabularyItem => item !== undefined)
+  }, [favorites, userVocabulary, allWords])
+
+  const hasUnresolvedFavorites = !loading && favoriteItems.length < favorites.length
+  const hasNothingToShow = favorites.length > 0 && favoriteItems.length === 0
 
   const navigateToDetail = (vocabularyItem: VocabularyItem): void => {
     navigation.navigate('VocabularyDetail', { vocabularyItem })
@@ -57,25 +80,36 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps): ReactElement => 
     <VocabularyListItem vocabularyItem={item} onPress={() => navigateToDetail(item)} />
   )
 
-  const { emptyState } = getLabels().favorites
+  const labels = getLabels().favorites
 
   return (
     <RouteWrapper>
       <Root>
-        <FlatList
-          ListHeaderComponent={<ListHeader>{wordsDescription(favorites.length)}</ListHeader>}
-          ListEmptyComponent={
-            favorites.length === 0 ? (
-              <EmptyStateContainer>
-                <EmptyStateTitle>{emptyState.title}</EmptyStateTitle>
-                <EmptyStateSubtitle>{emptyState.subtitle}</EmptyStateSubtitle>
-              </EmptyStateContainer>
-            ) : null
-          }
-          data={favoriteItems}
-          renderItem={renderItem}
-          keyExtractor={(item: VocabularyItem) => serializeVocabularyItemId(item.id)}
-        />
+        <Loading isLoading={loading && hasNothingToShow}>
+          <FlatList
+            ListHeaderComponent={
+              <>
+                <ListHeader>{wordsDescription(favoriteItems.length)}</ListHeader>
+                <ErrorMessage
+                  error={hasUnresolvedFavorites ? (error ?? new Error(labels.loadingError)) : null}
+                  refresh={refresh}
+                  contained
+                />
+              </>
+            }
+            ListEmptyComponent={
+              favorites.length === 0 ? (
+                <EmptyStateContainer>
+                  <EmptyStateTitle>{labels.emptyState.title}</EmptyStateTitle>
+                  <EmptyStateSubtitle>{labels.emptyState.subtitle}</EmptyStateSubtitle>
+                </EmptyStateContainer>
+              ) : null
+            }
+            data={favoriteItems}
+            renderItem={renderItem}
+            keyExtractor={(item: VocabularyItem) => serializeVocabularyItemId(item.id)}
+          />
+        </Loading>
       </Root>
     </RouteWrapper>
   )
