@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import VocabularyItem, { serializeVocabularyItemId, StandardVocabularyItem } from '../models/VocabularyItem'
 import { getWords } from '../services/CmsApi'
 import { StorageCache } from '../services/Storage'
@@ -37,6 +39,12 @@ export const loadAllWords = async (storageCache: StorageCache): Promise<Vocabula
   return withoutDuplicateIds([...lunesStandardVocabulary, ...contentAreaVocabulary.flat(), ...userVocabulary])
 }
 
-const useLoadAllWords = (): Return<VocabularyItem[]> => useLoadAsync(loadAllWords, useStorageCache())
+const useLoadAllWords = (): Return<VocabularyItem[]> => {
+  const storageCache = useStorageCache()
+  return useLoadAsync(
+    useCallback(() => loadAllWords(storageCache), [storageCache]),
+    null,
+  )
+}
 
 export default useLoadAllWords

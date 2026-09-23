@@ -1,19 +1,18 @@
+import { isAxiosError } from 'axios'
+
 import { Article, ARTICLES } from '../constants/data'
-import { NetworkError } from '../constants/endpoints'
-import { WithToken } from '../models/ContentArea'
+import { InvalidContentAreaCodeError, NetworkError } from '../constants/endpoints'
+import ContentArea, { WithToken } from '../models/ContentArea'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
-import {
-  ProtectedVocabularyId,
-  StandardVocabularyId,
-  StandardVocabularyItem,
-  VocabularyItemTypes,
-} from '../models/VocabularyItem'
+import { StandardVocabularyItem, VocabularyItemTypes } from '../models/VocabularyItem'
 import { AnalyticsEvent, AnalyticsPayload } from './AnalyticsService'
 import { deleteFromEndpoint, getFromEndpoint, postToEndpoint } from './axios'
 import { log, reportError } from './sentry'
+
+const HTTP_STATUS_CODE_BAD_REQUEST = 400
 
 const Endpoints = {
   feedback: 'feedback',
@@ -22,9 +21,9 @@ const Endpoints = {
   unitsOfJob: (id: StandardJobId) => `jobs/${id.id}/units`,
   sponsors: 'sponsors',
   words: 'words',
-  word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
+  registerArea: 'areas/register/',
   analyticsEvent: 'analytics/events',
   analyticsExport: (installationId: string) => `analytics/export/${installationId}/`,
   analyticsDelete: (installationId: string) => `analytics/data/${installationId}/`,
@@ -75,6 +74,34 @@ const transformJobResponse = (
 export const getJobs = async (): Promise<StandardJob[]> => {
   const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
   return response.map(job => transformJobResponse(job, undefined))
+}
+
+type RegisterAreaRequest = {
+  code: string
+  installation_id?: string
+}
+
+type RegisterAreaResponse = {
+  token: string
+  area: {
+    id: number
+    name: string
+  }
+}
+
+export const registerContentArea = async (code: string, installationId?: string): Promise<ContentArea> => {
+  try {
+    const { data } = await postToEndpoint<RegisterAreaRequest, RegisterAreaResponse>(Endpoints.registerArea, {
+      code,
+      installation_id: installationId,
+    })
+    return { id: data.area.id, token: data.token, name: data.area.name }
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE_BAD_REQUEST) {
+      throw new Error(InvalidContentAreaCodeError)
+    }
+    throw error
+  }
 }
 
 export const getJob = async ({ id, token }: WithToken<JobId>): Promise<StandardJob> =>
@@ -180,18 +207,6 @@ const transformWordResponse = (response: WordResponse, token: string | undefined
 export const getWords = async (token?: string): Promise<StandardVocabularyItem[]> => {
   const response = await getFromEndpoint<WordResponse[]>(Endpoints.words, token)
   return response.map(word => transformWordResponse(word, token))
-}
-
-export const getWordById = async ({
-  id,
-  token,
-}: WithToken<StandardVocabularyId | ProtectedVocabularyId>): Promise<StandardVocabularyItem> => {
-  // TODO: remove (#1539)
-  if (id.type === VocabularyItemTypes.Protected) {
-    return Promise.reject(new Error(NetworkError))
-  }
-  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id), token)
-  return transformWordResponse(response, token)
 }
 
 export const getWordsByUnit = async ({ id, token }: WithToken<StandardUnitId>): Promise<StandardVocabularyItem[]> => {

@@ -2,6 +2,7 @@ import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { StandardExerciseKey, Favorite, VocabularyNote } from '../constants/data'
+import ContentArea from '../models/ContentArea'
 import { SelectedJob, StandardJob, StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
@@ -49,6 +50,11 @@ export const pushSelectedJob = async (storageCache: StorageCache, job: StandardJ
   if (!job.migrated) {
     await addJobToNotMigrated(storageCache, id)
   }
+}
+
+export const saveContentArea = async (storageCache: StorageCache, contentArea: ContentArea): Promise<void> => {
+  const contentAreas = storageCache.getItem('contentAreas').filter(({ id }) => id !== contentArea.id)
+  await storageCache.setItem('contentAreas', [...contentAreas, contentArea])
 }
 
 export const tokenForJob = (selectedJobs: readonly SelectedJob[] | null, jobId: StandardJobId): string | undefined =>
@@ -412,6 +418,26 @@ export const removeFavorite = async (storageCache: StorageCache, favorite: Favor
   const favorites = storageCache.getItem('favorites')
   const newFavorites = favorites.filter(it => !areVocabularyItemIdsEqual(it, favorite))
   await storageCache.setItem('favorites', newFavorites)
+}
+
+// A standard or protected favorite missing from a response may just be unreachable, so only user created ones,
+// whose existence storage alone decides, may be pruned
+export const removeFavoritesOfDeletedUserVocabulary = async (storageCache: StorageCache): Promise<void> => {
+  const favorites = storageCache.getItem('favorites')
+  const userVocabulary = storageCache.getItem('userVocabulary')
+  const isDeleted = (favorite: Favorite): boolean =>
+    favorite.type === VocabularyItemTypes.UserCreated &&
+    !userVocabulary.some(item => areVocabularyItemIdsEqual(item.id, favorite))
+
+  const deletedFavorites = favorites.filter(isDeleted)
+  if (deletedFavorites.length === 0) {
+    return
+  }
+  await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(deletedFavorites)
+  await storageCache.setItem(
+    'favorites',
+    favorites.filter(favorite => !isDeleted(favorite)),
+  )
 }
 
 const notesExcludingWord = (vocabularyNotes: readonly VocabularyNote[], wordId: VocabularyItemId): VocabularyNote[] =>

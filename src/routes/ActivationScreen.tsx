@@ -1,15 +1,20 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../components/Button'
+import Loading from '../components/Loading'
 import RouteWrapper from '../components/RouteWrapper'
-import { ContentText, ContentTextBold } from '../components/text/Content'
+import { ContentError, ContentText, ContentTextBold } from '../components/text/Content'
 import { HeadingText } from '../components/text/Heading'
 import { BUTTONS_THEME } from '../constants/data'
+import { InvalidContentAreaCodeError } from '../constants/endpoints'
+import { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
+import { redeemContentAreaCode } from '../services/ContentAreaService'
 import { getLabels } from '../services/helpers'
+import { reportError } from '../services/sentry'
 
 type ActivationScreenProps = {
   route: RouteProp<RoutesParams, 'Activation'>
@@ -33,6 +38,11 @@ const CodeContainer = styled.View`
   margin-bottom: ${props => props.theme.spacings.lg};
 `
 
+const ErrorText = styled(ContentError)`
+  margin-bottom: ${props => props.theme.spacings.sm};
+  text-align: center;
+`
+
 const CodeLabel = styled(ContentText)`
   margin-right: ${props => props.theme.spacings.xs};
 `
@@ -40,36 +50,61 @@ const CodeLabel = styled(ContentText)`
 const ActivationScreen = ({ route, navigation }: ActivationScreenProps): ReactElement => {
   const { code } = route.params
   const { activation } = getLabels()
+  const storageCache = useStorageCache()
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isRedeeming, setIsRedeeming] = useState<boolean>(false)
 
-  // TODO: Validate accessKey and add the content once #1534 is ready.
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleAdd = (): void => {}
-
-  const handleCancel = (): void => {
+  const navigateToHome = (): void => {
     navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Home' } })
+  }
+
+  const redeem = async (): Promise<void> => {
+    setErrorMessage('')
+    setIsRedeeming(true)
+    try {
+      await redeemContentAreaCode(storageCache, code)
+      // TODO: Navigate to the jobs of the redeemed content area once #1532 is designed
+      navigateToHome()
+    } catch (error) {
+      if (error instanceof Error && error.message === InvalidContentAreaCodeError) {
+        setErrorMessage(activation.error.wrongCode)
+      } else {
+        reportError(error)
+        setErrorMessage(activation.error.technical)
+      }
+    } finally {
+      setIsRedeeming(false)
+    }
   }
 
   return (
     <RouteWrapper shouldSetTopInset shouldSetBottomInset>
-      <Root>
-        <Title>{activation.title}</Title>
-        <CodeContainer>
-          <CodeLabel>{activation.code}:</CodeLabel>
-          <ContentTextBold testID='activation-code'>{code}</ContentTextBold>
-        </CodeContainer>
-        <Button
-          label={activation.add}
-          onPress={handleAdd}
-          buttonTheme={BUTTONS_THEME.contained}
-          testID='activation-add-button'
-        />
-        <Button
-          label={activation.cancel}
-          onPress={handleCancel}
-          buttonTheme={BUTTONS_THEME.outlined}
-          testID='activation-cancel-button'
-        />
-      </Root>
+      <Loading isLoading={isRedeeming}>
+        <Root>
+          <Title>{activation.title}</Title>
+          <CodeContainer>
+            <CodeLabel>{activation.code}:</CodeLabel>
+            <ContentTextBold testID='activation-code'>{code}</ContentTextBold>
+          </CodeContainer>
+          {errorMessage.length > 0 && (
+            <ErrorText accessibilityRole='alert' accessibilityLiveRegion='polite' testID='activation-error'>
+              {errorMessage}
+            </ErrorText>
+          )}
+          <Button
+            label={activation.add}
+            onPress={redeem}
+            buttonTheme={BUTTONS_THEME.contained}
+            testID='activation-add-button'
+          />
+          <Button
+            label={activation.cancel}
+            onPress={navigateToHome}
+            buttonTheme={BUTTONS_THEME.outlined}
+            testID='activation-cancel-button'
+          />
+        </Root>
+      </Loading>
     </RouteWrapper>
   )
 }

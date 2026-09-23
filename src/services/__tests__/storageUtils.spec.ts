@@ -23,6 +23,7 @@ import {
   pushSelectedJob,
   removeCustomDiscipline,
   removeFavorite,
+  removeFavoritesOfDeletedUserVocabulary,
   removeJobFromNotMigrated,
   removeSelectedJob,
   saveExerciseProgress,
@@ -238,6 +239,39 @@ describe('storageUtils', () => {
       expect(storageCache.getItem('favorites')).toEqual([favoriteItems[0]!, favoriteItems[1]!, favoriteItems[3]!])
       await removeFavorite(storageCache, favoriteItems[0]!)
       expect(storageCache.getItem('favorites')).toEqual([favoriteItems[1]!, favoriteItems[3]!])
+    })
+
+    describe('removeFavoritesOfDeletedUserVocabulary', () => {
+      const userVocabularyItems: UserVocabularyItem[] = new VocabularyItemBuilder(2).buildUserVocabulary()
+
+      it('should remove favorites of user vocabulary items which no longer exist', async () => {
+        await storageCache.setItem('userVocabulary', [userVocabularyItems[0]!])
+        await storageCache.setItem('favorites', [userVocabularyItems[0]!.id, userVocabularyItems[1]!.id])
+
+        await removeFavoritesOfDeletedUserVocabulary(storageCache)
+
+        expect(storageCache.getItem('favorites')).toEqual([userVocabularyItems[0]!.id])
+      })
+
+      it('should remove the repetition card of a deleted user vocabulary item', async () => {
+        await storageCache.setItem('userVocabulary', [userVocabularyItems[0]!])
+        await addFavorite(storageCache, repetitionService, userVocabularyItems[1]!)
+
+        expect(repetitionService.getWordNodeCards()).toHaveLength(1)
+
+        await removeFavoritesOfDeletedUserVocabulary(storageCache)
+
+        expect(repetitionService.getWordNodeCards()).toHaveLength(0)
+      })
+
+      it('should keep favorites which are not user created', async () => {
+        await storageCache.setItem('userVocabulary', [])
+        await storageCache.setItem('favorites', favoriteItems)
+
+        await removeFavoritesOfDeletedUserVocabulary(storageCache)
+
+        expect(storageCache.getItem('favorites')).toEqual(favoriteItems)
+      })
     })
   })
 
