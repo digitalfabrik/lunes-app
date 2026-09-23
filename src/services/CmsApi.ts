@@ -1,18 +1,18 @@
+import { isAxiosError } from 'axios'
+
 import { Article, ARTICLES } from '../constants/data'
-import { NetworkError } from '../constants/endpoints'
+import { InvalidContentAreaCodeError, NetworkError } from '../constants/endpoints'
+import ContentArea, { WithToken } from '../models/ContentArea'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
 import { StandardUnit, StandardUnitId } from '../models/Unit'
-import {
-  ProtectedVocabularyId,
-  StandardVocabularyId,
-  StandardVocabularyItem,
-  VocabularyItemTypes,
-} from '../models/VocabularyItem'
+import { StandardVocabularyItem, VocabularyItemTypes } from '../models/VocabularyItem'
 import { AnalyticsEvent, AnalyticsPayload } from './AnalyticsService'
 import { deleteFromEndpoint, getFromEndpoint, postToEndpoint } from './axios'
 import { log, reportError } from './sentry'
+
+const HTTP_STATUS_CODE_BAD_REQUEST = 400
 
 const Endpoints = {
   feedback: 'feedback',
@@ -21,9 +21,9 @@ const Endpoints = {
   unitsOfJob: (id: StandardJobId) => `jobs/${id.id}/units`,
   sponsors: 'sponsors',
   words: 'words',
-  word: (id: StandardVocabularyId) => `words/${id.id}`,
   wordsOfUnit: (unitId: StandardUnitId) => `units/${unitId.id}/words`,
   wordsOfJob: (jobId: StandardJobId) => `jobs/${jobId.id}/words`,
+  registerArea: 'areas/register/',
   analyticsEvent: 'analytics/events',
   analyticsExport: (installationId: string) => `analytics/export/${installationId}/`,
   analyticsDelete: (installationId: string) => `analytics/data/${installationId}/`,
@@ -59,23 +59,56 @@ type JobResponse = {
   migrated: boolean
 }
 
-const transformJobsResponse = ({ id, name, icon, number_units: numberUnits, migrated }: JobResponse): StandardJob => ({
+const transformJobResponse = (
+  { id, name, icon, number_units: numberUnits, migrated }: JobResponse,
+  token: string | undefined,
+): StandardJob => ({
   id: { type: 'standard', id },
   name,
   icon,
   numberOfUnits: numberUnits,
   migrated,
+  token,
 })
 
 export const getJobs = async (): Promise<StandardJob[]> => {
   const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
-  return response.map(transformJobsResponse)
+  return response.map(job => transformJobResponse(job, undefined))
 }
 
-export const getJob = async (id: JobId): Promise<StandardJob> =>
+type RegisterAreaRequest = {
+  code: string
+  installation_id?: string
+}
+
+type RegisterAreaResponse = {
+  token: string
+  area: {
+    id: number
+    name: string
+  }
+}
+
+export const registerContentArea = async (code: string, installationId?: string): Promise<ContentArea> => {
+  try {
+    const { data } = await postToEndpoint<RegisterAreaRequest, RegisterAreaResponse>(Endpoints.registerArea, {
+      code,
+      installation_id: installationId,
+    })
+    return { id: data.area.id, token: data.token, name: data.area.name }
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE_BAD_REQUEST) {
+      throw new Error(InvalidContentAreaCodeError)
+    }
+    throw error
+  }
+}
+
+export const getJob = async ({ id, token }: WithToken<JobId>): Promise<StandardJob> =>
   id.type === 'standard'
-    ? transformJobsResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id)))
-    : Promise.reject(new Error(NetworkError)) // TODO: Add support back to the cms
+    ? transformJobResponse(await getFromEndpoint<JobResponse>(Endpoints.job(id), token), token)
+    : // TODO: remove (#1539)
+      Promise.reject(new Error(NetworkError))
 
 type UnitResponse = {
   id: number
@@ -85,27 +118,25 @@ type UnitResponse = {
   number_words: number
 }
 
-const transformUnitsResponse = ({
-  id,
-  title,
-  description,
-  icon: iconUrl,
-  number_words: numberWords,
-}: UnitResponse): StandardUnit => ({
+const transformUnitResponse = (
+  { id, title, description, icon: iconUrl, number_words: numberWords }: UnitResponse,
+  token: string | undefined,
+): StandardUnit => ({
   id: { id, type: 'standard' },
   title,
   description,
   iconUrl,
   numberWords,
+  token,
 })
 
-export const getUnitsOfJob = async (jobId: JobId): Promise<StandardUnit[]> => {
-  if (jobId.type !== 'standard') {
-    // TODO: Add support back to the cms
+export const getUnitsOfJob = async ({ id, token }: WithToken<JobId>): Promise<StandardUnit[]> => {
+  // TODO: remove (#1539)
+  if (id.type !== 'standard') {
     return Promise.reject(new Error(NetworkError))
   }
-  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(jobId))
-  return response.map(transformUnitsResponse)
+  const response = await getFromEndpoint<UnitResponse[]>(Endpoints.unitsOfJob(id), token)
+  return response.map(unit => transformUnitResponse(unit, token))
 }
 
 type SponsorResponse = {
@@ -151,7 +182,7 @@ type WordResponse = {
   pronunciation: string
 }
 
-const transformWordResponse = (response: WordResponse): StandardVocabularyItem => {
+const transformWordResponse = (response: WordResponse, token: string | undefined): StandardVocabularyItem => {
   const { id, word, article, images, audio, pronunciation, alternative_words: alternativeWords } = response
   return {
     id: { type: VocabularyItemTypes.Standard, id },
@@ -165,6 +196,7 @@ const transformWordResponse = (response: WordResponse): StandardVocabularyItem =
     })),
     // The CMS sends an empty string for words that need no special pronunciation
     pronunciation: pronunciation || undefined,
+    token,
     exampleSentence:
       response.example_sentence !== null && response.example_sentence_audio !== null
         ? { sentence: response.example_sentence, audio: response.example_sentence_audio }
@@ -172,30 +204,19 @@ const transformWordResponse = (response: WordResponse): StandardVocabularyItem =
   }
 }
 
-export const getWords = async (): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words)
-  return response.map(transformWordResponse)
+export const getWords = async (token?: string): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.words, token)
+  return response.map(word => transformWordResponse(word, token))
 }
 
-export const getWordById = async (
-  id: StandardVocabularyId | ProtectedVocabularyId,
-): Promise<StandardVocabularyItem> => {
-  if (id.type === VocabularyItemTypes.Protected) {
-    // TODO: Add support for protected vocabulary back to the cms
-    return Promise.reject(new Error(NetworkError))
-  }
-  const response = await getFromEndpoint<WordResponse>(Endpoints.word(id))
-  return transformWordResponse(response)
+export const getWordsByUnit = async ({ id, token }: WithToken<StandardUnitId>): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(id), token)
+  return response.map(word => transformWordResponse(word, token))
 }
 
-export const getWordsByUnit = async (unitId: StandardUnitId): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfUnit(unitId))
-  return response.map(transformWordResponse)
-}
-
-export const getWordsByJob = async (jobId: StandardJobId): Promise<StandardVocabularyItem[]> => {
-  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(jobId))
-  return response.map(transformWordResponse)
+export const getWordsByJob = async ({ id, token }: WithToken<StandardJobId>): Promise<StandardVocabularyItem[]> => {
+  const response = await getFromEndpoint<WordResponse[]>(Endpoints.wordsOfJob(id), token)
+  return response.map(word => transformWordResponse(word, token))
 }
 
 type AnalyticsEventPostData = Omit<AnalyticsEvent, 'payload'> & {

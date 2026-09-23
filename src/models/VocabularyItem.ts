@@ -42,6 +42,7 @@ type VocabularyItem = {
     sentence: string
     audio: string
   }
+  token?: string
 }
 
 export type StandardVocabularyItem = {
@@ -57,21 +58,19 @@ export const pronunciationOrWord = ({ word, pronunciation }: VocabularyItem): st
 export const isUserVocabularyItem = (vocabularyItem: VocabularyItem): vocabularyItem is UserVocabularyItem =>
   vocabularyItem.id.type === VocabularyItemTypes.UserCreated
 
+export const serializeVocabularyItemId = (vocabularyItemId: VocabularyItemId): string => {
+  if (vocabularyItemId.type === VocabularyItemTypes.UserCreated) {
+    return `${vocabularyItemId.type}:${vocabularyItemId.index}`
+  }
+  if (vocabularyItemId.type === VocabularyItemTypes.Protected) {
+    return `${vocabularyItemId.type}:${vocabularyItemId.protectedId}`
+  }
+  return `${vocabularyItemId.type}:${vocabularyItemId.id}`
+}
+
 export const areVocabularyItemIdsEqual = (
   vocabularyItemId1: VocabularyItemId,
   vocabularyItemId2: VocabularyItemId,
-  // eslint-disable-next-line consistent-return
-): boolean => {
-  switch (vocabularyItemId1.type) {
-    case 'lunes-standard':
-      return vocabularyItemId2.type === 'lunes-standard' && vocabularyItemId1.id === vocabularyItemId2.id
-    case 'user-created':
-      return vocabularyItemId2.type === 'user-created' && vocabularyItemId1.index === vocabularyItemId2.index
-    case 'lunes-protected':
-      return (
-        vocabularyItemId2.type === 'lunes-protected' && vocabularyItemId1.protectedId === vocabularyItemId2.protectedId
-      )
-  }
-}
+): boolean => serializeVocabularyItemId(vocabularyItemId1) === serializeVocabularyItemId(vocabularyItemId2)
 
 export default VocabularyItem

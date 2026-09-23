@@ -2,7 +2,8 @@ import { unlink } from '@dr.pogodin/react-native-fs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { StandardExerciseKey, Favorite, VocabularyNote } from '../constants/data'
-import { StandardJobId } from '../models/Job'
+import ContentArea from '../models/ContentArea'
+import { SelectedJob, StandardJob, StandardJobId } from '../models/Job'
 import { StandardUnitId } from '../models/Unit'
 import VocabularyItem, {
   areVocabularyItemIdsEqual,
@@ -39,38 +40,39 @@ export const removeJobFromNotMigrated = async (storageCache: StorageCache, jobId
   }
 }
 
-export const pushSelectedJob = async (
-  storageCache: StorageCache,
-  { id }: StandardJobId,
-  migrated: boolean,
-): Promise<void> => {
-  let jobs = storageCache.getMutableItem('selectedJobs')
-  if (jobs === null) {
-    jobs = [id]
-  } else {
-    jobs.push(id)
-  }
+export const pushSelectedJob = async (storageCache: StorageCache, job: StandardJob): Promise<void> => {
+  const { id } = job.id
+  const jobs = storageCache.getMutableItem('selectedJobs') ?? []
+  jobs.push({ id, token: job.token })
   await storageCache.setItem('selectedJobs', jobs)
   trackEvent(storageCache, { type: 'job_selected', job_id: id, action: 'add' })
 
-  if (!migrated) {
+  if (!job.migrated) {
     await addJobToNotMigrated(storageCache, id)
   }
 }
 
-export const removeSelectedJob = async (storageCache: StorageCache, jobId: StandardJobId): Promise<number[]> => {
+export const saveContentArea = async (storageCache: StorageCache, contentArea: ContentArea): Promise<void> => {
+  const contentAreas = storageCache.getItem('contentAreas').filter(({ id }) => id !== contentArea.id)
+  await storageCache.setItem('contentAreas', [...contentAreas, contentArea])
+}
+
+export const tokenForJob = (selectedJobs: readonly SelectedJob[] | null, jobId: StandardJobId): string | undefined =>
+  selectedJobs?.find(job => job.id === jobId.id)?.token
+
+export const removeSelectedJob = async (storageCache: StorageCache, jobId: StandardJobId): Promise<SelectedJob[]> => {
   const jobs = storageCache.getItem('selectedJobs')
   if (jobs === null) {
     throw new Error('professions not set')
   }
-  const updatedJobs = jobs.filter(item => item !== jobId.id)
+  const updatedJobs = jobs.filter(job => job.id !== jobId.id)
   await storageCache.setItem('selectedJobs', updatedJobs)
   trackEvent(storageCache, { type: 'job_selected', job_id: jobId.id, action: 'remove' })
 
   await removeJobFromNotMigrated(storageCache, jobId.id)
 
   try {
-    const jobWords = await getWordsByJob(jobId)
+    const jobWords = await getWordsByJob({ id: jobId, token: tokenForJob(jobs, jobId) })
     await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(jobWords.map(word => word.id))
   } catch {
     // If the cleanup fails, the words from this job remain in the repetition list
@@ -324,6 +326,16 @@ export const migrate6To7 = async (): Promise<void> => {
   await AsyncStorage.setItem('userVocabulary', JSON.stringify(newUserVocabulary))
 }
 
+// Selected jobs used to be plain ids; they now record which content area each job came from
+export const migrate7To8 = async (): Promise<void> => {
+  const selectedJobs = await getStorageItemOr<(number | SelectedJob)[] | null>('selectedProfessions', null)
+  if (selectedJobs === null) {
+    return
+  }
+  const migratedJobs = selectedJobs.map(job => (typeof job === 'number' ? { id: job } : job))
+  await AsyncStorage.setItem('selectedProfessions', JSON.stringify(migratedJobs))
+}
+
 // Removes the cms url overwrite value in case it has changed between versions
 export const migrateApiEndpointUrl = async (): Promise<void> => {
   const overwrite = await AsyncStorage.getItem('cms')
@@ -370,6 +382,9 @@ export const migrateStorage = async (): Promise<void> => {
     // eslint-disable-next-line no-fallthrough, no-magic-numbers
     case 6:
       await migrate6To7()
+    // eslint-disable-next-line no-fallthrough, no-magic-numbers
+    case 7:
+      await migrate7To8()
       break
   }
 
@@ -403,6 +418,26 @@ export const removeFavorite = async (storageCache: StorageCache, favorite: Favor
   const favorites = storageCache.getItem('favorites')
   const newFavorites = favorites.filter(it => !areVocabularyItemIdsEqual(it, favorite))
   await storageCache.setItem('favorites', newFavorites)
+}
+
+// A standard or protected favorite missing from a response may just be unreachable, so only user created ones,
+// whose existence storage alone decides, may be pruned
+export const removeFavoritesOfDeletedUserVocabulary = async (storageCache: StorageCache): Promise<void> => {
+  const favorites = storageCache.getItem('favorites')
+  const userVocabulary = storageCache.getItem('userVocabulary')
+  const isDeleted = (favorite: Favorite): boolean =>
+    favorite.type === VocabularyItemTypes.UserCreated &&
+    !userVocabulary.some(item => areVocabularyItemIdsEqual(item.id, favorite))
+
+  const deletedFavorites = favorites.filter(isDeleted)
+  if (deletedFavorites.length === 0) {
+    return
+  }
+  await RepetitionService.fromStorageCache(storageCache).removeWordNodeCards(deletedFavorites)
+  await storageCache.setItem(
+    'favorites',
+    favorites.filter(favorite => !isDeleted(favorite)),
+  )
 }
 
 const notesExcludingWord = (vocabularyNotes: readonly VocabularyNote[], wordId: VocabularyItemId): VocabularyNote[] =>

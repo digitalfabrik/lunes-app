@@ -48,7 +48,7 @@ describe('JobSelection', () => {
   })
   it('should confirm selection', async () => {
     mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
-    await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+    await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
 
     const { getByText } = renderWithStorageCache(
       storageCache,
@@ -71,7 +71,7 @@ describe('JobSelection', () => {
   })
   it('should hide welcome message and buttons for non initial view', async () => {
     mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
-    await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+    await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
 
     const { queryByText, getByText } = renderWithStorageCache(
       storageCache,
@@ -100,13 +100,13 @@ describe('JobSelection', () => {
     fireEvent.press(button)
 
     await waitFor(() => {
-      expect(storageCache.getItem('selectedJobs')).toEqual([mockJobs()[0]!.id.id])
+      expect(storageCache.getItem('selectedJobs')).toEqual([{ id: mockJobs()[0]!.id.id }])
     })
   })
 
   it('should unselect job on initial selection', async () => {
     mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
-    await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+    await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
     const { queryAllByTestId, getAllByTestId } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(true)} />,
@@ -123,7 +123,7 @@ describe('JobSelection', () => {
 
   it('should disable button if not on initial selection', async () => {
     mocked(getJobs).mockReturnValueOnce(Promise.resolve(mockJobs()))
-    await storageCache.setItem('selectedJobs', [mockJobs()[0]!.id.id])
+    await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
     const { getByText } = renderWithStorageCache(
       storageCache,
       <ScopeSelection navigation={navigation} route={getRoute(false)} />,

@@ -51,7 +51,11 @@ export const getFromEndpoint = async <T>(endpoint: string, apiKey?: string, noCa
   return response.data
 }
 
-export const postToEndpoint = async <T>(endpoint: string, data: T, apiKey?: string): Promise<AxiosResponse> => {
+export const postToEndpoint = async <T, R = unknown>(
+  endpoint: string,
+  data: T,
+  apiKey?: string,
+): Promise<AxiosResponse<R>> => {
   const headers = apiKey ? { Authorization: `Api-Key ${apiKey}` } : undefined
   return instance.post(await getUrl(endpoint), data, { headers })
 }

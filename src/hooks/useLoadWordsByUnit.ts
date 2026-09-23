@@ -1,8 +1,9 @@
-import { StandardUnitId } from '../models/Unit'
+import { StandardUnit } from '../models/Unit'
 import VocabularyItem from '../models/VocabularyItem'
 import { getWordsByUnit } from '../services/CmsApi'
 import useLoadAsync, { Return } from './useLoadAsync'
 
-const useLoadWordsByUnit = (unitId: StandardUnitId): Return<VocabularyItem[]> => useLoadAsync(getWordsByUnit, unitId)
+const useLoadWordsByUnit = (unit: StandardUnit): Return<VocabularyItem[]> =>
+  useLoadAsync(getWordsByUnit, { id: unit.id, token: unit.token })
 
 export default useLoadWordsByUnit

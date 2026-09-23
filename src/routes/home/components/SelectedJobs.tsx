@@ -74,7 +74,7 @@ type SelectedJobsProps = {
 
 const useAllJobs = (): JobId[] => {
   const [selectedJobs] = useStorage('selectedJobs')
-  return selectedJobs?.map(id => ({ type: 'standard', id })) ?? []
+  return selectedJobs?.map(({ id }) => ({ type: 'standard', id })) ?? []
 }
 
 const SelectedJobs = ({

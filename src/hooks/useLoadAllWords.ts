@@ -1,15 +1,50 @@
-import VocabularyItem from '../models/VocabularyItem'
+import { useCallback } from 'react'
+
+import VocabularyItem, { serializeVocabularyItemId, StandardVocabularyItem } from '../models/VocabularyItem'
 import { getWords } from '../services/CmsApi'
 import { StorageCache } from '../services/Storage'
+import { reportError } from '../services/sentry'
 import { Return, useLoadAsync } from './useLoadAsync'
 import { useStorageCache } from './useStorage'
 
-export const loadAllWords = async (storageCache: StorageCache): Promise<VocabularyItem[]> => {
-  const lunesStandardVocabulary = await getWords()
-  const userVocabulary = storageCache.getItem('userVocabulary')
-  return [...lunesStandardVocabulary, ...userVocabulary]
+const withoutDuplicateIds = (vocabularyItems: VocabularyItem[]): VocabularyItem[] => {
+  const seenIds = new Set<string>()
+  return vocabularyItems.filter(item => {
+    const id = serializeVocabularyItemId(item.id)
+    if (seenIds.has(id)) {
+      return false
+    }
+    seenIds.add(id)
+    return true
+  })
 }
 
-const useLoadAllWords = (): Return<VocabularyItem[]> => useLoadAsync(loadAllWords, useStorageCache())
+const wordsOfContentArea = async (token: string): Promise<StandardVocabularyItem[]> => {
+  try {
+    return await getWords(token)
+  } catch (error) {
+    // An unreachable content area must not take the public and the user vocabulary down with it
+    reportError(error)
+    return []
+  }
+}
+
+export const loadAllWords = async (storageCache: StorageCache): Promise<VocabularyItem[]> => {
+  const contentAreas = storageCache.getItem('contentAreas')
+  const [lunesStandardVocabulary, contentAreaVocabulary] = await Promise.all([
+    getWords(),
+    Promise.all(contentAreas.map(({ token }) => wordsOfContentArea(token))),
+  ])
+  const userVocabulary = storageCache.getItem('userVocabulary')
+  return withoutDuplicateIds([...lunesStandardVocabulary, ...contentAreaVocabulary.flat(), ...userVocabulary])
+}
+
+const useLoadAllWords = (): Return<VocabularyItem[]> => {
+  const storageCache = useStorageCache()
+  return useLoadAsync(
+    useCallback(() => loadAllWords(storageCache), [storageCache]),
+    null,
+  )
+}
 
 export default useLoadAllWords

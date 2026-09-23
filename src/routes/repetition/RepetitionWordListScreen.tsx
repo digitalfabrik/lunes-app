@@ -9,10 +9,8 @@ import Loading from '../../components/Loading'
 import RouteWrapper from '../../components/RouteWrapper'
 import Title from '../../components/Title'
 import { SubheadingText } from '../../components/text/Subheading'
-import { loadAllWords } from '../../hooks/useLoadAllWords'
-import useLoadAsync from '../../hooks/useLoadAsync'
+import useLoadAllWords from '../../hooks/useLoadAllWords'
 import useRepetitionService from '../../hooks/useRepetitionService'
-import { useStorageCache } from '../../hooks/useStorage'
 import VocabularyItem, { VocabularyItemId } from '../../models/VocabularyItem'
 import { RoutesParams } from '../../navigation/NavigationTypes'
 import { RepetitionService } from '../../services/RepetitionService'
@@ -38,8 +36,7 @@ type RepetitionWordListScreenProps = {
 
 const RepetitionWordListScreen = ({ navigation }: RepetitionWordListScreenProps): ReactElement => {
   const repetitionService = useRepetitionService()
-  const storageCache = useStorageCache()
-  const { data: allVocabulary, refresh } = useLoadAsync(loadAllWords, storageCache)
+  const { data: allVocabulary, refresh } = useLoadAllWords()
   useFocusEffect(refresh)
 
   const cardsWithVocabulary = useMemo(

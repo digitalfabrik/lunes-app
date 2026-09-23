@@ -60,7 +60,7 @@ const ManageSelectionsScreen = ({ navigation }: ManageSelectionScreenProps): Rea
   const storageCache = useStorageCache()
   const [selectedJobs] = useStorage('selectedJobs')
 
-  const jobItems = selectedJobs?.map(id => {
+  const jobItems = selectedJobs?.map(({ id }) => {
     const unselectJobAndRefresh = () => {
       removeSelectedJob(storageCache, { id, type: 'standard' }).catch(reportError)
     }
