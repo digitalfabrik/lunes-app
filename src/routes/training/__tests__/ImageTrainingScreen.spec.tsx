@@ -105,6 +105,15 @@ describe('ImageTrainingScreen', () => {
     expect(queryByText(getLabels().exercises.training.image.whatIs, { exact: false })).toBeNull()
   })
 
+  it('should offer to add a note once the answer is resolved', async () => {
+    const { getAllByTestId, getByText, queryByText } = await renderScreenAndWaitForLoad()
+    expect(queryByText(getLabels().notes.add)).toBeNull()
+
+    fireEvent.press(getAllByTestId('imageOption')[0]!)
+
+    expect(getByText(getLabels().notes.add)).toBeVisible()
+  })
+
   it('should keep Skip button after selecting incorrect image', async () => {
     const { getAllByTestId, getByTestId, queryByText } = await renderScreenAndWaitForLoad()
 

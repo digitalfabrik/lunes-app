@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import styled from 'styled-components/native'
 
 import { Heading } from '../../../components/text/Heading'
@@ -27,7 +27,7 @@ const FooterContainer = styled.View`
 export type TrainingExerciseContainerProps = {
   title: string
   footer?: ReactElement
-  children: ReactElement[] | ReactElement | null
+  children: ReactNode
 }
 
 const TrainingExerciseContainer = ({ title, children, footer }: TrainingExerciseContainerProps): ReactElement => (
