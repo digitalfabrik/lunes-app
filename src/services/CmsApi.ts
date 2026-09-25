@@ -71,9 +71,9 @@ const transformJobResponse = (
   token,
 })
 
-export const getJobs = async (): Promise<StandardJob[]> => {
-  const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs)
-  return response.map(job => transformJobResponse(job, undefined))
+export const getJobs = async (token?: string): Promise<StandardJob[]> => {
+  const response = await getFromEndpoint<JobResponse[]>(Endpoints.jobs, token)
+  return response.map(job => transformJobResponse(job, token))
 }
 
 type RegisterAreaRequest = {
@@ -86,6 +86,7 @@ type RegisterAreaResponse = {
   area: {
     id: number
     name: string
+    primary_color: string
   }
 }
 
@@ -95,7 +96,12 @@ export const registerContentArea = async (code: string, installationId?: string)
       code,
       installation_id: installationId,
     })
-    return { id: data.area.id, token: data.token, name: data.area.name }
+    return {
+      id: data.area.id,
+      token: data.token,
+      name: data.area.name,
+      primaryColor: data.area.primary_color || undefined,
+    }
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE_BAD_REQUEST) {
       throw new Error(InvalidContentAreaCodeError)

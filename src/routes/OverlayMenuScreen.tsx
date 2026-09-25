@@ -74,6 +74,11 @@ const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
         />
         <OverlayMenuItem
           isSubItem
+          title={getLabels().general.header.activationCodeEntry}
+          onPress={() => navigation.navigate('ActivationCodeEntry')}
+        />
+        <OverlayMenuItem
+          isSubItem
           title={getLabels().general.header.settings}
           onPress={() => navigation.popTo('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Settings' } })}
         />

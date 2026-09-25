@@ -5,7 +5,10 @@
     "skipSelection": "Überspringen",
     "confirmSelection": "Starten",
     "searchJob": "Nach Beruf suchen",
-    "noJobsFound": "Keine Berufe gefunden"
+    "noJobsFound": "Keine Berufe gefunden",
+    "goToLunesJobs": "Alle Lunes-Berufe anzeigen →",
+    "contentAreaTitle": "Lernen mit {}",
+    "contentAreaSubtitle": "Wähle deinen Beruf und übe die passenden Fachwörter in Lunes."
   },
   "home": {
     "welcome": "Willkommen bei Lunes!",
@@ -202,7 +205,8 @@
       "sponsors": "Unterstützer*innen von Lunes",
       "settings": "Einstellungen",
       "wordFeedback": "Feedback geben",
-      "menu": "Menü"
+      "menu": "Menü",
+      "activationCodeEntry": "Code eingeben"
     },
     "back": "Zurück",
     "close": "Schließen",
@@ -316,6 +320,10 @@
       "wrongCode": "Dieser Code existiert nicht (ungültiger Code).",
       "technical": "Ein technischer Fehler ist aufgetreten. Prüfen Sie Ihre Internetverbindung."
     }
+  },
+  "activationCodeEntry": {
+    "description": "Dein QR-Code funktioniert nicht? Gib hier den Code ein, um deinen Lernbereich zu öffnen.",
+    "placeholder": "Code eingeben"
   },
   "settings": {
     "settings": "Einstellungen",

@@ -46,8 +46,17 @@ describe('CmsApi', () => {
 
       const jobs = await getJobs()
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('jobs')
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs', undefined)
       expect(jobs[0]?.token).toBeUndefined()
+    })
+
+    it('should pass the token on and stamp it onto every job', async () => {
+      mocked(getFromEndpoint).mockResolvedValueOnce([jobResponse])
+
+      const jobs = await getJobs(token)
+
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs', token)
+      expect(jobs[0]?.token).toBe(token)
     })
   })
 

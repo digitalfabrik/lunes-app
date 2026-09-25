@@ -69,6 +69,7 @@ export type RoutesParams = {
   UserVocabularyList: undefined
   JobSelection: {
     initialSelection: boolean
+    jobScope?: { type: 'contentArea'; token: string } | { type: 'lunesOnly' }
   }
   AddCustomDiscipline: undefined
   UnitSelection: {
@@ -112,6 +113,7 @@ export type RoutesParams = {
   Activation: {
     code: string
   }
+  ActivationCodeEntry: undefined
 }
 
 export type Route = keyof RoutesParams

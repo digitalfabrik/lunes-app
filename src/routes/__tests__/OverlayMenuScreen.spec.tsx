@@ -41,4 +41,16 @@ describe('OverlayMenu', () => {
       params: { screen: route },
     })
   })
+
+  it('should navigate to ActivationCodeEntry', () => {
+    const { getByText } = renderWithTheme(
+      <NavigationContainer>
+        <OverlayMenu navigation={navigation} />
+      </NavigationContainer>,
+    )
+
+    const item = getByText(getLabels().general.header.activationCodeEntry)
+    fireEvent.press(item)
+    expect(navigation.navigate).toHaveBeenCalledWith('ActivationCodeEntry')
+  })
 })

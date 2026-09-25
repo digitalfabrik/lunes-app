@@ -12,6 +12,7 @@ import { BUTTONS_THEME } from '../constants/data'
 import { InvalidContentAreaCodeError } from '../constants/endpoints'
 import { useStorageCache } from '../hooks/useStorage'
 import { RoutesParams } from '../navigation/NavigationTypes'
+import { resetToHome } from '../navigation/navigationHelpers'
 import { redeemContentAreaCode } from '../services/ContentAreaService'
 import { getLabels } from '../services/helpers'
 import { reportError } from '../services/sentry'
@@ -55,16 +56,18 @@ const ActivationScreen = ({ route, navigation }: ActivationScreenProps): ReactEl
   const [isRedeeming, setIsRedeeming] = useState<boolean>(false)
 
   const navigateToHome = (): void => {
-    navigation.navigate('BottomTabNavigator', { screen: 'HomeTab', params: { screen: 'Home' } })
+    resetToHome(navigation)
   }
 
   const redeem = async (): Promise<void> => {
     setErrorMessage('')
     setIsRedeeming(true)
     try {
-      await redeemContentAreaCode(storageCache, code)
-      // TODO: Navigate to the jobs of the redeemed content area once #1532 is designed
-      navigateToHome()
+      const contentArea = await redeemContentAreaCode(storageCache, code)
+      navigation.replace('JobSelection', {
+        initialSelection: false,
+        jobScope: { type: 'contentArea', token: contentArea.token },
+      })
     } catch (error) {
       if (error instanceof Error && error.message === InvalidContentAreaCodeError) {
         setErrorMessage(activation.error.wrongCode)

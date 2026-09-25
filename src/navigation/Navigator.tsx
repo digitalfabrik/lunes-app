@@ -4,6 +4,7 @@ import React, { ReactElement } from 'react'
 import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
 import useStorage from '../hooks/useStorage'
 import useTrackSession from '../hooks/useTrackSession'
+import ActivationCodeEntryScreen from '../routes/ActivationCodeEntryScreen'
 import ActivationScreen from '../routes/ActivationScreen'
 import OverlayMenu, { overlayTransition } from '../routes/OverlayMenuScreen'
 import VocabularyListScreen from '../routes/VocabularyListScreen'
@@ -30,7 +31,7 @@ const HomeStackNavigator = (): ReactElement | null => {
   const options = screenOptions(headerHeight)
   const isReducedMotionEnabled = useIsReducedMotionEnabled()
 
-  const { manageJobs, overviewExercises, cancelExercise } = getLabels().general.header
+  const { manageJobs, overviewExercises, cancelExercise, activationCodeEntry } = getLabels().general.header
 
   return (
     <Stack.Navigator
@@ -86,6 +87,11 @@ const HomeStackNavigator = (): ReactElement | null => {
       <Stack.Screen name='TrainingFinished' component={TrainingFinishedScreen} options={{ headerShown: false }} />
       <Stack.Screen name='ExerciseFinished' component={ExerciseFinishedScreen} options={{ headerShown: false }} />
       <Stack.Screen name='Activation' component={ActivationScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name='ActivationCodeEntry'
+        component={ActivationCodeEntryScreen}
+        options={({ navigation }) => options(activationCodeEntry, navigation)}
+      />
     </Stack.Navigator>
   )
 }
