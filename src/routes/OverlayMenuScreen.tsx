@@ -75,7 +75,8 @@ const OverlayMenu = ({ navigation }: OverlayProps): ReactElement => {
         <OverlayMenuItem
           isSubItem
           title={getLabels().general.header.activationCodeEntry}
-          onPress={() => navigation.navigate('ActivationCodeEntry')}
+          // Replacing closes the menu, so it doesn't reappear when going back after redeeming a code
+          onPress={() => navigation.replace('ActivationCodeEntry')}
         />
         <OverlayMenuItem
           isSubItem

@@ -42,7 +42,7 @@ describe('OverlayMenu', () => {
     })
   })
 
-  it('should navigate to ActivationCodeEntry', () => {
+  it('should close the menu and navigate to ActivationCodeEntry', () => {
     const { getByText } = renderWithTheme(
       <NavigationContainer>
         <OverlayMenu navigation={navigation} />
@@ -51,6 +51,6 @@ describe('OverlayMenu', () => {
 
     const item = getByText(getLabels().general.header.activationCodeEntry)
     fireEvent.press(item)
-    expect(navigation.navigate).toHaveBeenCalledWith('ActivationCodeEntry')
+    expect(navigation.replace).toHaveBeenCalledWith('ActivationCodeEntry')
   })
 })
