@@ -296,9 +296,10 @@ describe('JobSelection', () => {
       expect(queryByText(getLabels().scopeSelection.confirmSelection)).toBeNull()
     })
 
-    it('should not show a confirm button just because a job from a different scope is already selected', async () => {
-      await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
-      const { queryByText } = renderWithStorageCache(
+    it('should additionally show already selected Lunes jobs, but not the unselected ones', async () => {
+      const [selectedLunesJob, unselectedLunesJob] = mockJobs()
+      await storageCache.setItem('selectedJobs', [{ id: selectedLunesJob!.id.id }])
+      const { getByText, queryByText, getByTestId } = renderWithStorageCache(
         storageCache,
         <ScopeSelection
           navigation={navigation}
@@ -306,8 +307,29 @@ describe('JobSelection', () => {
         />,
       )
 
-      await waitFor(() => expect(queryByText(telcJob.name)).toBeDefined())
-      expect(queryByText(getLabels().scopeSelection.confirmSelection)).toBeNull()
+      await waitFor(() => expect(getByText(telcJob.name)).toBeDefined())
+      expect(getByText(selectedLunesJob!.name)).toBeDefined()
+      expect(getByTestId('check-icon')).toBeDefined()
+      expect(queryByText(unselectedLunesJob!.name)).toBeNull()
+    })
+
+    it('should show a start button when only a Lunes job is selected, so the user is not stuck after returning from the Lunes list', async () => {
+      await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
+      const { getByText } = renderWithStorageCache(
+        storageCache,
+        <ScopeSelection
+          navigation={navigation}
+          route={getRoute(false, { type: 'contentArea', token: 'telc_token' })}
+        />,
+      )
+
+      const button = await waitFor(() => getByText(getLabels().scopeSelection.confirmSelection))
+      fireEvent.press(button)
+
+      expect(navigation.reset).toHaveBeenCalledWith({
+        index: 0,
+        routes: [{ name: 'BottomTabNavigator', params: { screen: 'HomeTab', params: { screen: 'Home' } } }],
+      })
     })
 
     it('should show a confirm button that leads to the home screen once a job is selected', async () => {

@@ -69,7 +69,13 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
   const [queryTerm, setQueryTerm] = useState<string>('')
   const theme = useTheme()
 
-  const isJobInScope = useCallback((job: StandardJob): boolean => matchesJobScope(job.token, jobScope), [jobScope])
+  // Lunes jobs picked via the Lunes-only list stay visible in the content area list, so the selection is complete there
+  const isJobInScope = useCallback(
+    (job: StandardJob): boolean =>
+      matchesJobScope(job.token, jobScope) ||
+      (jobScope?.type === 'contentArea' && !!selectedJobs?.some(selectedJob => selectedJob.id === job.id.id)),
+    [jobScope, selectedJobs],
+  )
 
   const contentAreaScope = jobScope?.type === 'contentArea' ? jobScope : undefined
   const isContentArea = contentAreaScope !== undefined
@@ -78,7 +84,7 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
     ? getLabels().scopeSelection.contentAreaTitle.replace('{}', contentArea.name)
     : getLabels().manageJobs.addJob
   const subtitle = isContentArea ? getLabels().scopeSelection.contentAreaSubtitle : getLabels().scopeSelection.selectJob
-  const hasSelectedJobs = !!selectedJobs?.some(job => matchesJobScope(job.token, jobScope))
+  const hasSelectedJobs = !!selectedJobs && selectedJobs.length > 0
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: !initialSelection })
