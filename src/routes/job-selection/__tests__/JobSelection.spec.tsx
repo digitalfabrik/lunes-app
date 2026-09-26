@@ -225,7 +225,7 @@ describe('JobSelection', () => {
       await storageCache.setItem('contentAreas', [
         { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', primaryColor: '#123456' },
       ])
-      const { getAllByText } = renderWithStorageCache(
+      const { getAllByText, getByTestId } = renderWithStorageCache(
         storageCache,
         <ScopeSelection
           navigation={navigation}
@@ -233,17 +233,29 @@ describe('JobSelection', () => {
         />,
       )
 
-      await waitFor(() =>
-        expect(getAllByText('telc')[0]).toHaveStyle({
-          color: COLORS.text,
-          borderColor: '#123456',
-          backgroundColor: '#1234561A',
-        }),
+      await waitFor(() => expect(getAllByText('telc')[0]).toHaveStyle({ color: COLORS.text }))
+      expect(getByTestId('content-area-badge')).toHaveStyle({ borderColor: '#123456' })
+      expect(getByTestId('content-area-badge-background')).toHaveStyle({ backgroundColor: '#123456', opacity: 0.1 })
+    })
+
+    it('should lighten any color format the CMS provides, not only six digit hex colors', async () => {
+      await storageCache.setItem('contentAreas', [
+        { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', primaryColor: 'rgb(18, 52, 86)' },
+      ])
+      const { getByTestId } = renderWithStorageCache(
+        storageCache,
+        <ScopeSelection
+          navigation={navigation}
+          route={getRoute(false, { type: 'contentArea', token: 'telc_token' })}
+        />,
       )
+
+      const background = await waitFor(() => getByTestId('content-area-badge-background'))
+      expect(background).toHaveStyle({ backgroundColor: 'rgb(18, 52, 86)', opacity: 0.1 })
     })
 
     it('should fall back to a neutral badge color without a CMS brand color, rather than implying a specific brand', async () => {
-      const { getAllByText } = renderWithStorageCache(
+      const { getAllByText, getByTestId } = renderWithStorageCache(
         storageCache,
         <ScopeSelection
           navigation={navigation}
@@ -251,9 +263,8 @@ describe('JobSelection', () => {
         />,
       )
 
-      await waitFor(() =>
-        expect(getAllByText('telc')[0]).toHaveStyle({ color: COLORS.text, borderColor: COLORS.textSecondary }),
-      )
+      await waitFor(() => expect(getAllByText('telc')[0]).toHaveStyle({ color: COLORS.text }))
+      expect(getByTestId('content-area-badge')).toHaveStyle({ borderColor: COLORS.textSecondary })
     })
 
     it('should frame the job icon in the content area brand color, without the plain progress ring', async () => {

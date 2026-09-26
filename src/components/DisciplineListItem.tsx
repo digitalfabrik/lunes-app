@@ -94,19 +94,32 @@ export const UnitListItem = ({
   )
 }
 
-const LIGHT_BACKGROUND_ALPHA = '1A' // ~10% opacity, for a subtle tinted background
+const LIGHT_BACKGROUND_OPACITY = 0.1
 const BADGE_BORDER_RADIUS = 12.5
 const BADGE_VERTICAL_PADDING = 2
 
-const ContentAreaBadge = styled.Text<{ brandColor: string }>`
-  font-family: ${props => props.theme.fonts.contentFontBold};
-  color: ${props => props.theme.colors.text};
-  background-color: ${props => `${props.brandColor}${LIGHT_BACKGROUND_ALPHA}`};
+const ContentAreaBadge = styled.View<{ brandColor: string }>`
   border: 1px solid ${props => props.brandColor};
   border-radius: ${BADGE_BORDER_RADIUS}px;
   padding: ${BADGE_VERTICAL_PADDING}px ${props => props.theme.spacings.xs};
-  font-size: ${props => props.theme.fonts.smallFontSize};
   margin-left: ${props => props.theme.spacings.xxs};
+  overflow: hidden;
+`
+
+const ContentAreaBadgeBackground = styled.View<{ brandColor: string }>`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: ${props => props.brandColor};
+  opacity: ${LIGHT_BACKGROUND_OPACITY};
+`
+
+const ContentAreaBadgeText = styled.Text`
+  font-family: ${props => props.theme.fonts.contentFontBold};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
 const BRANDED_FRAME_BORDER_WIDTH = 2
@@ -147,7 +160,12 @@ export const JobListItem = ({
       onPress={onPress}
       badgeLabel={badgeLabel}
       afterDescription={
-        contentArea ? <ContentAreaBadge brandColor={brandColor}>{contentArea.name}</ContentAreaBadge> : undefined
+        contentArea ? (
+          <ContentAreaBadge brandColor={brandColor} testID='content-area-badge'>
+            <ContentAreaBadgeBackground brandColor={brandColor} testID='content-area-badge-background' />
+            <ContentAreaBadgeText>{contentArea.name}</ContentAreaBadgeText>
+          </ContentAreaBadge>
+        ) : undefined
       }
       rightChildren={rightChildren}
       disabled={disabled}
