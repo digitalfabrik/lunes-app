@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import Button from '../components/Button'
@@ -9,13 +9,10 @@ import RouteWrapper from '../components/RouteWrapper'
 import { ContentError, ContentText, ContentTextBold } from '../components/text/Content'
 import { HeadingText } from '../components/text/Heading'
 import { BUTTONS_THEME } from '../constants/data'
-import { InvalidContentAreaCodeError } from '../constants/endpoints'
-import { useStorageCache } from '../hooks/useStorage'
+import useRedeemContentArea from '../hooks/useRedeemContentArea'
 import { RoutesParams } from '../navigation/NavigationTypes'
 import { resetToHome } from '../navigation/navigationHelpers'
-import { redeemContentAreaCode } from '../services/ContentAreaService'
 import { getLabels } from '../services/helpers'
-import { reportError } from '../services/sentry'
 
 type ActivationScreenProps = {
   route: RouteProp<RoutesParams, 'Activation'>
@@ -51,33 +48,10 @@ const CodeLabel = styled(ContentText)`
 const ActivationScreen = ({ route, navigation }: ActivationScreenProps): ReactElement => {
   const { code } = route.params
   const { activation } = getLabels()
-  const storageCache = useStorageCache()
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isRedeeming, setIsRedeeming] = useState<boolean>(false)
+  const { redeem, errorMessage, isRedeeming } = useRedeemContentArea(navigation)
 
   const navigateToHome = (): void => {
     resetToHome(navigation)
-  }
-
-  const redeem = async (): Promise<void> => {
-    setErrorMessage('')
-    setIsRedeeming(true)
-    try {
-      const contentArea = await redeemContentAreaCode(storageCache, code)
-      navigation.replace('JobSelection', {
-        initialSelection: false,
-        jobScope: { type: 'contentArea', token: contentArea.token },
-      })
-    } catch (error) {
-      if (error instanceof Error && error.message === InvalidContentAreaCodeError) {
-        setErrorMessage(activation.error.wrongCode)
-      } else {
-        reportError(error)
-        setErrorMessage(activation.error.technical)
-      }
-    } finally {
-      setIsRedeeming(false)
-    }
   }
 
   return (
@@ -96,7 +70,7 @@ const ActivationScreen = ({ route, navigation }: ActivationScreenProps): ReactEl
           )}
           <Button
             label={activation.add}
-            onPress={redeem}
+            onPress={() => redeem(code)}
             buttonTheme={BUTTONS_THEME.contained}
             testID='activation-add-button'
           />
