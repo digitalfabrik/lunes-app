@@ -7,7 +7,7 @@ import { StorageCache } from '../Storage'
 jest.mock('../CmsApi')
 
 describe('ContentAreaService', () => {
-  const telc = { id: 1, token: 'telc_token', name: 'telc gGmbH' }
+  const telc = { id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'TELC2026' }
 
   let storageCache: StorageCache
 

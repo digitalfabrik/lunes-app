@@ -57,6 +57,11 @@ export const saveContentArea = async (storageCache: StorageCache, contentArea: C
   await storageCache.setItem('contentAreas', [...contentAreas, contentArea])
 }
 
+export const getContentArea = (
+  contentAreas: readonly ContentArea[],
+  token: string | undefined,
+): ContentArea | undefined => contentAreas.find(area => area.token === token)
+
 export const tokenForJob = (selectedJobs: readonly SelectedJob[] | null, jobId: StandardJobId): string | undefined =>
   selectedJobs?.find(job => job.id === jobId.id)?.token
 

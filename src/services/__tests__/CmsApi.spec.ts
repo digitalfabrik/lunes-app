@@ -46,8 +46,17 @@ describe('CmsApi', () => {
 
       const jobs = await getJobs()
 
-      expect(getFromEndpoint).toHaveBeenCalledWith('jobs')
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs', undefined)
       expect(jobs[0]?.token).toBeUndefined()
+    })
+
+    it('should pass the token on and stamp it onto every job', async () => {
+      mocked(getFromEndpoint).mockResolvedValueOnce([jobResponse])
+
+      const jobs = await getJobs(token)
+
+      expect(getFromEndpoint).toHaveBeenCalledWith('jobs', token)
+      expect(jobs[0]?.token).toBe(token)
     })
   })
 
@@ -114,7 +123,7 @@ describe('CmsApi', () => {
         code: 'band-1',
         installation_id: 'installation-1',
       })
-      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH' })
+      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1' })
     })
 
     it('should reject an unknown code as an invalid area code', async () => {
