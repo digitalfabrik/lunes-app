@@ -1,0 +1,65 @@
+Fixes a native iOS crash ("Collection <__NSArrayM> was mutated while being
+enumerated") in RNSScreenContainer.updateContainer under the New Architecture
+(Fabric). Reported as https://github.com/digitalfabrik/lunes-app/issues/1544,
+root-caused to https://github.com/software-mansion/react-native-screens/issues/4168
+(open upstream, unfixed).
+
+Snapshots `_reactSubviews` into an immutable array before iterating over it,
+so a reentrant Fabric mount triggered from inside the loop (via
+attachScreen:/detachScreen:/prepareDetach: -> UIKit lifecycle callbacks) can
+no longer mutate the collection while it's being enumerated.
+
+Remove this patch once https://github.com/software-mansion/react-native-screens/issues/4168
+is fixed upstream.
+
+diff --git a/node_modules/react-native-screens/ios/RNSScreenContainer.mm b/node_modules/react-native-screens/ios/RNSScreenContainer.mm
+index b13e665..b4c7d5f 100644
+--- a/node_modules/react-native-screens/ios/RNSScreenContainer.mm
++++ b/node_modules/react-native-screens/ios/RNSScreenContainer.mm
+@@ -157,10 +157,18 @@ RNS_IGNORE_SUPER_CALL_END
+ 
+ - (void)updateContainer
+ {
++  // Snapshot `_reactSubviews` before iterating: `attachScreen:`/`detachScreen:`/`prepareDetach:`
++  // below call UIKit lifecycle methods that can trigger a reentrant Fabric mount on this same
++  // container, which mutates the live `_reactSubviews` array via `insertReactSubview:`/
++  // `removeReactSubview:` while we're still enumerating it, crashing with
++  // "Collection was mutated while being enumerated".
++  // See https://github.com/software-mansion/react-native-screens/issues/4168
++  NSArray<RNSScreenView *> *reactSubviewsSnapshot = [_reactSubviews copy];
++
+   BOOL screenRemoved = NO;
+   // remove screens that are no longer active
+   NSMutableSet *orphaned = [NSMutableSet setWithSet:_activeScreens];
+-  for (RNSScreenView *screen in _reactSubviews) {
++  for (RNSScreenView *screen in reactSubviewsSnapshot) {
+     if (screen.activityState == RNSActivityStateInactive && [_activeScreens containsObject:screen]) {
+       screenRemoved = YES;
+       [self detachScreen:screen];
+@@ -174,7 +182,7 @@ RNS_IGNORE_SUPER_CALL_END
+ 
+   // detect if new screen is going to be activated
+   BOOL screenAdded = NO;
+-  for (RNSScreenView *screen in _reactSubviews) {
++  for (RNSScreenView *screen in reactSubviewsSnapshot) {
+     if (screen.activityState != RNSActivityStateInactive && ![_activeScreens containsObject:screen]) {
+       screenAdded = YES;
+     }
+@@ -183,7 +191,7 @@ RNS_IGNORE_SUPER_CALL_END
+   if (screenAdded) {
+     // add new screens in order they are placed in subviews array
+     NSInteger index = 0;
+-    for (RNSScreenView *screen in _reactSubviews) {
++    for (RNSScreenView *screen in reactSubviewsSnapshot) {
+       if (screen.activityState != RNSActivityStateInactive) {
+         if ([_activeScreens containsObject:screen] && screen.activityState == RNSActivityStateTransitioningOrBelowTop) {
+           // for screens that were already active we want to mimick the effect UINavigationController
+@@ -197,7 +205,7 @@ RNS_IGNORE_SUPER_CALL_END
+     }
+   }
+ 
+-  for (RNSScreenView *screen in _reactSubviews) {
++  for (RNSScreenView *screen in reactSubviewsSnapshot) {
+     if (screen.activityState == RNSActivityStateOnTop) {
+       [screen notifyFinishTransitioning];
+     }
