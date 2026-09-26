@@ -100,6 +100,7 @@ export const registerContentArea = async (code: string, installationId?: string)
       id: data.area.id,
       token: data.token,
       name: data.area.name,
+      code,
       primaryColor: data.area.primary_color || undefined,
     }
   } catch (error) {

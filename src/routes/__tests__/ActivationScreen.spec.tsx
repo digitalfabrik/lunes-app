@@ -21,7 +21,12 @@ describe('ActivationScreen', () => {
 
   beforeEach(() => {
     storageCache = StorageCache.createDummy()
-    mocked(redeemContentAreaCode).mockResolvedValue({ id: 1, token: 'telc_token', name: 'telc gGmbH' })
+    mocked(redeemContentAreaCode).mockResolvedValue({
+      id: 1,
+      token: 'telc_token',
+      name: 'telc gGmbH',
+      code: 'TELC2026',
+    })
   })
 
   const renderScreen = (code = 'ABC123') => {

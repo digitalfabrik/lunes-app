@@ -123,7 +123,7 @@ describe('CmsApi', () => {
         code: 'band-1',
         installation_id: 'installation-1',
       })
-      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH' })
+      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1' })
     })
 
     it('should reject an unknown code as an invalid area code', async () => {

@@ -26,7 +26,7 @@ describe('useLoadAllJobs', () => {
   })
 
   describe('when a contentArea was redeemed', () => {
-    const telc = { id: 1, token: 'telc_token', name: 'telc gGmbH' }
+    const telc = { id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'TELC2026' }
     const contentAreaJobsMock: StandardJob[] = [
       { id: { type: 'standard', id: 101 }, name: 'Telc Job', icon: 'none', numberOfUnits: 1, migrated: false },
     ]

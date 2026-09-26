@@ -2,6 +2,7 @@ type ContentArea = {
   id: number
   token: string
   name: string
+  code: string
   primaryColor?: string
 }
 
