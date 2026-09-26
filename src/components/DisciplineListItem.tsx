@@ -104,6 +104,7 @@ const ContentAreaBadge = styled.View<{ brandColor: string }>`
   padding: ${BADGE_VERTICAL_PADDING}px ${props => props.theme.spacings.xs};
   margin-left: ${props => props.theme.spacings.xxs};
   overflow: hidden;
+  flex-shrink: 1;
 `
 
 const ContentAreaBadgeBackground = styled.View<{ brandColor: string }>`
@@ -163,7 +164,7 @@ export const JobListItem = ({
         contentArea ? (
           <ContentAreaBadge brandColor={brandColor} testID='content-area-badge'>
             <ContentAreaBadgeBackground brandColor={brandColor} testID='content-area-badge-background' />
-            <ContentAreaBadgeText>{contentArea.name}</ContentAreaBadgeText>
+            <ContentAreaBadgeText numberOfLines={1}>{contentArea.name}</ContentAreaBadgeText>
           </ContentAreaBadge>
         ) : undefined
       }

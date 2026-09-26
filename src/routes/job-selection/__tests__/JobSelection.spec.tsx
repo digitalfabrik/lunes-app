@@ -254,6 +254,22 @@ describe('JobSelection', () => {
       expect(background).toHaveStyle({ backgroundColor: 'rgb(18, 52, 86)', opacity: 0.1 })
     })
 
+    it('should shorten long content area names to one line instead of overflowing the list item', async () => {
+      const longName = 'telc – Deutsch für den Beruf in Pflege und Gesundheit'
+      await storageCache.setItem('contentAreas', [{ id: 1, token: 'telc_token', name: longName, code: 'TELC2026' }])
+      const { getByText, getByTestId } = renderWithStorageCache(
+        storageCache,
+        <ScopeSelection
+          navigation={navigation}
+          route={getRoute(false, { type: 'contentArea', token: 'telc_token' })}
+        />,
+      )
+
+      const name = await waitFor(() => getByText(longName))
+      expect(name.props.numberOfLines).toBe(1)
+      expect(getByTestId('content-area-badge')).toHaveStyle({ flexShrink: 1 })
+    })
+
     it('should fall back to a neutral badge color without a CMS brand color, rather than implying a specific brand', async () => {
       const { getAllByText, getByTestId } = renderWithStorageCache(
         storageCache,
