@@ -322,7 +322,7 @@
     }
   },
   "activationCodeEntry": {
-    "description": "Dein QR-Code funktioniert nicht? Gib hier den Code ein, um deinen Lernbereich zu öffnen.",
+    "description": "Gib hier den Code ein, um deinen Lernbereich zu öffnen.",
     "placeholder": "Code eingeben"
   },
   "settings": {
