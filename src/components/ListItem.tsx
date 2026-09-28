@@ -103,6 +103,7 @@ type ListItemProps = {
   beforeTitle?: ReactElement
   description?: string
   badgeLabel?: string
+  afterDescription?: ReactElement
   children?: ReactElement
   onPress?: () => void
   rightChildren?: ReactElement
@@ -118,6 +119,7 @@ const ListItem = ({
   beforeTitle,
   description,
   badgeLabel,
+  afterDescription,
   children,
   rightChildren,
   hideRightChildren = false,
@@ -192,10 +194,11 @@ const ListItem = ({
         {iconToRender}
         <FlexContainer>
           {titleToRender}
-          {(!!badgeLabel || !!description) && (
+          {(!!badgeLabel || !!description || !!afterDescription) && (
             <Row>
               {!!badgeLabel && <BadgeLabel pressed={pressed}>{badgeLabel}</BadgeLabel>}
               {!!description && description.length > 0 && <Description pressed={pressed}>{description}</Description>}
+              {afterDescription}
             </Row>
           )}
           {children}

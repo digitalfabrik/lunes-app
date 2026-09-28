@@ -21,7 +21,12 @@ describe('ActivationScreen', () => {
 
   beforeEach(() => {
     storageCache = StorageCache.createDummy()
-    mocked(redeemContentAreaCode).mockResolvedValue({ id: 1, token: 'telc_token', name: 'telc gGmbH' })
+    mocked(redeemContentAreaCode).mockResolvedValue({
+      id: 1,
+      token: 'telc_token',
+      name: 'telc gGmbH',
+      code: 'TELC2026',
+    })
   })
 
   const renderScreen = (code = 'ABC123') => {
@@ -39,14 +44,14 @@ describe('ActivationScreen', () => {
     expect(getByTestId('activation-code')).toHaveTextContent('MY-CODE')
   })
 
-  it('should navigate to the start page, skipping the initial job selection, when cancel is pressed', () => {
+  it('should reset to the start page, skipping the initial job selection and any screens behind it, when cancel is pressed', () => {
     const { getByTestId } = renderScreen()
 
     fireEvent.press(getByTestId('activation-cancel-button'))
 
-    expect(navigation.navigate).toHaveBeenCalledWith('BottomTabNavigator', {
-      screen: 'HomeTab',
-      params: { screen: 'Home' },
+    expect(navigation.reset).toHaveBeenCalledWith({
+      index: 0,
+      routes: [{ name: 'BottomTabNavigator', params: { screen: 'HomeTab', params: { screen: 'Home' } } }],
     })
   })
 
@@ -56,6 +61,19 @@ describe('ActivationScreen', () => {
     fireEvent.press(getByTestId('activation-add-button'))
 
     await waitFor(() => expect(redeemContentAreaCode).toHaveBeenCalledWith(storageCache, 'MY-CODE'))
+  })
+
+  it('should navigate to the jobs of the redeemed content area when add succeeds', async () => {
+    const { getByTestId } = renderScreen('MY-CODE')
+
+    fireEvent.press(getByTestId('activation-add-button'))
+
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith('JobSelection', {
+        initialSelection: false,
+        jobScope: { type: 'contentArea', token: 'telc_token' },
+      }),
+    )
   })
 
   it('should tell the user that an unknown code does not exist', async () => {

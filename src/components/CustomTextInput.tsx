@@ -100,6 +100,7 @@ const CustomTextInput = ({
   style,
   characterLimit,
   hint,
+  ...textInputProps
 }: CustomTextInputProps): ReactElement => {
   const theme = useTheme()
   const [isFocused, setIsFocused] = useState<boolean>(false)
@@ -136,6 +137,7 @@ const CustomTextInput = ({
         showErrorValidation={showErrorValidation}
       >
         <StyledTextInput
+          {...textInputProps}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           textContentType={textContentType}

@@ -29,6 +29,21 @@ describe('CustomTextInput', () => {
     expect(getByTestId('clearInput')).toBeTruthy()
   })
 
+  it('should forward unrecognized native TextInput props to the underlying input', () => {
+    const { getByPlaceholderText } = render(
+      <CustomTextInput
+        value=''
+        placeholder='Test'
+        onChangeText={onChangeText}
+        keyboardType='number-pad'
+        returnKeyType='done'
+      />,
+    )
+    const input = getByPlaceholderText('Test')
+    expect(input.props.keyboardType).toBe('number-pad')
+    expect(input.props.returnKeyType).toBe('done')
+  })
+
   describe('characterLimit', () => {
     it('should not show a counter without a limit', () => {
       const { queryByText } = render(<CustomTextInput value='abc' placeholder='Test' onChangeText={onChangeText} />)

@@ -35,16 +35,30 @@ type JobSelectionProps = {
   setQueryTerm: (newString: string) => void
   onSelectJob: (job: StandardJob) => void
   onUnselectJob?: (job: StandardJob) => void
+  isJobInScope?: (job: StandardJob) => boolean
 }
 
-const JobSelection = ({ queryTerm, setQueryTerm, onSelectJob, onUnselectJob }: JobSelectionProps): ReactElement => {
+const JobSelection = ({
+  queryTerm,
+  setQueryTerm,
+  onSelectJob,
+  onUnselectJob,
+  isJobInScope,
+}: JobSelectionProps): ReactElement => {
   const { data: allJobs, error, loading, refresh } = useLoadAllJobs()
   const theme = useTheme()
   const [selectedJobs] = useStorage('selectedJobs')
 
+  const jobsInScope = useMemo(() => {
+    if (allJobs === null) {
+      return null
+    }
+    return isJobInScope ? allJobs.filter(isJobInScope) : allJobs
+  }, [allJobs, isJobInScope])
+
   const filteredJobs = useMemo(
-    () => (queryTerm.length === 0 ? allJobs : searchJobs(allJobs, queryTerm)),
-    [allJobs, queryTerm],
+    () => (queryTerm.length === 0 ? jobsInScope : searchJobs(jobsInScope, queryTerm)),
+    [jobsInScope, queryTerm],
   )
   const jobItems = filteredJobs?.map(item => {
     const isSelected = selectedJobs?.some(job => job.id === item.id.id)
