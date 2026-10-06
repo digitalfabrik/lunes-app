@@ -37,6 +37,15 @@ describe('WordItem', () => {
     })
   })
 
+  describe('when the word has no article', () => {
+    it('should render the word without a placeholder article', () => {
+      const { getByText, queryByText } = render(<WordItem answer={{ word: 'abschließen', article: ARTICLES[0] }} />)
+
+      expect(getByText('abschließen')).toBeTruthy()
+      expect(queryByText('keiner')).toBeNull()
+    })
+  })
+
   it('should report the selected answer when pressed', () => {
     const onClick = jest.fn()
     const { getByText } = render(<WordItem answer={answer} onClick={onClick} />)

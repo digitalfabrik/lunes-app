@@ -93,16 +93,26 @@ describe('ImageTrainingScreen', () => {
     const skipButton = getByTestId('button-skip')
     expect(skipButton).toBeVisible()
 
-    expect(queryByText(getLabels().exercises.training.image.whatAre, { exact: false })).toBeNull()
-    expect(getByText(getLabels().exercises.training.image.whatIs, { exact: false })).toBeVisible()
+    expect(queryByText(getLabels().exercises.training.image.whatMeansPlural, { exact: false })).toBeNull()
+    expect(getByText(getLabels().exercises.training.image.whatMeansSingular, { exact: false })).toBeVisible()
   })
 
   it('should correctly use plural form', async () => {
     mocked(getWordsByJob).mockResolvedValue(vocabularyItems.map(item => ({ ...item, article: ARTICLES[4] })))
 
     const { getByText, queryByText } = await renderScreenAndWaitForLoad()
-    expect(getByText(getLabels().exercises.training.image.whatAre, { exact: false })).toBeVisible()
-    expect(queryByText(getLabels().exercises.training.image.whatIs, { exact: false })).toBeNull()
+    expect(getByText(getLabels().exercises.training.image.whatMeansPlural, { exact: false })).toBeVisible()
+    expect(queryByText(getLabels().exercises.training.image.whatMeansSingular, { exact: false })).toBeNull()
+  })
+
+  it('should ask for a word without article without a placeholder article', async () => {
+    mocked(getWordsByJob).mockResolvedValue(
+      vocabularyItems.map(item => ({ ...item, word: 'abschließen', article: ARTICLES[0] })),
+    )
+
+    const { getByText, queryByText } = await renderScreenAndWaitForLoad()
+    expect(getByText('abschließen')).toBeVisible()
+    expect(queryByText('keiner', { exact: false })).toBeNull()
   })
 
   it('should offer to add a note once the answer is resolved', async () => {

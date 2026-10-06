@@ -96,8 +96,8 @@
         "title": "Bilderrätsel",
         "description": "Die richtige Vokabel finden",
         "selectImage": "Wähle das richtige Bild aus!",
-        "whatIs": "Was ist",
-        "whatAre": "Was sind"
+        "whatMeansSingular": "Was bedeutet",
+        "whatMeansPlural": "Was bedeuten"
       },
       "speech": {
         "title": "Sprechstudio",

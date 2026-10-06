@@ -6,6 +6,7 @@ import {
   StandardExerciseKey,
   StandardExerciseKeys,
   EXERCISES,
+  hasNoArticle,
   NextExercise,
   Progress,
   SCORE_THRESHOLD_UNLOCK,
@@ -19,7 +20,7 @@ import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getUnitsOfJob } from './CmsApi'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
-  `${article.value} ${word}`
+  hasNoArticle(article) ? word : `${article.value} ${word}`
 
 export const getLabels = (): typeof labels => labels
 
@@ -179,7 +180,9 @@ const normalizeString = (str: string): string => normalizeStrings(str).toLowerCa
 const normalizeSearchString = (searchString: string): string => {
   const words = searchString.split(' ')
   const firstWord = words[0]?.toLowerCase() ?? ''
-  const startsWithArticle = ARTICLES.some(article => article.value === firstWord)
+  const startsWithArticle = ARTICLES.filter(article => !hasNoArticle(article)).some(
+    article => article.value === firstWord,
+  )
   const searchStringWithoutArticle = startsWithArticle ? words.slice(1).join(' ') : searchString
   return normalizeString(searchStringWithoutArticle)
 }

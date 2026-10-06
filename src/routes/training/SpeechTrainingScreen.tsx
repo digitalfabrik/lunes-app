@@ -333,7 +333,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
           <InstructionText>{instructions}</InstructionText>
           {isDevModeEnabled && (
             <CheatText>
-              Cheat: {currentWord.article.value} {currentWord.word}
+              Cheat: {stringifyVocabularyItem(currentWord)}
               {currentWord.pronunciation !== undefined && ` (${currentWord.pronunciation})`}
             </CheatText>
           )}

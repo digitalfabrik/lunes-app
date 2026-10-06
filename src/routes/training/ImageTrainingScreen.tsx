@@ -15,6 +15,7 @@ import VocabularyNotePreview from '../../components/VocabularyNotePreview'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
 import {
   BUTTONS_THEME,
+  hasNoArticle,
   isArticlePlural,
   MAX_TRAINING_REPETITIONS,
   NUMBER_OF_MAX_RETRIES,
@@ -253,8 +254,10 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
   }
 
   const questionLabel = isArticlePlural(word.article)
-    ? getLabels().exercises.training.image.whatAre
-    : getLabels().exercises.training.image.whatIs
+    ? getLabels().exercises.training.image.whatMeansPlural
+    : getLabels().exercises.training.image.whatMeansSingular
+
+  const articlePrefix = hasNoArticle(word.article) ? '' : `${word.article.value} `
 
   return (
     <>
@@ -276,7 +279,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
       >
         <QuestionContainer>
           <ContentText>
-            {questionLabel} {word.article.value}{' '}
+            {questionLabel} {articlePrefix}
           </ContentText>
           <ContentTextBold {...hyphenated(word.word)} />
           <ContentText>?</ContentText>

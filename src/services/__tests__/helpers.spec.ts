@@ -18,6 +18,7 @@ import {
   getProgress,
   getSortedAndFilteredVocabularyItems,
   searchJobs,
+  stringifyVocabularyItem,
   willNextExerciseUnlock,
 } from '../helpers'
 
@@ -197,6 +198,18 @@ describe('helpers', () => {
       expect(resultForUe).toEqual(resultForU)
     })
 
+    it('should treat keiner as part of the search, not as an article', () => {
+      const [firstItem, secondItem] = testData
+      const items = [
+        { ...firstItem!, word: 'keinerlei', article: ARTICLES[0] },
+        { ...secondItem!, word: 'Hose' },
+      ]
+
+      const result = getSortedAndFilteredVocabularyItems(items, 'keiner')
+
+      expect(result.map(item => item.word)).toEqual(['keinerlei'])
+    })
+
     it('should show correctly ordering of the words in the list, words starting with special chars should not be placed at the end', () => {
       const sortedData: VocabularyItem[] = [
         {
@@ -322,6 +335,16 @@ describe('helpers', () => {
       const jobs = mockJobs()
       expect(searchJobs(jobs, 'fourth unit')).toStrictEqual([])
       expect(searchJobs(jobs, 'Maler')).toStrictEqual([])
+    })
+  })
+
+  describe('stringifyVocabularyItem', () => {
+    it('should prefix the word with its article', () => {
+      expect(stringifyVocabularyItem({ word: 'Absprache', article: ARTICLES[2] })).toBe('die Absprache')
+    })
+
+    it('should return only the word if it has no article', () => {
+      expect(stringifyVocabularyItem({ word: 'abschließen', article: ARTICLES[0] })).toBe('abschließen')
     })
   })
 })
