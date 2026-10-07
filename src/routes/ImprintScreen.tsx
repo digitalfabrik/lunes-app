@@ -35,10 +35,6 @@ const ImprintScreen = (): ReactElement => (
       <Subheading>Aufsichtsbehörde:</Subheading>
       <Description>Finanzamt Augsburg-Stadt</Description>
       <Subheading>Sitz der Gesellschaft:</Subheading>
-      <Description>Augsburg</Description>
-      <Subheading>Handelsregister und Registernummer:</Subheading>
-      <Description>HRB30759</Description>
-      <Subheading>Umsatzsteuer-Identifikationsnummer:</Subheading>
       <Description>DE307491397</Description>
       <Subheading>Kontakt</Subheading>
       <MultiTextContainer>
