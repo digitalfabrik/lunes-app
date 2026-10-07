@@ -24,23 +24,21 @@ type EditableVocabularyDetailScreenProps = {
 type EditButtonProps = {
   navigation: StackNavigationProp<RoutesParams, 'VocabularyDetail'>
   vocabularyItem: UserVocabularyItem
+  color: string
 }
 
-const EditButton = ({ navigation, vocabularyItem }: EditButtonProps): ReactElement => {
-  const theme = useTheme()
-  return (
-    <PressableOpacity
-      onPress={() =>
-        navigation.navigate('UserVocabularyProcess', {
-          itemToEdit: vocabularyItem,
-        })
-      }
-      accessibilityLabel={getLabels().userVocabulary.list.edit}
-    >
-      <PenIcon color={theme.colors.text} />
-    </PressableOpacity>
-  )
-}
+const EditButton = ({ navigation, vocabularyItem, color }: EditButtonProps): ReactElement => (
+  <PressableOpacity
+    onPress={() =>
+      navigation.navigate('UserVocabularyProcess', {
+        itemToEdit: vocabularyItem,
+      })
+    }
+    accessibilityLabel={getLabels().userVocabulary.list.edit}
+  >
+    <PenIcon color={color} />
+  </PressableOpacity>
+)
 
 const VocabularyDetailScreen = ({ route }: VocabularyDetailScreenProps): ReactElement | null => {
   const { vocabularyItem } = route.params
@@ -59,15 +57,16 @@ export const EditableVocabularyDetailsScreen = ({
   navigation,
 }: EditableVocabularyDetailScreenProps): ReactElement | null => {
   const { vocabularyItem } = route.params
+  const theme = useTheme()
 
   useFocusEffect(
     useCallback(() => {
       if (isUserVocabularyItem(vocabularyItem)) {
         navigation.setOptions({
-          headerRight: () => EditButton({ navigation, vocabularyItem }),
+          headerRight: () => EditButton({ navigation, vocabularyItem, color: theme.colors.text }),
         })
       }
-    }, [vocabularyItem, navigation]),
+    }, [vocabularyItem, navigation, theme.colors.text]),
   )
 
   return <VocabularyDetailScreen route={route} />
