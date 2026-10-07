@@ -62,9 +62,10 @@ export const EditableVocabularyDetailsScreen = ({
   useFocusEffect(
     useCallback(() => {
       if (isUserVocabularyItem(vocabularyItem)) {
-        navigation.setOptions({
-          headerRight: () => EditButton({ navigation, vocabularyItem, color: theme.colors.text }),
-        })
+        const renderHeaderRight = () => (
+          <EditButton navigation={navigation} vocabularyItem={vocabularyItem} color={theme.colors.text} />
+        )
+        navigation.setOptions({ headerRight: renderHeaderRight })
       }
     }, [vocabularyItem, navigation, theme.colors.text]),
   )
