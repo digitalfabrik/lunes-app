@@ -30,7 +30,7 @@ const ImprintScreen = (): ReactElement => (
       <Title>Impressum</Title>
       <Description>Angaben gemäß § 5 TMG und verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</Description>
       <Description>Tür an Tür – Digitalfabrik gGmbH Wertachstr. 29 86153 Augsburg</Description>
-      <Description>vertreten durch Clara Bracklo, Daniel Kehne</Description>
+      <Description>vertreten durch Antonia Hauf, Daniel Kehne</Description>
       <Description>Prokura: Fritjof Knier</Description>
       <Subheading>Aufsichtsbehörde:</Subheading>
       <Description>Finanzamt Augsburg-Stadt</Description>
