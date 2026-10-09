@@ -38,7 +38,6 @@ const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   justify-content: center;
   align-items: center;
   margin-right: ${props => props.theme.spacings.sm};
-  margin-left: ${props => props.theme.spacings.sm};
   background-color: ${props => (props.pressed ? props.theme.colors.background : getArticleColor(props.article))};
 `
 
