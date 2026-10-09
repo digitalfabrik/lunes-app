@@ -128,6 +128,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
             await unlink(image)
           }),
         )
+        if (itemToEdit.audio && recordingPath !== itemToEdit.audio) {
+          await unlink(itemToEdit.audio)
+        }
       } else {
         id = await incrementNextUserVocabularyId(storageCache)
       }
@@ -149,8 +152,9 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
 
       const audioPath = getUserVocabularyFileUri(`audio-${id.index}`)
       const audioPathWithFormat = Platform.OS === 'ios' ? `${audioPath}.m4a` : `${audioPath}.mp4`
+      const hasNewRecording = recordingPath !== null && recordingPath !== itemToEdit?.audio
 
-      if (recordingPath) {
+      if (hasNewRecording) {
         await moveFile(recordingPath, audioPathWithFormat)
       }
 
@@ -159,7 +163,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
         word,
         article: ARTICLES.find(articleType => articleType.id === article.id) ?? null,
         images: imagePaths,
-        audio: recordingPath ? audioPathWithFormat : null,
+        audio: hasNewRecording ? audioPathWithFormat : recordingPath,
         alternatives: [],
       }
 
@@ -188,7 +192,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
 
   return (
     <RouteWrapper>
-      <Root>
+      <Root keyboardShouldPersistTaps='handled'>
         <StyledTitle title={itemToEdit ? getLabels().userVocabulary.editing.headline : headline} />
         <CustomTextInput
           clearable

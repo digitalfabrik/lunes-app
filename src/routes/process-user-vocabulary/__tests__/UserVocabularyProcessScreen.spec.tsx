@@ -18,10 +18,14 @@ jest.mock('@dr.pogodin/react-native-fs', () => ({
   moveFile: jest.fn(),
   unlink: jest.fn(),
 }))
-jest.mock('../components/AudioRecordOverlay', () => () => {
-  const { Text } = require('react-native')
-  return <Text>AudioRecorderOverlay</Text>
-})
+jest.mock(
+  '../components/AudioRecordOverlay',
+  () =>
+    ({ onAudioRecorded }: { onAudioRecorded: (path: string) => void }) => {
+      const { Text } = require('react-native')
+      return <Text onPress={() => onAudioRecorded('new-recording.m4a')}>AudioRecorderOverlay</Text>
+    },
+)
 jest.mock('../../../components/AudioPlayer', () => () => {
   const { Text } = require('react-native')
   return <Text>AudioPlayer</Text>
@@ -59,6 +63,7 @@ describe('UserVocabularyProcessScreen', () => {
 
   let storageCache: StorageCache
   beforeEach(() => {
+    jest.clearAllMocks()
     storageCache = StorageCache.createDummy()
   })
 
@@ -132,6 +137,48 @@ describe('UserVocabularyProcessScreen', () => {
         expect(userVocabulary).toEqual([shouldBe])
       })
     })
+
+    it('should not move the existing recording if it is unchanged', async () => {
+      const { getByPlaceholderText, getByText } = renderWithStorageCache(
+        storageCache,
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
+      )
+      fireEvent.changeText(getByPlaceholderText(getLabels().userVocabulary.creation.wordPlaceholder), 'new-word')
+      fireEvent.press(getByText(getLabels().userVocabulary.creation.saveButton))
+
+      await waitFor(() => expect(navigation.navigate).toHaveBeenCalledWith('UserVocabularyList'))
+      expect(ReactNativeFS.moveFile).not.toHaveBeenCalled()
+      expect(storageCache.getItem('userVocabulary')).toEqual([{ ...itemToEdit, word: 'new-word' }])
+    })
+
+    it('should remove the audio if the recording is deleted', async () => {
+      const { getByTestId, getByText } = renderWithStorageCache(
+        storageCache,
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
+      )
+      fireEvent.press(getByTestId('delete-audio-recording'))
+      fireEvent.press(getByText(getLabels().userVocabulary.creation.saveButton))
+
+      await waitFor(() => expect(storageCache.getItem('userVocabulary')).toEqual([{ ...itemToEdit, audio: null }]))
+      expect(ReactNativeFS.moveFile).not.toHaveBeenCalled()
+      expect(ReactNativeFS.unlink).toHaveBeenCalledWith(itemToEdit.audio)
+    })
+
+    it('should replace the existing recording with a new one', async () => {
+      const { getByTestId, getByText, findByText } = renderWithStorageCache(
+        storageCache,
+        <UserVocabularyProcessScreen navigation={navigation} route={getRoute(itemToEdit)} />,
+      )
+      fireEvent.press(getByTestId('delete-audio-recording'))
+      fireEvent.press(getByText(getLabels().userVocabulary.creation.addAudio))
+      fireEvent.press(await findByText('AudioRecorderOverlay'))
+      fireEvent.press(getByText(getLabels().userVocabulary.creation.saveButton))
+
+      await waitFor(() => expect(navigation.navigate).toHaveBeenCalledWith('UserVocabularyList'))
+      expect(ReactNativeFS.unlink).toHaveBeenCalledWith(itemToEdit.audio)
+      expect(ReactNativeFS.moveFile).toHaveBeenCalledWith('new-recording.m4a', itemToEdit.audio)
+    })
+
     it('should delete a photo', async () => {
       jest.spyOn(ReactNativeFS, 'unlink')
 
