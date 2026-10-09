@@ -26,7 +26,20 @@ describe('VocabularyListItem', () => {
 
   it('should display article passed to it', () => {
     const { queryByText } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)
-    expect(queryByText(vocabularyItem.article.value)).toBeTruthy()
+    expect(queryByText(vocabularyItem.article!.value)).toBeTruthy()
+  })
+
+  describe('when the word has no article', () => {
+    const wordWithoutArticle = { ...vocabularyItem, word: 'abschließen', article: null }
+
+    it('should display the word without a placeholder article', () => {
+      const { getByText, queryByText } = render(
+        <VocabularyListItem vocabularyItem={wordWithoutArticle} onPress={onPress} />,
+      )
+
+      expect(getByText('abschließen')).toBeTruthy()
+      expect(queryByText('keiner')).toBeNull()
+    })
   })
 
   it('should display word passed to it', () => {

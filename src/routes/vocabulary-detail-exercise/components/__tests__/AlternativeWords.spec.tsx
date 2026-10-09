@@ -13,7 +13,7 @@ describe('AlternativeWords', () => {
     expect(getByText(getLabels().exercises.vocabularyList.alternativeWords)).toBeDefined()
     expect(
       getByText(
-        `${vocabularyItems[0]!.alternatives[0]!.article.value} ${vocabularyItems[0]!.alternatives[0]!.word}, ${vocabularyItems[0]!.alternatives[1]!.article.value} ${vocabularyItems[0]!.alternatives[1]!.word}`,
+        `${vocabularyItems[0]!.alternatives[0]!.article!.value} ${vocabularyItems[0]!.alternatives[0]!.word}, ${vocabularyItems[0]!.alternatives[1]!.article!.value} ${vocabularyItems[0]!.alternatives[1]!.word}`,
       ),
     ).toBeDefined()
   })

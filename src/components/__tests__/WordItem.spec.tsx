@@ -9,7 +9,7 @@ import render from '../../testing/render'
 import WordItem from '../WordItem'
 
 describe('WordItem', () => {
-  const answer = { word: 'Arbeitsjacke', article: ARTICLES[2] }
+  const answer = { word: 'Arbeitsjacke', article: ARTICLES[1] }
 
   describe('when the word is the primary content of the screen', () => {
     it('should render the word prominently', () => {
@@ -31,9 +31,18 @@ describe('WordItem', () => {
     const longWord = 'Schutzleiteranschluss'
 
     it('should render it with soft hyphens while keeping the plain word accessible', () => {
-      const { getByLabelText } = render(<WordItem answer={{ word: longWord, article: ARTICLES[1] }} />)
+      const { getByLabelText } = render(<WordItem answer={{ word: longWord, article: ARTICLES[0] }} />)
 
       expect(getByLabelText(longWord)).toHaveTextContent(hyphenate(longWord))
+    })
+  })
+
+  describe('when the word has no article', () => {
+    it('should render the word without a placeholder article', () => {
+      const { getByText, queryByText } = render(<WordItem answer={{ word: 'abschließen', article: null }} />)
+
+      expect(getByText('abschließen')).toBeTruthy()
+      expect(queryByText('keiner')).toBeNull()
     })
   })
 

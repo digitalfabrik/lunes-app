@@ -1,11 +1,11 @@
 import { ARTICLES, SIMPLE_RESULTS } from '../../../../constants/data'
 import { evaluateSpeechMatch, SPEECH_FEEDBACK_REASONS } from '../SpeechMatchingService'
 
-const NO_ARTICLE = ARTICLES[0]
-const DER = ARTICLES[1]
-const DIE = ARTICLES[2]
-const DAS = ARTICLES[3]
-const DIE_PLURAL = ARTICLES[4]
+const NO_ARTICLE = null
+const DER = ARTICLES[0]
+const DIE = ARTICLES[1]
+const DAS = ARTICLES[2]
+const DIE_PLURAL = ARTICLES[3]
 
 describe('evaluateSpeechMatch', () => {
   describe('when transcript list is empty', () => {
@@ -203,8 +203,7 @@ describe('evaluateSpeechMatch', () => {
       expect(evaluateSpeechMatch(['Deutschlant'], NO_ARTICLE, 'Deutschland').result).toBe(SIMPLE_RESULTS.correct)
     })
 
-    it('should not expect the literal article value "keiner" to be spoken', () => {
-      // Grading against "keiner Deutschland" would make the item unpassable, so the word alone counts
+    it('should grade the word alone', () => {
       expect(evaluateSpeechMatch(['Deutschland'], NO_ARTICLE, 'Deutschland').reason).toBeUndefined()
       expect(evaluateSpeechMatch(['die Deutschland'], NO_ARTICLE, 'Deutschland').result).toBe(SIMPLE_RESULTS.correct)
     })

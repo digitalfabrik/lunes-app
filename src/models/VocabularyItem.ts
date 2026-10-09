@@ -8,7 +8,7 @@ export const VocabularyItemTypes = {
 
 export type AlternativeWord = {
   word: string
-  article: Article
+  article: Article | null
 }
 
 export type StandardVocabularyId = {
@@ -32,7 +32,7 @@ export type VocabularyItemId = StandardVocabularyId | UserVocabularyId | Protect
 type VocabularyItem = {
   id: VocabularyItemId
   word: string
-  article: Article
+  article: Article | null
   images: string[]
   audio: string | null
   alternatives: AlternativeWord[]

@@ -38,7 +38,6 @@ const ArticleBox = styled.View<StyledListElementProps & { article: Article }>`
   justify-content: center;
   align-items: center;
   margin-right: ${props => props.theme.spacings.sm};
-  margin-left: ${props => props.theme.spacings.sm};
   background-color: ${props => (props.pressed ? props.theme.colors.background : getArticleColor(props.article))};
 `
 
@@ -74,15 +73,17 @@ const WordItem = ({
 }: SingleChoiceListItemProps): ReactElement => {
   const { word, article } = answer
   const WordText = isPrimaryContent ? PrimaryWord : Word
-  const displayedWord = isArticlePlural(article) ? `${word} (${getLabels().general.plurals})` : word
+  const displayedWord = article !== null && isArticlePlural(article) ? `${word} (${getLabels().general.plurals})` : word
 
   return (
     <Pressable onPress={onClick ? () => onClick(answer) : undefined} disabled={anyAnswerSelected} testID='word-item'>
       {({ pressed }) => (
         <Container pressed={pressed}>
-          <ArticleBox article={article} pressed={pressed}>
-            <ArticleText pressed={pressed}>{article.value}</ArticleText>
-          </ArticleBox>
+          {article !== null && (
+            <ArticleBox article={article} pressed={pressed}>
+              <ArticleText pressed={pressed}>{article.value}</ArticleText>
+            </ArticleBox>
+          )}
           <WordText pressed={pressed} {...hyphenated(displayedWord)} />
         </Container>
       )}
