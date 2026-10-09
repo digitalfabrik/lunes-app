@@ -98,7 +98,7 @@ describe('ImageTrainingScreen', () => {
   })
 
   it('should correctly use plural form', async () => {
-    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.map(item => ({ ...item, article: ARTICLES[4] })))
+    mocked(getWordsByJob).mockResolvedValue(vocabularyItems.map(item => ({ ...item, article: ARTICLES[3] })))
 
     const { getByText, queryByText } = await renderScreenAndWaitForLoad()
     expect(getByText(getLabels().exercises.training.image.whatAre, { exact: false })).toBeVisible()
@@ -107,7 +107,7 @@ describe('ImageTrainingScreen', () => {
 
   it('should ask for a word without article without a placeholder article', async () => {
     mocked(getWordsByJob).mockResolvedValue(
-      vocabularyItems.map(item => ({ ...item, word: 'abschließen', article: ARTICLES[0] })),
+      vocabularyItems.map(item => ({ ...item, word: 'abschließen', article: null })),
     )
 
     const { getByText, queryByText } = await renderScreenAndWaitForLoad()

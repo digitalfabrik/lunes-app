@@ -2,7 +2,6 @@ import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import 'react-native'
 
-import { ARTICLES } from '../../constants/data'
 import { COLORS } from '../../constants/theme/colors'
 import { FONT_SIZES } from '../../constants/theme/fonts'
 import VocabularyItemBuilder from '../../testing/VocabularyItemBuilder'
@@ -27,11 +26,11 @@ describe('VocabularyListItem', () => {
 
   it('should display article passed to it', () => {
     const { queryByText } = render(<VocabularyListItem vocabularyItem={vocabularyItem} onPress={onPress} />)
-    expect(queryByText(vocabularyItem.article.value)).toBeTruthy()
+    expect(queryByText(vocabularyItem.article!.value)).toBeTruthy()
   })
 
   describe('when the word has no article', () => {
-    const wordWithoutArticle = { ...vocabularyItem, word: 'abschließen', article: ARTICLES[0] }
+    const wordWithoutArticle = { ...vocabularyItem, word: 'abschließen', article: null }
 
     it('should display the word without a placeholder article', () => {
       const { getByText, queryByText } = render(

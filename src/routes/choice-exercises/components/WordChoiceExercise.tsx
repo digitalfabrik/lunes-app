@@ -63,7 +63,7 @@ type State = {
 }
 
 const isAnswerEqual = (answer1: Answer | AlternativeWord, answer2: Answer | null): boolean =>
-  answer2 != null && answer1.article.id === answer2.article.id && answer1.word === answer2.word
+  answer2 != null && answer1.article?.id === answer2.article?.id && answer1.word === answer2.word
 
 const initializeState = (vocabularyItems: VocabularyItem[]): State => {
   const results = shuffleArray(

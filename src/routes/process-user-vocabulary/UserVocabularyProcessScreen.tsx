@@ -79,7 +79,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
   useEffect(() => {
     if (itemToEdit) {
       setWord(itemToEdit.word)
-      setArticle(getArticleWithLabel().find(item => item.id === itemToEdit.article.id) ?? null)
+      setArticle(getArticleWithLabel().find(item => item.id === itemToEdit.article?.id) ?? null)
       setImages(itemToEdit.images)
       setRecordingPath(itemToEdit.audio)
     }
@@ -157,7 +157,7 @@ const UserVocabularyProcessScreen = ({ navigation, route }: UserVocabularyProces
       const itemToSave = {
         id,
         word,
-        article: ARTICLES.find(articleType => articleType.id === article.id) ?? ARTICLES[0],
+        article: ARTICLES.find(articleType => articleType.id === article.id) ?? null,
         images: imagePaths,
         audio: recordingPath ? audioPathWithFormat : null,
         alternatives: [],

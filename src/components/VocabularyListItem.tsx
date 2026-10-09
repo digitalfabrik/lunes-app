@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
-import { hasNoArticle } from '../constants/data'
 import VocabularyItem from '../models/VocabularyItem'
 import { getArticleColor, stringifyVocabularyItem } from '../services/helpers'
 import AudioPlayer from './AudioPlayer'
@@ -49,9 +48,10 @@ const VocabularyListItem = ({
 }: VocabularyListItemProps): ReactElement => {
   const { article, word, images, audio } = vocabularyItem
 
-  const articleLabel = hasNoArticle(article) ? undefined : (
-    <StyledArticle articleColor={getArticleColor(article)}>{article.value}</StyledArticle>
-  )
+  const articleLabel =
+    article === null ? undefined : (
+      <StyledArticle articleColor={getArticleColor(article)}>{article.value}</StyledArticle>
+    )
   const icon = images.length > 0 ? <StyledImage testID='image' source={{ uri: images[0] }} /> : undefined
 
   const actions = customActions ?? (

@@ -24,7 +24,6 @@ import { ContentText } from '../../components/text/Content'
 import { HeadingText, VocabularyWord } from '../../components/text/Heading'
 import {
   BUTTONS_THEME,
-  hasNoArticle,
   MAX_TRAINING_REPETITIONS,
   NUMBER_OF_MAX_RETRIES,
   SIMPLE_RESULTS,
@@ -279,8 +278,7 @@ const SpeechTraining = ({ vocabularyItems, navigation, job }: SpeechTrainingProp
     try {
       const spokenWord = pronunciationOrWord(currentWord)
       const { article } = currentWord
-      // "keiner" is not a word anybody says, so it must not be used to bias the recognizer
-      const hints = hasNoArticle(article) ? [spokenWord] : [spokenWord, `${article.value} ${spokenWord}`]
+      const hints = article === null ? [spokenWord] : [spokenWord, `${article.value} ${spokenWord}`]
       const results = await startRecording({ hints })
       dispatch({ type: 'speechResult', match: evaluateSpeechMatch(results, article, spokenWord) })
     } catch (error) {

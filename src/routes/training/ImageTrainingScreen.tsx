@@ -15,7 +15,6 @@ import VocabularyNotePreview from '../../components/VocabularyNotePreview'
 import { ContentText, ContentTextBold } from '../../components/text/Content'
 import {
   BUTTONS_THEME,
-  hasNoArticle,
   isArticlePlural,
   MAX_TRAINING_REPETITIONS,
   NUMBER_OF_MAX_RETRIES,
@@ -255,13 +254,13 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
 
   const getQuestionLabel = (): string => {
     const { whatIs, whatAre, whatMeans } = getLabels().exercises.training.image
-    if (hasNoArticle(word.article)) {
+    if (word.article === null) {
       return whatMeans
     }
     return isArticlePlural(word.article) ? whatAre : whatIs
   }
 
-  const articlePrefix = hasNoArticle(word.article) ? '' : `${word.article.value} `
+  const articlePrefix = word.article === null ? '' : `${word.article.value} `
 
   return (
     <>

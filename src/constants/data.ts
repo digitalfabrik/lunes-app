@@ -92,10 +92,6 @@ export type ArticleType = {
 
 export const ARTICLES = [
   {
-    id: 0,
-    value: 'keiner',
-  },
-  {
     id: 1,
     value: 'der',
   },
@@ -119,10 +115,8 @@ export type ArticleTypeExtended = {
 
 export const isArticlePlural = (article: ArticleType): boolean => article.id === 4
 
-export const hasNoArticle = (article: ArticleType): boolean => article.id === 0
-
 export const getArticleWithLabel = (): ArticleTypeExtended[] =>
-  ARTICLES.filter(article => article.id !== 0).map(article => {
+  ARTICLES.map(article => {
     if (isArticlePlural(article)) {
       return { ...article, label: `${article.value} (Plural)` }
     }
@@ -146,7 +140,7 @@ export type VocabularyNote = {
 
 export type Answer = {
   word: string
-  article: Article
+  article: Article | null
 }
 
 // Should not be more than 3 because we use it in the ImageTraining where we show four images

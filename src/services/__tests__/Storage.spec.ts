@@ -47,7 +47,7 @@ describe('Storage', () => {
     const persistedItem = {
       id: { index: 1, type: VocabularyItemTypes.UserCreated },
       word: 'Hund',
-      article: ARTICLES[1],
+      article: ARTICLES[0],
       images: ['image-1-0-2000.jpg', 'image-1-1-2000.jpg'],
       audio: 'audio-1.m4a',
       alternatives: [],
