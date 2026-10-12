@@ -186,7 +186,7 @@ describe('SpeechTrainingScreen', () => {
   })
 
   describe('words without an article', () => {
-    const articleLessWord = { ...vocabularyItems[0]!, article: ARTICLES[0] }
+    const articleLessWord = { ...vocabularyItems[0]!, article: null }
 
     beforeEach(() => {
       mocked(getWordsByJob).mockResolvedValue([articleLessWord])
@@ -213,7 +213,7 @@ describe('SpeechTrainingScreen', () => {
 
   describe('loanwords with a pronunciation from the CMS', () => {
     // "Baiser" is spoken "Besee"
-    const loanword = { ...vocabularyItems[0]!, word: 'Baiser', article: ARTICLES[3], pronunciation: 'Besee' }
+    const loanword = { ...vocabularyItems[0]!, word: 'Baiser', article: ARTICLES[2], pronunciation: 'Besee' }
 
     beforeEach(() => {
       mocked(getWordsByJob).mockResolvedValue([loanword])

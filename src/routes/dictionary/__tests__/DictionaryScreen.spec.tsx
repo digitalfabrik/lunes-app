@@ -54,7 +54,7 @@ describe('DictionaryScreen', () => {
     mocked(useLoadAllWords).mockReturnValue(getReturnOf(vocabularyItems))
     const { queryByText, getByPlaceholderText } = render(<DictionaryScreen navigation={navigation} />)
     const searchBar = getByPlaceholderText(getLabels().search.enterWord)
-    fireEvent.changeText(searchBar, `${vocabularyItems[0]!.article.value} ${vocabularyItems[0]!.word}`)
+    fireEvent.changeText(searchBar, `${vocabularyItems[0]!.article!.value} ${vocabularyItems[0]!.word}`)
     expect(queryByText(vocabularyItems[0]!.word)).toBeDefined()
     expect(queryByText(vocabularyItems[1]!.word)).toBeNull()
   })

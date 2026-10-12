@@ -424,7 +424,7 @@ describe('RepetitionService', () => {
       const notInLongTermExerciseWord: VocabularyItem = {
         id: { id: 99, type: VocabularyItemTypes.Standard },
         word: 'i am unknown',
-        article: ARTICLES[1],
+        article: ARTICLES[0],
         audio: '',
         images: [],
         alternatives: [],

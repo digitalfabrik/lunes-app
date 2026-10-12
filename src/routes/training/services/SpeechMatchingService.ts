@@ -1,6 +1,6 @@
 import normalizeStrings from 'normalize-strings'
 
-import { Article, ARTICLES, hasNoArticle, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
+import { Article, ARTICLES, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
 
 // Not higher: a single misheard letter in a short word ("das Kleinhinz" for "das Kleinhirn") costs 0.846
 const FULL_PHRASE_SIMILARITY_THRESHOLD = 0.8
@@ -39,9 +39,7 @@ const normalizeText = (text: string): string =>
     // collapsing runs on both sides makes the comparison robust to this
     .replace(/(.)\1+/g, '$1')
 
-const SPOKEN_ARTICLES: readonly string[] = ARTICLES.filter(article => !hasNoArticle(article)).map(article =>
-  normalizeText(article.value),
-)
+const SPOKEN_ARTICLES: readonly string[] = ARTICLES.map(article => normalizeText(article.value))
 
 // https://en.wikipedia.org/wiki/Levenshtein_distance
 const levenshteinDistance = (source: string, target: string): number => {
@@ -119,9 +117,9 @@ const looksLikeExpectedWord = (transcriptWord: string, expectedWord: string): bo
 
 const incorrect = (reason?: SpeechFeedbackReason): SpeechMatch => ({ result: SIMPLE_RESULTS.incorrect, reason })
 
-const evaluateCandidate = (transcript: string, article: Article, word: string): SpeechMatch => {
+const evaluateCandidate = (transcript: string, article: Article | null, word: string): SpeechMatch => {
   const normalizedTranscript = normalizeText(transcript)
-  const expectedPhrase = normalizeText(hasNoArticle(article) ? word : `${article.value} ${word}`)
+  const expectedPhrase = normalizeText(article === null ? word : `${article.value} ${word}`)
 
   if (containsAsTokens(normalizedTranscript, expectedPhrase, MAX_EXTRA_TOKENS)) {
     return { result: SIMPLE_RESULTS.correct }
@@ -132,7 +130,7 @@ const evaluateCandidate = (transcript: string, article: Article, word: string): 
   const spokenArticle = firstToken !== undefined && SPOKEN_ARTICLES.includes(firstToken) ? firstToken : null
   const spokenWord = spokenArticle === null ? normalizedTranscript : tokens.slice(1).join(' ')
 
-  if (!hasNoArticle(article) && spokenArticle !== normalizeText(article.value)) {
+  if (article !== null && spokenArticle !== normalizeText(article.value)) {
     const reason =
       spokenArticle === null ? SPEECH_FEEDBACK_REASONS.missingArticle : SPEECH_FEEDBACK_REASONS.wrongArticle
     return incorrect(looksLikeExpectedWord(spokenWord, normalizeText(word)) ? reason : undefined)
@@ -140,7 +138,7 @@ const evaluateCandidate = (transcript: string, article: Article, word: string): 
 
   // Items without an article are graded on the word alone, so an article the recognizer added by itself
   // is ignored rather than counted against the answer.
-  const spokenPhrase = hasNoArticle(article) ? spokenWord : normalizedTranscript
+  const spokenPhrase = article === null ? spokenWord : normalizedTranscript
 
   // A dropped syllable barely moves a long compound's similarity ("die Bodenheizung" for
   // "die Fußbodenheizung" still scores 0.842) but always changes the syllable count, which is the only
@@ -160,7 +158,11 @@ const evaluateCandidate = (transcript: string, article: Article, word: string): 
 // The candidates are alternates of one utterance, so a single matching hypothesis is enough. Otherwise the
 // hint comes from the most confident candidate only — both platforms order their hypotheses by confidence,
 // and a hint taken from a lower-ranked alternate can contradict what the top one shows.
-export const evaluateSpeechMatch = (transcriptResults: string[], article: Article, word: string): SpeechMatch => {
+export const evaluateSpeechMatch = (
+  transcriptResults: string[],
+  article: Article | null,
+  word: string,
+): SpeechMatch => {
   const matches = transcriptResults.map(transcript => evaluateCandidate(transcript, article, word))
 
   if (matches.some(match => match.result === SIMPLE_RESULTS.correct)) {

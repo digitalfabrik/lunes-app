@@ -20,7 +20,7 @@ export const SingleChoice = ({ answers, onClick, selectedAnswer }: SingleChoiceP
   <StyledContainer>
     {answers.map(answer => (
       <WordItem
-        key={`${answer.article.id}-${answer.word}`}
+        key={`${answer.article?.id ?? 'none'}-${answer.word}`}
         answer={answer}
         onClick={onClick}
         anyAnswerSelected={selectedAnswer !== null}

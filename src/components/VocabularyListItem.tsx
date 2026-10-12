@@ -48,7 +48,10 @@ const VocabularyListItem = ({
 }: VocabularyListItemProps): ReactElement => {
   const { article, word, images, audio } = vocabularyItem
 
-  const articleLabel = <StyledArticle articleColor={getArticleColor(article)}>{article.value}</StyledArticle>
+  const articleLabel =
+    article === null ? undefined : (
+      <StyledArticle articleColor={getArticleColor(article)}>{article.value}</StyledArticle>
+    )
   const icon = images.length > 0 ? <StyledImage testID='image' source={{ uri: images[0] }} /> : undefined
 
   const actions = customActions ?? (

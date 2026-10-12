@@ -1,0 +1,6 @@
+issue_key: 1560
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Wörter ohne Artikel, zum Beispiel Verben und Adjektive, werden nicht mehr mit „keiner“ angezeigt.

@@ -252,9 +252,15 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
     )
   }
 
-  const questionLabel = isArticlePlural(word.article)
-    ? getLabels().exercises.training.image.whatAre
-    : getLabels().exercises.training.image.whatIs
+  const getQuestionLabel = (): string => {
+    const { whatIs, whatAre, whatMeans } = getLabels().exercises.training.image
+    if (word.article === null) {
+      return whatMeans
+    }
+    return isArticlePlural(word.article) ? whatAre : whatIs
+  }
+
+  const articlePrefix = word.article === null ? '' : `${word.article.value} `
 
   return (
     <>
@@ -276,7 +282,7 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
       >
         <QuestionContainer>
           <ContentText>
-            {questionLabel} {word.article.value}{' '}
+            {getQuestionLabel()} {articlePrefix}
           </ContentText>
           <ContentTextBold {...hyphenated(word.word)} />
           <ContentText>?</ContentText>

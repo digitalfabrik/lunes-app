@@ -166,12 +166,12 @@ export const getSponsors = async (): Promise<Sponsor[]> => {
 
 type CMSArticle = 'keiner' | 'der' | 'die' | 'das' | 'die (Plural)'
 
-const CMSArticleToArticle: Record<CMSArticle, Article> = {
-  keiner: ARTICLES[0],
-  der: ARTICLES[1],
-  die: ARTICLES[2],
-  das: ARTICLES[3],
-  'die (Plural)': ARTICLES[4],
+const CMSArticleToArticle: Record<CMSArticle, Article | null> = {
+  keiner: null,
+  der: ARTICLES[0],
+  die: ARTICLES[1],
+  das: ARTICLES[2],
+  'die (Plural)': ARTICLES[3],
 }
 
 type WordResponse = {

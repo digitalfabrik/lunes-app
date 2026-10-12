@@ -4,7 +4,7 @@ import styled, { useTheme } from 'styled-components/native'
 import { LightBulbIcon } from '../../../../assets/images'
 import { ContentSecondary } from '../../../components/text/Content'
 import VocabularyItem from '../../../models/VocabularyItem'
-import { getLabels } from '../../../services/helpers'
+import { getLabels, stringifyVocabularyItem } from '../../../services/helpers'
 
 const Heading = styled(ContentSecondary)`
   padding-bottom: ${props => props.theme.spacings.xs};
@@ -35,9 +35,7 @@ const AlternativeWordsSection = ({ vocabularyItem }: AlternativeWordsSectionProp
       <LightBulbIcon width={theme.sizes.defaultIcon} height={theme.sizes.defaultIcon} color={theme.colors.black} />
       <Content>
         <Heading>{getLabels().exercises.vocabularyList.alternativeWords}</Heading>
-        <AlternativeWords>
-          {vocabularyItem.alternatives.map(value => `${value.article.value} ${value.word}`).join(', ')}
-        </AlternativeWords>
+        <AlternativeWords>{vocabularyItem.alternatives.map(stringifyVocabularyItem).join(', ')}</AlternativeWords>
       </Content>
     </Root>
   ) : null

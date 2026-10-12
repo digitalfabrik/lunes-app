@@ -19,7 +19,7 @@ import { VocabularyItemResult } from '../navigation/NavigationTypes'
 import { getUnitsOfJob } from './CmsApi'
 
 export const stringifyVocabularyItem = ({ article, word }: VocabularyItem | AlternativeWord): string =>
-  `${article.value} ${word}`
+  article === null ? word : `${article.value} ${word}`
 
 export const getLabels = (): typeof labels => labels
 
@@ -39,7 +39,6 @@ export const childrenDescription = (job: Job): string => `${job.numberOfUnits} $
 
 export const getArticleColor = (article: Article): string => {
   switch (article.id) {
-    case 0:
     case 1:
       return COLORS.articleMasculine
 

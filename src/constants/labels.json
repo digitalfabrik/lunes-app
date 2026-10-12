@@ -97,7 +97,8 @@
         "description": "Die richtige Vokabel finden",
         "selectImage": "Wähle das richtige Bild aus!",
         "whatIs": "Was ist",
-        "whatAre": "Was sind"
+        "whatAre": "Was sind",
+        "whatMeans": "Was bedeutet"
       },
       "speech": {
         "title": "Sprechstudio",
