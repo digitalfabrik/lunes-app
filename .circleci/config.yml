@@ -221,16 +221,19 @@ commands:
                 paths:
                     - tools/.yarn/cache
     verify_screenshots:
-        description: Fails unless the full set of eight screenshots was produced in the given directory
+        description: Fails unless eight screenshots matching the pattern exist in the directory
         parameters:
             directory:
+                type: string
+            pattern:
+                default: '*.png'
                 type: string
         steps:
             - run:
                 command: |
-                    count=$(ls << parameters.directory >>/*.png 2>/dev/null | wc -l)
+                    count=$(ls << parameters.directory >>/<< parameters.pattern >> 2>/dev/null | wc -l || true)
                     if [ "$count" -ne 8 ]; then
-                      echo "Expected 8 screenshots in << parameters.directory >>, found $count."
+                      echo "Expected 8 screenshots matching << parameters.pattern >> in << parameters.directory >>, found $count."
                       exit 1
                     fi
                 name: Verify screenshots
@@ -767,7 +770,7 @@ jobs:
     screenshot_ios:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
-            SIMULATOR_DEVICE: iPhone 17 Pro Max
+            IPHONE_SIMULATOR: iPhone 17 Pro Max
             TOTAL_CPUS: 6
         macos:
             xcode: 26.3.0
@@ -782,17 +785,39 @@ jobs:
             - install_maestro
             - run:
                 command: |
-                    xcrun simctl boot "$SIMULATOR_DEVICE" || true
-                    xcrun simctl bootstatus "$SIMULATOR_DEVICE" -b
-                name: Boot simulator
+                    xcrun simctl boot "$IPHONE_SIMULATOR" || true
+                    xcrun simctl bootstatus "$IPHONE_SIMULATOR" -b
+                name: Boot iPhone simulator
             - run:
-                command: yarn ios:production --simulator "$SIMULATOR_DEVICE"
-                name: Build and install release app on simulator
+                command: yarn ios:production --simulator "$IPHONE_SIMULATOR"
+                name: Build and install release app on iPhone simulator
             - run:
                 command: yarn screenshots:ios
-                name: Capture screenshots
+                name: Capture iPhone screenshots
             - verify_screenshots:
                 directory: ios/fastlane/screenshots/de-DE
+                pattern: iphone_*.png
+            - run:
+                command: |
+                    xcrun simctl shutdown all
+                    ipad_simulator=$(xcrun simctl list devices available | grep -m1 -o 'iPad Pro 13-inch ([^)]*)')
+                    if [ -z "$ipad_simulator" ]; then
+                      echo "No iPad Pro 13-inch simulator available."
+                      exit 1
+                    fi
+                    echo "export IPAD_SIMULATOR='$ipad_simulator'" >> "$BASH_ENV"
+                    xcrun simctl boot "$ipad_simulator" || true
+                    xcrun simctl bootstatus "$ipad_simulator" -b
+                name: Boot iPad simulator
+            - run:
+                command: yarn ios:production --simulator "$IPAD_SIMULATOR"
+                name: Build and install release app on iPad simulator
+            - run:
+                command: yarn screenshots:ios
+                name: Capture iPad screenshots
+            - verify_screenshots:
+                directory: ios/fastlane/screenshots/de-DE
+                pattern: ipad_*.png
             - persist_to_workspace:
                 paths:
                     - ios/fastlane/screenshots/de-DE/*.png

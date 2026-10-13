@@ -33,7 +33,9 @@ name: Lunes store screenshots
     repeat: 6
 - tapOn: 'Development Code'
 - inputText: 'wirschaffendas'
-- hideKeyboard
+# hideKeyboard does not work on iPad, so tap the modal backdrop instead
+- tapOn:
+    point: '2%,50%'
 - tapOn:
     id: 'debug-seed-screenshot-data'
 - tapOn: 'Schließen'
