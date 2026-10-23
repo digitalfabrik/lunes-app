@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useCallback, useLayoutEffect, useState } from 'react'
+import React, { ReactElement, useLayoutEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
@@ -69,7 +69,7 @@ const JobSelectionScreen = ({ navigation, route }: JobSelectionScreenProps): Rea
   const [queryTerm, setQueryTerm] = useState<string>('')
   const theme = useTheme()
 
-  const isJobInScope = useCallback((job: StandardJob): boolean => matchesJobScope(job.token, jobScope), [jobScope])
+  const isJobInScope = (job: StandardJob): boolean => matchesJobScope(job.token, jobScope)
 
   const contentAreaScope = jobScope?.type === 'contentArea' ? jobScope : undefined
   const isContentArea = contentAreaScope !== undefined
