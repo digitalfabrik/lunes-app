@@ -323,10 +323,10 @@ describe('JobSelection', () => {
       expect(queryByText(getLabels().scopeSelection.confirmSelection)).toBeNull()
     })
 
-    it('should additionally show already selected Lunes jobs, but not the unselected ones', async () => {
-      const [selectedLunesJob, unselectedLunesJob] = mockJobs()
+    it('should not show already selected Lunes jobs among the jobs of a content area', async () => {
+      const [selectedLunesJob] = mockJobs()
       await storageCache.setItem('selectedJobs', [{ id: selectedLunesJob!.id.id }])
-      const { getByText, queryByText, getByTestId } = renderWithStorageCache(
+      const { getByText, queryByText } = renderWithStorageCache(
         storageCache,
         <ScopeSelection
           navigation={navigation}
@@ -335,9 +335,40 @@ describe('JobSelection', () => {
       )
 
       await waitFor(() => expect(getByText(telcJob.name)).toBeDefined())
+      expect(queryByText(selectedLunesJob!.name)).toBeNull()
+    })
+
+    it('should show selected and unselected jobs of a content area', async () => {
+      const secondTelcJob = { ...telcJob, id: { type: 'standard' as const, id: 102 }, name: 'Second Telc Job' }
+      mocked(getJobs).mockImplementation(async token =>
+        token === 'telc_token' ? [telcJob, secondTelcJob] : mockJobs(),
+      )
+      await storageCache.setItem('selectedJobs', [{ id: telcJob.id.id, token: telcJob.token }])
+      const { getByText, getAllByTestId } = renderWithStorageCache(
+        storageCache,
+        <ScopeSelection
+          navigation={navigation}
+          route={getRoute(false, { type: 'contentArea', token: 'telc_token' })}
+        />,
+      )
+
+      await waitFor(() => expect(getByText(telcJob.name)).toBeDefined())
+      expect(getByText(secondTelcJob.name)).toBeDefined()
+      expect(getAllByTestId('check-icon')).toHaveLength(1)
+    })
+
+    it('should show content area jobs and all Lunes jobs, including selected ones, when adding a job without a scope', async () => {
+      const [selectedLunesJob, unselectedLunesJob] = mockJobs()
+      await storageCache.setItem('selectedJobs', [{ id: selectedLunesJob!.id.id }])
+      const { getByText, getByTestId } = renderWithStorageCache(
+        storageCache,
+        <ScopeSelection navigation={navigation} route={getRoute(false)} />,
+      )
+
+      await waitFor(() => expect(getByText(telcJob.name)).toBeDefined())
       expect(getByText(selectedLunesJob!.name)).toBeDefined()
+      expect(getByText(unselectedLunesJob!.name)).toBeDefined()
       expect(getByTestId('check-icon')).toBeDefined()
-      expect(queryByText(unselectedLunesJob!.name)).toBeNull()
     })
 
     it('should show a start button when only a Lunes job is selected, so the user is not stuck after returning from the Lunes list', async () => {

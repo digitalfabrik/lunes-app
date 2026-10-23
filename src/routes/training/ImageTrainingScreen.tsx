@@ -283,9 +283,8 @@ const ImageTraining = ({ vocabularyItems, navigation, job }: ImageTrainingProps)
         <QuestionContainer>
           <ContentText>
             {getQuestionLabel()} {articlePrefix}
+            <ContentTextBold {...hyphenated(word.word)} />?
           </ContentText>
-          <ContentTextBold {...hyphenated(word.word)} />
-          <ContentText>?</ContentText>
           <AudioPlayerContainer>
             <AudioPlayer disabled={word.audio === null} audio={word.audio ?? ''} />
           </AudioPlayerContainer>
