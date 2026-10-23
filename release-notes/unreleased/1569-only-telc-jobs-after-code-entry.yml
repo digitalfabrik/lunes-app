@@ -1,0 +1,6 @@
+issue_key: 1569
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Nach der Eingabe eines telc-Codes werden nur noch die telc-Berufe angezeigt, nicht mehr zusätzlich bereits ausgewählte andere Berufe.
