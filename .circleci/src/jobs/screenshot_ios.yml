@@ -6,6 +6,7 @@ environment:
   FASTLANE_SKIP_UPDATE_CHECK: true
   TOTAL_CPUS: 6
   IPHONE_SIMULATOR: iPhone 17 Pro Max
+  IPAD_SIMULATOR: iPad Pro 13-inch (M5)
 shell: /bin/bash --login -o pipefail
 steps:
   - checkout
@@ -32,14 +33,8 @@ steps:
       name: Boot iPad simulator
       command: |
         xcrun simctl shutdown all
-        ipad_simulator=$(xcrun simctl list devices available | grep -m1 -o 'iPad Pro 13-inch ([^)]*)')
-        if [ -z "$ipad_simulator" ]; then
-          echo "No iPad Pro 13-inch simulator available."
-          exit 1
-        fi
-        echo "export IPAD_SIMULATOR='$ipad_simulator'" >> "$BASH_ENV"
-        xcrun simctl boot "$ipad_simulator" || true
-        xcrun simctl bootstatus "$ipad_simulator" -b
+        xcrun simctl boot "$IPAD_SIMULATOR" || true
+        xcrun simctl bootstatus "$IPAD_SIMULATOR" -b
   - run:
       name: Build and install release app on iPad simulator
       command: yarn ios:production --simulator "$IPAD_SIMULATOR"

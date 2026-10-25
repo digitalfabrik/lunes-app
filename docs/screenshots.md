@@ -39,7 +39,7 @@ Then to take the screenshots:
 ### iOS
 
 The App Store requires screenshots for the 6.9" iPhone display and, because the app runs on iPad, the 13" iPad display.
-They are taken on an iPhone 17 Pro Max (1320 x 2868 pixels) and an iPad Pro 13-inch (2064 x 2752 pixels) simulator.
+They are taken on an iPhone 17 Pro Max (1320 x 2868 pixels) and an iPad Pro 13-inch (M5) (2064 x 2752 pixels) simulator.
 Both sets are stored in `ios/fastlane/screenshots/de-DE/`, prefixed with `iphone_` and `ipad_`.
 The App Store sorts them into device sets by resolution, so they have to stay in this one folder.
 
