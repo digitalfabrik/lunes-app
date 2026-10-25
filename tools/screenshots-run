@@ -4,6 +4,7 @@ shopt -s nullglob
 
 PLATFORM="$1"
 OUTPUT_DIR="$2"
+FILE_PREFIX="${3:-}"
 
 # Maestro rejects takeScreenshot paths that point outside the run's own artifact bundle,
 # so the flow only names the files and we collect them from the bundle afterwards
@@ -25,5 +26,7 @@ if [ "${#captured[@]}" -ne "$expected" ]; then
 fi
 
 mkdir -p "$OUTPUT_DIR"
-rm -f "$OUTPUT_DIR"/*.png
-cp "${captured[@]}" "$OUTPUT_DIR"/
+rm -f "$OUTPUT_DIR"/"$FILE_PREFIX"*.png
+for screenshot in "${captured[@]}"; do
+  cp "$screenshot" "$OUTPUT_DIR/$FILE_PREFIX$(basename "$screenshot")"
+done

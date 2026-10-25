@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+booted_simulators=$(xcrun simctl list devices booted)
+
+if [ "$(grep -c "(Booted)" <<< "$booted_simulators")" -ne 1 ]; then
+  echo "Expected exactly one booted simulator."
+  exit 1
+fi
+
+if grep -q "iPad" <<< "$booted_simulators"; then
+  DEVICE_TYPE="ipad"
+  EXPECTED_RESOLUTION="2064 x 2752"
+else
+  DEVICE_TYPE="iphone"
+  EXPECTED_RESOLUTION="1320 x 2868"
+fi
+OUTPUT_DIR="ios/fastlane/screenshots/de-DE"
+
 # Pin the simulator's status bar so screenshots are reproducible
 trap 'xcrun simctl status_bar booted clear' EXIT
 xcrun simctl status_bar booted override \
@@ -12,4 +28,12 @@ xcrun simctl status_bar booted override \
   --batteryState charged \
   --batteryLevel 100
 
-tools/screenshots-run ios ios/fastlane/screenshots/de-DE
+tools/screenshots-run ios "$OUTPUT_DIR" "${DEVICE_TYPE}_"
+
+for screenshot in "$OUTPUT_DIR/${DEVICE_TYPE}_"*.png; do
+  file_description=$(file "$screenshot")
+  if [[ "$file_description" != *"$EXPECTED_RESOLUTION"* ]]; then
+    echo "Expected $screenshot to be $EXPECTED_RESOLUTION pixels: $file_description"
+    exit 1
+  fi
+done
