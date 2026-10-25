@@ -38,17 +38,21 @@ Then to take the screenshots:
 
 ### iOS
 
-All screenshots are taken on an iPhone 17 Pro Max, because the App Store requires the 6.9" display size.
-To take the screenshots:
+The App Store requires screenshots for the 6.9" iPhone display and, because the app runs on iPad, the 13" iPad display.
+They are taken on an iPhone 17 Pro Max (1320 x 2868 pixels) and an iPad Pro 13-inch (M5) (2064 x 2752 pixels) simulator.
+Both sets are stored in `ios/fastlane/screenshots/de-DE/`, prefixed with `iphone_` and `ipad_`.
+The App Store sorts them into device sets by resolution, so they have to stay in this one folder.
 
-1. Start the simulator
-2. Build the app with `yarn ios:production --simulator "iPhone 17 Pro Max"`
-3. Take the screenshots with `yarn screenshots:ios`
+To take the screenshots, repeat the following for the iPhone and the iPad simulator:
+
+1. Shut down all simulators with `xcrun simctl shutdown all`, then start the one you need; the script fails unless exactly one is booted
+2. Build the app with `yarn ios:production --simulator "<simulator name>"`
+3. Take the screenshots with `yarn screenshots:ios`, which names them after the booted simulator
 
 ## In CI
 
 The screenshots can also be captured in CircleCI by triggering a pipeline with the
 `run_update_screenshots` parameter set to `true` (CircleCI UI → Trigger Pipeline, or via the API).
-This runs the `screenshot_android` and `screenshot_ios` jobs (on a Linux emulator and a macOS
-simulator respectively) and then opens or updates a single pull request on the `update-screenshots`
+This runs the `screenshot_android` job (on a Linux emulator) and the `screenshot_ios` job (on macOS
+simulators for iPhone and iPad) and then opens or updates a single pull request on the `update-screenshots`
 branch with the regenerated images for review.
