@@ -52,9 +52,31 @@ export const pushSelectedJob = async (storageCache: StorageCache, job: StandardJ
   }
 }
 
+const replaceSelectedJobsToken = async (
+  storageCache: StorageCache,
+  previousToken: string,
+  newToken: string,
+): Promise<void> => {
+  const selectedJobs = storageCache.getItem('selectedJobs')
+  if (!selectedJobs?.some(job => job.token === previousToken)) {
+    return
+  }
+  await storageCache.setItem(
+    'selectedJobs',
+    selectedJobs.map(job => (job.token === previousToken ? { ...job, token: newToken } : job)),
+  )
+}
+
 export const saveContentArea = async (storageCache: StorageCache, contentArea: ContentArea): Promise<void> => {
-  const contentAreas = storageCache.getItem('contentAreas').filter(({ id }) => id !== contentArea.id)
-  await storageCache.setItem('contentAreas', [...contentAreas, contentArea])
+  const storedContentAreas = storageCache.getItem('contentAreas')
+  const previousToken = storedContentAreas.find(({ id }) => id === contentArea.id)?.token
+  await storageCache.setItem('contentAreas', [
+    ...storedContentAreas.filter(({ id }) => id !== contentArea.id),
+    contentArea,
+  ])
+  if (previousToken !== undefined && previousToken !== contentArea.token) {
+    await replaceSelectedJobsToken(storageCache, previousToken, contentArea.token)
+  }
 }
 
 export const getContentArea = (

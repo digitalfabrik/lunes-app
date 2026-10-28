@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
 
 import useIsReducedMotionEnabled from '../hooks/useIsReducedMotionEnabled'
+import useRefreshContentAreas from '../hooks/useRefreshContentAreas'
 import useStorage from '../hooks/useStorage'
 import useTrackSession from '../hooks/useTrackSession'
 import ActivationCodeEntryScreen from '../routes/ActivationCodeEntryScreen'
@@ -25,6 +26,7 @@ const Stack = createStackNavigator<RoutesParams>()
 
 const HomeStackNavigator = (): ReactElement | null => {
   useTrackSession()
+  useRefreshContentAreas()
   const [jobs] = useStorage('selectedJobs')
 
   const headerHeight = useTabletHeaderHeight()

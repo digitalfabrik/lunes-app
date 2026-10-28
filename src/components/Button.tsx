@@ -67,6 +67,7 @@ type ButtonProps = {
   fitToContentWidth?: boolean
   iconSize?: number
   testID?: string
+  textColor?: Color
 }
 
 const Button = (props: ButtonProps): ReactElement => {
@@ -82,11 +83,13 @@ const Button = (props: ButtonProps): ReactElement => {
     iconSize = theme.spacingsPlain.md,
     fitToContentWidth,
     testID = 'button',
+    textColor,
   } = props
   const buttonWidth = fitToContentWidth ? undefined : screenWidth * BUTTON_WIDTH_RATIO
 
   const getTextColor = (): Color => {
-    const enabledTextColor = buttonTheme === BUTTONS_THEME.contained ? theme.colors.background : theme.colors.primary
+    const defaultTextColor = buttonTheme === BUTTONS_THEME.contained ? theme.colors.background : theme.colors.primary
+    const enabledTextColor = textColor ?? defaultTextColor
     return disabled ? theme.colors.placeholder : enabledTextColor
   }
 

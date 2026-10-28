@@ -5,12 +5,14 @@ import { mocked } from 'jest-mock'
 import React from 'react'
 
 import { EXERCISES, StandardExerciseKeys, SCORE_THRESHOLD_POSITIVE_FEEDBACK } from '../../../constants/data'
+import theme from '../../../constants/theme'
 import useLoadWordsByUnit from '../../../hooks/useLoadWordsByUnit'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { StorageCache } from '../../../services/Storage'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
+import { mockTelcArea } from '../../../testing/mockContentArea'
 import { mockJobs } from '../../../testing/mockJob'
 import mockUnits from '../../../testing/mockUnit'
 import { renderWithStorageCache } from '../../../testing/render'
@@ -97,5 +99,28 @@ describe('StandardExercisesScreen', () => {
       <StandardExercisesScreen route={route} navigation={navigation} />,
     )
     await waitFor(() => expect(queryByTestId('negative-badge')).toBeNull())
+  })
+
+  describe('branding', () => {
+    const telc = { ...mockTelcArea(), learningColor: '#a01915' }
+    const firstExerciseTitle = Object.values(EXERCISES)[0]!.title
+
+    const renderWithUnitToken = async (token?: string) => {
+      await storageCache.setItem('contentAreas', [telc])
+      const telcRoute = { ...route, params: { ...route.params, unit: { ...route.params.unit, token } } }
+      return renderWithStorageCache(storageCache, <StandardExercisesScreen route={telcRoute} navigation={navigation} />)
+    }
+
+    it('should show light text on the telc learning color', async () => {
+      const { getAllByText } = await renderWithUnitToken(telc.token)
+
+      expect(getAllByText(firstExerciseTitle)[0]).toHaveStyle({ color: theme.colors.background })
+    })
+
+    it('should keep the dark text of Lunes for a public unit', async () => {
+      const { getAllByText } = await renderWithUnitToken(undefined)
+
+      expect(getAllByText(firstExerciseTitle)[0]).toHaveStyle({ color: theme.colors.textOnLearningItem })
+    })
   })
 })

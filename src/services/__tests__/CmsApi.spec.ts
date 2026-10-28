@@ -2,12 +2,30 @@ import { AxiosError, AxiosResponse } from 'axios'
 import { mocked } from 'jest-mock'
 
 import { InvalidContentAreaCodeError } from '../../constants/endpoints'
-import { getJob, getJobs, getUnitsOfJob, getWords, registerContentArea } from '../CmsApi'
+import { getContentAreaBranding, getJob, getJobs, getUnitsOfJob, getWords, registerContentArea } from '../CmsApi'
 import { getFromEndpoint, postToEndpoint } from '../axios'
 
 jest.mock('../axios')
 
 const token = 'telc_token'
+
+const areaResponse = {
+  id: 1,
+  name: 'telc gGmbH',
+  logo: 'https://lunes.example/media/logo.png',
+  secondary_logo: 'https://lunes.example/media/secondary.png',
+  primary_color: '#a01915',
+  learning_color: '#007dbe',
+  training_color: '#027b91',
+}
+
+const branding = {
+  logoUrl: 'https://lunes.example/media/logo.png',
+  secondaryLogoUrl: 'https://lunes.example/media/secondary.png',
+  primaryColor: '#a01915',
+  learningColor: '#007dbe',
+  trainingColor: '#027b91',
+}
 
 const jobResponse = {
   id: 7,
@@ -126,6 +144,42 @@ describe('CmsApi', () => {
       expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1' })
     })
 
+    it('should return the branding of the area', async () => {
+      mocked(postToEndpoint).mockResolvedValueOnce({ data: { token: 'telc_token', area: areaResponse } } as never)
+
+      const contentArea = await registerContentArea('band-1', 'installation-1')
+
+      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1', ...branding })
+    })
+
+    it('should leave out branding the CMS has not set', async () => {
+      mocked(postToEndpoint).mockResolvedValueOnce({
+        data: {
+          token: 'telc_token',
+          area: { ...areaResponse, logo: null, secondary_logo: null, primary_color: '', learning_color: '' },
+        },
+      } as never)
+
+      const contentArea = await registerContentArea('band-1', 'installation-1')
+
+      expect(contentArea.logoUrl).toBeUndefined()
+      expect(contentArea.secondaryLogoUrl).toBeUndefined()
+      expect(contentArea.primaryColor).toBeUndefined()
+      expect(contentArea.learningColor).toBeUndefined()
+      expect(contentArea.trainingColor).toBe('#027b91')
+    })
+
+    it('should ignore a color that is not a hex color', async () => {
+      mocked(postToEndpoint).mockResolvedValueOnce({
+        data: { token: 'telc_token', area: { ...areaResponse, primary_color: 'red', training_color: '#12345' } },
+      } as never)
+
+      const contentArea = await registerContentArea('band-1', 'installation-1')
+
+      expect(contentArea.primaryColor).toBeUndefined()
+      expect(contentArea.trainingColor).toBeUndefined()
+    })
+
     it('should reject an unknown code as an invalid area code', async () => {
       const badRequest = new AxiosError('Request failed with status code 400')
       badRequest.response = { status: 400 } as AxiosResponse
@@ -138,6 +192,17 @@ describe('CmsApi', () => {
       mocked(postToEndpoint).mockRejectedValueOnce(new Error('Network Error'))
 
       await expect(registerContentArea('band-1', 'installation-1')).rejects.toThrow('Network Error')
+    })
+  })
+
+  describe('getContentAreaBranding', () => {
+    it('should post only the code and return the branding without a token', async () => {
+      mocked(postToEndpoint).mockResolvedValueOnce({ data: { area: areaResponse } } as never)
+
+      const result = await getContentAreaBranding('band-1')
+
+      expect(postToEndpoint).toHaveBeenCalledWith('areas/info/', { code: 'band-1' })
+      expect(result).toEqual(branding)
     })
   })
 })
