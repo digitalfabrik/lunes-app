@@ -2,14 +2,17 @@ import { RouteProp } from '@react-navigation/native'
 import { mocked } from 'jest-mock'
 import React from 'react'
 
+import theme from '../../../constants/theme'
 import useLoadWordsByJob from '../../../hooks/useLoadWordsByJob'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
+import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import VocabularyItemBuilder from '../../../testing/VocabularyItemBuilder'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
 import { getReturnOf } from '../../../testing/helper'
+import { mockTelcArea } from '../../../testing/mockContentArea'
 import { mockJobs } from '../../../testing/mockJob'
-import renderWithTheme from '../../../testing/render'
+import renderWithTheme, { renderWithStorageCache } from '../../../testing/render'
 import TrainingExerciseSelectionScreen from '../TrainingExerciseSelectionScreen'
 
 jest.mock('../../../hooks/useLoadWordsByJob')
@@ -54,5 +57,36 @@ describe('TrainingExerciseSelectionScreen', () => {
     const { getByText } = renderWithTheme(<TrainingExerciseSelectionScreen navigation={navigation} route={route} />)
 
     expect(getByText(getLabels().exercises.training.sentence.title)).not.toBeDisabled()
+  })
+
+  describe('branding', () => {
+    const telc = mockTelcArea()
+    const telcRoute: RouteProp<RoutesParams, 'TrainingExerciseSelection'> = {
+      ...route,
+      params: { job: { ...job, token: telc.token } },
+    }
+
+    const renderWithTelc = async (screenRoute: RouteProp<RoutesParams, 'TrainingExerciseSelection'>) => {
+      const storageCache = StorageCache.createDummy()
+      await storageCache.setItem('contentAreas', [telc])
+      return renderWithStorageCache(
+        storageCache,
+        <TrainingExerciseSelectionScreen navigation={navigation} route={screenRoute} />,
+      )
+    }
+
+    it('should show light text on the telc training color', async () => {
+      const { getByText } = await renderWithTelc(telcRoute)
+
+      expect(getByText(getLabels().exercises.training.image.title)).toHaveStyle({ color: theme.colors.background })
+    })
+
+    it('should keep the dark text of Lunes for a public job', async () => {
+      const { getByText } = await renderWithTelc(route)
+
+      expect(getByText(getLabels().exercises.training.image.title)).toHaveStyle({
+        color: theme.colors.textOnTrainingItem,
+      })
+    })
   })
 })

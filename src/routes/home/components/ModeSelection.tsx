@@ -8,6 +8,7 @@ import { Content } from '../../../components/text/Content'
 import { Heading } from '../../../components/text/Heading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { Color } from '../../../constants/theme/colors'
+import { darkenUntilContrast, MIN_CONTRAST_RATIO } from '../../../constants/theme/contrast'
 import useLoadProgress from '../../../hooks/useLoadProgress'
 import Job from '../../../models/Job'
 import { getLabels, pluralize } from '../../../services/helpers'
@@ -41,13 +42,13 @@ const IconBackground = styled.View`
   padding: ${props => props.theme.spacings.xs};
 `
 
-const CardTitle = styled(Heading)`
+const CardTitle = styled(Heading)<{ textColor: Color }>`
   font-size: ${props => props.theme.fonts.defaultFontSize};
-  color: ${props => props.theme.colors.background};
+  color: ${props => props.textColor};
 `
 
-const Subtitle = styled(Content)`
-  color: ${props => props.theme.colors.background};
+const Subtitle = styled(Content)<{ textColor: Color }>`
+  color: ${props => props.textColor};
 `
 
 const ProgressRow = styled.View`
@@ -60,26 +61,26 @@ const SmallContent = styled(Content)`
 `
 
 const ProgressBarTrack = styled.View`
-  background-color: rgba(123, 142, 255, 0.2);
+  background-color: ${props => props.theme.colors.progressTrack};
   border-radius: ${props => props.theme.spacings.xs};
   height: ${props => props.theme.spacings.xs};
 `
 
-const ProgressBar = styled.View<{ progress: number }>`
-  background-color: ${props => props.theme.colors.backgroundBlue};
+const ProgressBar = styled.View<{ progress: number; color: Color }>`
+  background-color: ${props => props.color};
   width: ${props => (Number.isFinite(props.progress) ? props.progress * 100 : 0)}%;
   height: 100%;
   border-radius: ${props => props.theme.spacings.xs};
 `
 
 const NewBadge = styled.View`
-  background-color: ${props => props.theme.colors.backgroundTeal};
+  background-color: ${props => props.theme.colors.backgroundTraining};
   border-radius: ${props => props.theme.spacings.sm};
   padding: ${props => props.theme.spacings.xxs} ${props => props.theme.spacings.xs};
 `
 
 const NewBadgeText = styled(Content)`
-  color: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.textOnTrainingCard};
   font-size: ${props => props.theme.fonts.smallFontSize};
 `
 
@@ -112,15 +113,17 @@ type LearningCardProps = {
 const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningCardProps): ReactElement => {
   const labels = getLabels()
   const theme = useTheme()
+  const textColor = theme.colors.textOnLearningCard
+  const progressColor = darkenUntilContrast(color, theme.colors.progressTrack, MIN_CONTRAST_RATIO)
   return (
     <CardContainer backgroundColor={color}>
       <TitleRow>
         <IconBackground>
-          <BookIcon color={theme.colors.background} />
+          <BookIcon color={textColor} />
         </IconBackground>
         <View>
-          <CardTitle>{labels.home.learnVocabulary}</CardTitle>
-          <Subtitle>{labels.home.learnVocabularyDescription}</Subtitle>
+          <CardTitle textColor={textColor}>{labels.home.learnVocabulary}</CardTitle>
+          <Subtitle textColor={textColor}>{labels.home.learnVocabularyDescription}</Subtitle>
         </View>
       </TitleRow>
       <ContentBox>
@@ -131,7 +134,7 @@ const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningC
           </SmallContent>
         </ProgressRow>
         <ProgressBarTrack>
-          <ProgressBar progress={unitsCompleted / numberUnits} />
+          <ProgressBar testID='learning-progress-bar' progress={unitsCompleted / numberUnits} color={progressColor} />
         </ProgressBarTrack>
         <StartButton
           testID='start-learning-button'
@@ -139,7 +142,8 @@ const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningC
           label={labels.home.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
           fitToContentWidth
-          backgroundColor={theme.colors.backgroundBlue}
+          backgroundColor={theme.colors.backgroundLearning}
+          textColor={textColor}
         />
       </ContentBox>
     </CardContainer>
@@ -153,15 +157,16 @@ type TrainingCardProps = {
 const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
   const labels = getLabels().home
   const theme = useTheme()
+  const textColor = theme.colors.textOnTrainingCard
   return (
-    <CardContainer backgroundColor={theme.colors.backgroundTeal}>
+    <CardContainer backgroundColor={theme.colors.backgroundTraining}>
       <TitleRow>
         <IconBackground>
-          <TargetIcon color={theme.colors.background} />
+          <TargetIcon color={textColor} />
         </IconBackground>
         <View>
-          <CardTitle>{labels.trainVocabulary}</CardTitle>
-          <Subtitle>{labels.testYourKnowledge}</Subtitle>
+          <CardTitle textColor={textColor}>{labels.trainVocabulary}</CardTitle>
+          <Subtitle textColor={textColor}>{labels.testYourKnowledge}</Subtitle>
         </View>
       </TitleRow>
       <ContentBox>
@@ -179,7 +184,8 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
           label={labels.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
           fitToContentWidth
-          backgroundColor={theme.colors.backgroundTeal}
+          backgroundColor={theme.colors.backgroundTraining}
+          textColor={textColor}
         />
       </ContentBox>
     </CardContainer>
@@ -206,7 +212,7 @@ const ModeSelection = ({
       <LearningCard
         numberUnits={job.numberOfUnits}
         unitsCompleted={completedUnits}
-        color={theme.colors.backgroundBlue}
+        color={theme.colors.backgroundLearning}
         onPress={navigateToJob}
       />
       <TrainingCard onPress={navigateToTrainingExerciseSelection} />

@@ -4,6 +4,7 @@ import React, { useEffect, useState, ReactElement } from 'react'
 import { FlatList, View } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 
+import AreaThemeProvider from '../../components/AreaThemeProvider'
 import FeedbackBadge from '../../components/FeedbackBadge'
 import Modal from '../../components/Modal'
 import PressableOpacity from '../../components/PressableOpacity'
@@ -43,8 +44,16 @@ const SmallMessage = styled(Content)`
   text-align: center;
 `
 
+const ExerciseTitle = styled(Heading)`
+  color: ${props => props.theme.colors.textOnLearningItem};
+`
+
+const ExerciseDescription = styled(Content)`
+  color: ${props => props.theme.colors.textOnLearningItem};
+`
+
 const UnitItem = styled(PressableOpacity)`
-  background-color: ${props => props.theme.colors.backgroundBlue};
+  background-color: ${props => props.theme.colors.backgroundLearning};
   border-radius: ${props => props.theme.spacings.xs};
   padding: ${props => props.theme.spacings.md};
   gap: ${props => props.theme.spacings.sm};
@@ -112,8 +121,8 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
         <UnitItem onPress={() => handleNavigation(item)}>
           <item.icon />
           <View>
-            <Heading>{item.title}</Heading>
-            <Content>{item.description}</Content>
+            <ExerciseTitle>{item.title}</ExerciseTitle>
+            <ExerciseDescription>{item.description}</ExerciseDescription>
           </View>
         </UnitItem>
       </ListItemResizer>
@@ -125,45 +134,47 @@ const StandardExercisesScreen = ({ route, navigation }: ExercisesScreenProps): R
       ? getLabels().exercises.lockedExerciseModal.confirmButtonLabelDeclinated
       : getLabels().exercises.lockedExerciseModal.confirmButtonLabel
   return (
-    <RouteWrapper>
-      {vocabularyItems && nextExercise && (
-        <Modal
-          onClose={() => setIsModalVisible(false)}
-          visible={isModalVisible}
-          text={getLabels().exercises.lockedExerciseModal.title}
-          confirmationButtonText={`${nextExercisePreposition} ${nextExercise.title}`}
-          confirmationAction={() => {
-            handleNavigation(nextExercise)
-            setIsModalVisible(false)
-          }}
-          testID='locking-modal'
-        >
-          <SmallMessage>
-            {getLabels().exercises.lockedExerciseModal.descriptionPart1}
-            <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>
-            {getLabels().exercises.lockedExerciseModal.descriptionPart2}
-          </SmallMessage>
-        </Modal>
-      )}
-
-      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        {vocabularyItems && (
-          <>
-            <Title title={unit.title} description={wordsDescription(vocabularyItems.length)} />
-            <FlatList
-              data={Object.values(EXERCISES)}
-              renderItem={renderListItem}
-              keyExtractor={({ key }) => key}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                gap: theme.spacingsPlain.xs,
-                paddingBottom: theme.spacingsPlain.sm,
-              }}
-            />
-          </>
+    <AreaThemeProvider token={unit.token}>
+      <RouteWrapper>
+        {vocabularyItems && nextExercise && (
+          <Modal
+            onClose={() => setIsModalVisible(false)}
+            visible={isModalVisible}
+            text={getLabels().exercises.lockedExerciseModal.title}
+            confirmationButtonText={`${nextExercisePreposition} ${nextExercise.title}`}
+            confirmationAction={() => {
+              handleNavigation(nextExercise)
+              setIsModalVisible(false)
+            }}
+            testID='locking-modal'
+          >
+            <SmallMessage>
+              {getLabels().exercises.lockedExerciseModal.descriptionPart1}
+              <ContentTextBold>{` ${nextExercise.title} `}</ContentTextBold>
+              {getLabels().exercises.lockedExerciseModal.descriptionPart2}
+            </SmallMessage>
+          </Modal>
         )}
-      </ServerResponseHandler>
-    </RouteWrapper>
+
+        <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+          {vocabularyItems && (
+            <>
+              <Title title={unit.title} description={wordsDescription(vocabularyItems.length)} />
+              <FlatList
+                data={Object.values(EXERCISES)}
+                renderItem={renderListItem}
+                keyExtractor={({ key }) => key}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  gap: theme.spacingsPlain.xs,
+                  paddingBottom: theme.spacingsPlain.sm,
+                }}
+              />
+            </>
+          )}
+        </ServerResponseHandler>
+      </RouteWrapper>
+    </AreaThemeProvider>
   )
 }
 

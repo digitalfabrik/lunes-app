@@ -1,6 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import { mocked } from 'jest-mock'
-import React from 'react'
+import React, { ComponentProps, ReactElement, useState } from 'react'
 
 import { getJob } from '../../../../services/CmsApi'
 import { StorageCache } from '../../../../services/Storage'
@@ -11,6 +11,13 @@ import SelectedJobs from '../SelectedJobs'
 
 jest.mock('@react-navigation/native')
 jest.mock('../../../../services/CmsApi')
+
+type SelectedJobsProps = Omit<ComponentProps<typeof SelectedJobs>, 'currentIndex' | 'setCurrentIndex'>
+
+const SelectedJobsWithIndex = (props: SelectedJobsProps): ReactElement => {
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
+  return <SelectedJobs {...props} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+}
 
 describe('SelectedJobs', () => {
   const defaultProps = {
@@ -23,7 +30,7 @@ describe('SelectedJobs', () => {
   it('should show empty state and navigate to job selection when no jobs', () => {
     const navigateToJobSelection = jest.fn()
     const { getByText, queryByTestId } = render(
-      <SelectedJobs {...defaultProps} navigateToJobSelection={navigateToJobSelection} />,
+      <SelectedJobsWithIndex {...defaultProps} navigateToJobSelection={navigateToJobSelection} />,
     )
     expect(getByText(`${getLabels().home.jobs} [0]`)).toBeDefined()
     expect(queryByTestId('edit-professions-button')).toBeNull()
@@ -39,7 +46,7 @@ describe('SelectedJobs', () => {
     await storageCache.setItem('selectedJobs', [{ id: mockJobs()[0]!.id.id }])
     mocked(getJob).mockResolvedValue(mockJobs()[0]!)
 
-    const { getByText, getByTestId } = renderWithStorageCache(storageCache, <SelectedJobs {...defaultProps} />)
+    const { getByText, getByTestId } = renderWithStorageCache(storageCache, <SelectedJobsWithIndex {...defaultProps} />)
 
     await waitFor(() => expect(getByText(mockJobs()[0]!.name)).toBeDefined())
     expect(getByTestId('edit-professions-button')).toBeDefined()
@@ -56,7 +63,7 @@ describe('SelectedJobs', () => {
 
     const { getByText, getByTestId, queryByTestId } = renderWithStorageCache(
       storageCache,
-      <SelectedJobs {...defaultProps} />,
+      <SelectedJobsWithIndex {...defaultProps} />,
     )
 
     await waitFor(() => expect(getByText(firstJob!.name)).toBeDefined())

@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 
 import { AddCircleIcon, PenIcon } from '../../../../assets/images'
@@ -66,6 +66,8 @@ const EmptyStateSubtitle = styled.Text`
 `
 
 type SelectedJobsProps = {
+  currentIndex: number
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
   navigateToJob: (job: Job) => void
   navigateToTrainingExerciseSelection: (job: StandardJob) => void
   navigateToManageSelection: () => void
@@ -78,13 +80,14 @@ const useAllJobs = (): JobId[] => {
 }
 
 const SelectedJobs = ({
+  currentIndex,
+  setCurrentIndex,
   navigateToJob,
   navigateToTrainingExerciseSelection,
   navigateToManageSelection,
   navigateToJobSelection,
 }: SelectedJobsProps): ReactElement | null => {
   const jobs = useAllJobs()
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
   const theme = useTheme()
 
   const { emptyState } = getLabels().home

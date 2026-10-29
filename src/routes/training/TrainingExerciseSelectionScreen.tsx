@@ -5,6 +5,7 @@ import { FlatList } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 import { TrainingImages, TrainingSentences, TrainingSpeech } from '../../../assets/images'
+import AreaThemeProvider from '../../components/AreaThemeProvider'
 import PressableOpacity from '../../components/PressableOpacity'
 import RouteWrapper from '../../components/RouteWrapper'
 import ServerResponseHandler from '../../components/ServerResponseHandler'
@@ -63,7 +64,7 @@ const ListItem = styled(PressableOpacity)<{ disabled: boolean }>`
     css`
       opacity: 0.5;
     `}
-  background-color: ${props => props.theme.colors.backgroundTeal};
+  background-color: ${props => props.theme.colors.backgroundTraining};
   padding: ${props => props.theme.spacings.sm};
   border-radius: ${props => props.theme.spacings.sm};
 `
@@ -89,11 +90,11 @@ const ListItemBody = styled.View`
 `
 
 const Heading = styled(HeadingText)`
-  color: black;
+  color: ${props => props.theme.colors.textOnTrainingItem};
 `
 
 const Description = styled(ContentText)`
-  color: black;
+  color: ${props => props.theme.colors.textOnTrainingItem};
 `
 
 export type TrainingExerciseSelectionScreenProps = {
@@ -138,19 +139,21 @@ const TrainingExerciseSelectionScreen = ({ route, navigation }: TrainingExercise
   }
 
   return (
-    <RouteWrapper>
-      <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
-        <Root>
-          <Title title={getLabels().exercises.training.train} subtitle={job.name} />
-          <FlatList
-            data={Object.values(TRAINING_EXERCISES)}
-            renderItem={renderListItem}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
-          />
-        </Root>
-      </ServerResponseHandler>
-    </RouteWrapper>
+    <AreaThemeProvider token={job.token}>
+      <RouteWrapper>
+        <ServerResponseHandler error={error} loading={loading} refresh={refresh}>
+          <Root>
+            <Title title={getLabels().exercises.training.train} subtitle={job.name} />
+            <FlatList
+              data={Object.values(TRAINING_EXERCISES)}
+              renderItem={renderListItem}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+            />
+          </Root>
+        </ServerResponseHandler>
+      </RouteWrapper>
+    </AreaThemeProvider>
   )
 }
 
