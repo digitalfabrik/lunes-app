@@ -106,12 +106,8 @@ type AreaInfoResponse = {
   area: AreaResponse
 }
 
-const emptyToUndefined = (url: string | null | undefined): string | undefined => {
-  if (!url) {
-    return undefined
-  }
-  return url
-}
+const emptyToUndefined = (url: string | null | undefined): string | undefined =>
+  url === null || url === '' ? undefined : url
 
 const transformColor = (color: string | undefined): string | undefined =>
   color !== undefined && HEX_COLOR_PATTERN.test(color) ? color : undefined
