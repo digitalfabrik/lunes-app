@@ -705,6 +705,7 @@ jobs:
             - run:
                 command: bundle exec fastlane ios appstoreconnect_promote
                 name: '[FL] App Store Connect Promotion'
+                no_output_timeout: 30m
                 working_directory: ios
             - notify
     screenshot_android:
