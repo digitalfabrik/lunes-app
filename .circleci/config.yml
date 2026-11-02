@@ -319,7 +319,7 @@ jobs:
             FL_OUTPUT_DIR: output
             TOTAL_CPUS: 6
         macos:
-            xcode: 26.3.0
+            xcode: 26.6
         resource_class: m4pro.medium
         shell: /bin/bash --login -o pipefail
         steps:
@@ -515,7 +515,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 26.3.0
+            xcode: 26.6
         shell: /bin/bash --login -o pipefail
         steps:
             - checkout
@@ -693,7 +693,7 @@ jobs:
         environment:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
-            xcode: 26.3.0
+            xcode: 26.6
         resource_class: m4pro.medium
         shell: /bin/bash --login -o pipefail
         steps:
@@ -774,7 +774,7 @@ jobs:
             IPHONE_SIMULATOR: iPhone 17 Pro Max
             TOTAL_CPUS: 6
         macos:
-            xcode: 26.3.0
+            xcode: 26.6
         resource_class: m4pro.medium
         shell: /bin/bash --login -o pipefail
         steps:
