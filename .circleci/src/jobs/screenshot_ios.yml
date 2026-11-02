@@ -1,6 +1,6 @@
 # Captures the store screenshots on iOS
 macos:
-  xcode: 26.3.0
+  xcode: 26.6
 resource_class: m4pro.medium
 environment:
   FASTLANE_SKIP_UPDATE_CHECK: true
