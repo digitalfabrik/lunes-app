@@ -12,7 +12,7 @@ const StyledImage = styled.Image`
   margin-right: ${props => props.theme.spacings.sm};
   width: 60px;
   height: 60px;
-  border-radius: ${props => props.theme.spacings.xxl};
+  border-radius: ${props => props.theme.spacings.xs};
 `
 
 const StyledArticle = styled(Content)<{ articleColor: string }>`
