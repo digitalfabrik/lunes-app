@@ -1,0 +1,6 @@
+issue_key: 1582
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Bilder in der Wortliste sind jetzt abgerundete Quadrate statt Kreise, damit nichts abgeschnitten wird.
