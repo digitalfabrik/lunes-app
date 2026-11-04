@@ -1,4 +1,4 @@
-export const HEX_COLOR_PATTERN = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i
+const HEX_COLOR_PATTERN = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i
 const HEX_RADIX = 16
 const DARKENING_STEPS = 10
 
@@ -22,6 +22,10 @@ const BLUE_LUMINANCE_WEIGHT = 0.0722
 // https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html#dfn-contrast-ratio
 const CONTRAST_RATIO_OFFSET = 0.05
 
+export const isHexColor = (color: string): boolean => HEX_COLOR_PATTERN.test(color)
+
+const getHexChannels = (hexColor: string): string[] => HEX_COLOR_PATTERN.exec(hexColor)?.slice(1) ?? []
+
 const toLinearChannel = (channel: string): number => {
   const value = parseInt(channel, HEX_RADIX) / MAX_CHANNEL_VALUE
   if (value <= SRGB_LINEAR_THRESHOLD) {
@@ -31,7 +35,7 @@ const toLinearChannel = (channel: string): number => {
 }
 
 const getRelativeLuminance = (color: string): number => {
-  const [, red = '00', green = '00', blue = '00'] = HEX_COLOR_PATTERN.exec(color) ?? []
+  const [red = '00', green = '00', blue = '00'] = getHexChannels(color)
   return (
     RED_LUMINANCE_WEIGHT * toLinearChannel(red) +
     GREEN_LUMINANCE_WEIGHT * toLinearChannel(green) +
@@ -48,15 +52,16 @@ export const getContrastRatio = (firstColor: string, secondColor: string): numbe
 
 const toHexChannel = (channel: number): string => Math.round(channel).toString(HEX_RADIX).padStart(2, '0')
 
+const toHexColor = (channels: number[], brightness: number): string =>
+  `#${channels.map(channel => toHexChannel(channel * brightness)).join('')}`
+
 export const darkenUntilContrast = (color: string, backgroundColor: string, minContrastRatio: number): string => {
-  const match = HEX_COLOR_PATTERN.exec(color)
-  if (match === null) {
+  if (!isHexColor(color) || !isHexColor(backgroundColor)) {
     return color
   }
-  const channels = match.slice(1).map(channel => parseInt(channel, HEX_RADIX))
+  const channels = getHexChannels(color).map(channel => parseInt(channel, HEX_RADIX))
   for (let step = 0; step <= DARKENING_STEPS; step += 1) {
-    const brightness = 1 - step / DARKENING_STEPS
-    const darkened = `#${channels.map(channel => toHexChannel(channel * brightness)).join('')}`
+    const darkened = toHexColor(channels, 1 - step / DARKENING_STEPS)
     if (getContrastRatio(darkened, backgroundColor) >= minContrastRatio) {
       return darkened
     }

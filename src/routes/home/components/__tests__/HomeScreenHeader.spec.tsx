@@ -44,7 +44,10 @@ describe('HomeScreenHeader', () => {
     })
 
     it('should keep the Lunes logo if the area has no main logo', () => {
-      const { queryByTestId, getByTestId } = renderHeader({ ...telc, logoUrl: undefined })
+      const { queryByTestId, getByTestId } = renderHeader({
+        ...telc,
+        branding: { ...telc.branding, logoUrl: undefined },
+      })
 
       expect(queryByTestId('main-logo')).toBeNull()
       expect(getByTestId('lunes-logo')).toBeTruthy()

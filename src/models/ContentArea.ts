@@ -6,11 +6,12 @@ export type ContentAreaBranding = {
   trainingColor?: string
 }
 
-type ContentArea = ContentAreaBranding & {
+type ContentArea = {
   id: number
   token: string
   name: string
   code: string
+  branding?: ContentAreaBranding
 }
 
 export type WithToken<Id> = {

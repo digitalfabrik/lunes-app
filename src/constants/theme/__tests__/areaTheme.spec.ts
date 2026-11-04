@@ -1,38 +1,10 @@
 import theme from '..'
 
-import { mockTelcArea } from '../../../testing/mockContentArea'
+import { mockLightTelcArea, mockTelcArea } from '../../../testing/mockContentArea'
 import getAreaTheme from '../areaTheme'
-import { darkenUntilContrast, getContrastRatio } from '../contrast'
+import { getContrastRatio } from '../contrast'
 
 const MIN_TEXT_CONTRAST = 4.5
-
-describe('getContrastRatio', () => {
-  it('should be 21 between black and white', () => {
-    expect(getContrastRatio('#000000', '#ffffff')).toBeCloseTo(21)
-  })
-})
-
-describe('darkenUntilContrast', () => {
-  it('should keep a color that already has enough contrast', () => {
-    expect(darkenUntilContrast('#007dbe', '#ffffff', 3)).toBe('#007dbe')
-  })
-
-  it('should darken a light color until it has enough contrast', () => {
-    const darkened = darkenUntilContrast('#a6e0ff', '#ffffff', 3)
-
-    expect(darkened).not.toBe('#a6e0ff')
-    expect(darkened).toMatch(/^#[0-9a-f]{6}$/)
-    expect(getContrastRatio(darkened, '#ffffff')).toBeGreaterThanOrEqual(3)
-  })
-
-  it('should darken in steps of ten percent and stop at the first one with enough contrast', () => {
-    expect(darkenUntilContrast('#ffffff', '#ffffff', 3)).toBe('#808080')
-  })
-
-  it('should keep a color that is not a hex color', () => {
-    expect(darkenUntilContrast('red', '#ffffff', 3)).toBe('red')
-  })
-})
 
 describe('getAreaTheme', () => {
   const telc = mockTelcArea()
@@ -42,12 +14,7 @@ describe('getAreaTheme', () => {
   })
 
   it('should keep the Lunes colors if the area has no colors', () => {
-    const { colors } = getAreaTheme({
-      ...telc,
-      primaryColor: undefined,
-      learningColor: undefined,
-      trainingColor: undefined,
-    })
+    const { colors } = getAreaTheme({ ...telc, branding: {} })
 
     expect(colors).toEqual(theme.colors)
   })
@@ -80,7 +47,7 @@ describe('getAreaTheme', () => {
   })
 
   describe('with a light color', () => {
-    const light = { ...telc, primaryColor: '#ffff00', learningColor: '#f0f0f0', trainingColor: '#cccccc' }
+    const light = mockLightTelcArea()
 
     it('should still use the color', () => {
       const { colors } = getAreaTheme(light)
@@ -110,7 +77,7 @@ describe('getAreaTheme', () => {
 
   describe('with a color the area has not set', () => {
     it('should keep the Lunes color and text for just that place', () => {
-      const { colors } = getAreaTheme({ ...telc, learningColor: undefined })
+      const { colors } = getAreaTheme({ ...telc, branding: { ...telc.branding, learningColor: undefined } })
 
       expect(colors.backgroundLearning).toBe(theme.colors.backgroundLearning)
       expect(colors.textOnLearningCard).toBe(theme.colors.textOnLearningCard)

@@ -2,7 +2,7 @@ import { isAxiosError } from 'axios'
 
 import { Article, ARTICLES } from '../constants/data'
 import { InvalidContentAreaCodeError, NetworkError } from '../constants/endpoints'
-import { HEX_COLOR_PATTERN } from '../constants/theme/contrast'
+import { isHexColor } from '../constants/theme/contrast'
 import ContentArea, { ContentAreaBranding, WithToken } from '../models/ContentArea'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { JobId, StandardJob, StandardJobId } from '../models/Job'
@@ -110,7 +110,7 @@ const emptyToUndefined = (url: string | null | undefined): string | undefined =>
   url === null || url === '' ? undefined : url
 
 const transformColor = (color: string | undefined): string | undefined =>
-  color !== undefined && HEX_COLOR_PATTERN.test(color) ? color : undefined
+  color !== undefined && isHexColor(color) ? color : undefined
 
 const transformAreaBranding = (area: AreaResponse): ContentAreaBranding => ({
   logoUrl: emptyToUndefined(area.logo),
@@ -131,7 +131,7 @@ export const registerContentArea = async (code: string, installationId?: string)
       token: data.token,
       name: data.area.name,
       code,
-      ...transformAreaBranding(data.area),
+      branding: transformAreaBranding(data.area),
     }
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE_BAD_REQUEST) {

@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components/native'
 
-import useAreaTheme from '../hooks/useAreaTheme'
+import getAreaTheme from '../constants/theme/areaTheme'
 import useContentArea from '../hooks/useContentArea'
 
 type AreaThemeProviderProps = {
@@ -11,7 +11,7 @@ type AreaThemeProviderProps = {
 
 const AreaThemeProvider = ({ token, children }: AreaThemeProviderProps): ReactElement => {
   const contentArea = useContentArea(token)
-  return <ThemeProvider theme={useAreaTheme(contentArea)}>{children}</ThemeProvider>
+  return <ThemeProvider theme={getAreaTheme(contentArea)}>{children}</ThemeProvider>
 }
 
 export default AreaThemeProvider

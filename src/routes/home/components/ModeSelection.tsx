@@ -106,17 +106,17 @@ const StartButton = styled(Button)<{ backgroundColor: string }>`
 type LearningCardProps = {
   numberUnits: number
   unitsCompleted: number
-  color: Color
   onPress: () => void
 }
 
-const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningCardProps): ReactElement => {
+const LearningCard = ({ numberUnits, unitsCompleted, onPress }: LearningCardProps): ReactElement => {
   const labels = getLabels()
   const theme = useTheme()
   const textColor = theme.colors.textOnLearningCard
-  const progressColor = darkenUntilContrast(color, theme.colors.progressTrack, MIN_CONTRAST_RATIO)
+  const backgroundColor = theme.colors.backgroundLearning
+  const progressColor = darkenUntilContrast(backgroundColor, theme.colors.progressTrack, MIN_CONTRAST_RATIO)
   return (
-    <CardContainer backgroundColor={color}>
+    <CardContainer backgroundColor={backgroundColor}>
       <TitleRow>
         <IconBackground>
           <BookIcon color={textColor} />
@@ -142,7 +142,7 @@ const LearningCard = ({ numberUnits, unitsCompleted, color, onPress }: LearningC
           label={labels.home.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
           fitToContentWidth
-          backgroundColor={theme.colors.backgroundLearning}
+          backgroundColor={backgroundColor}
           textColor={textColor}
         />
       </ContentBox>
@@ -158,8 +158,9 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
   const labels = getLabels().home
   const theme = useTheme()
   const textColor = theme.colors.textOnTrainingCard
+  const backgroundColor = theme.colors.backgroundTraining
   return (
-    <CardContainer backgroundColor={theme.colors.backgroundTraining}>
+    <CardContainer backgroundColor={backgroundColor}>
       <TitleRow>
         <IconBackground>
           <TargetIcon color={textColor} />
@@ -184,7 +185,7 @@ const TrainingCard = ({ onPress }: TrainingCardProps): ReactElement => {
           label={labels.startExercise}
           buttonTheme={BUTTONS_THEME.contained}
           fitToContentWidth
-          backgroundColor={theme.colors.backgroundTraining}
+          backgroundColor={backgroundColor}
           textColor={textColor}
         />
       </ContentBox>
@@ -204,17 +205,11 @@ const ModeSelection = ({
   navigateToTrainingExerciseSelection,
 }: ModeSelectionProps): ReactElement => {
   const { data: progress } = useLoadProgress(job)
-  const theme = useTheme()
   const completedUnits = Math.floor((progress ?? 0) * job.numberOfUnits)
 
   return (
     <Container>
-      <LearningCard
-        numberUnits={job.numberOfUnits}
-        unitsCompleted={completedUnits}
-        color={theme.colors.backgroundLearning}
-        onPress={navigateToJob}
-      />
+      <LearningCard numberUnits={job.numberOfUnits} unitsCompleted={completedUnits} onPress={navigateToJob} />
       <TrainingCard onPress={navigateToTrainingExerciseSelection} />
     </Container>
   )

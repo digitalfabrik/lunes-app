@@ -102,7 +102,7 @@ describe('StandardExercisesScreen', () => {
   })
 
   describe('branding', () => {
-    const telc = { ...mockTelcArea(), learningColor: '#a01915' }
+    const telc = { ...mockTelcArea(), branding: { learningColor: '#a01915' } }
     const firstExerciseTitle = Object.values(EXERCISES)[0]!.title
 
     const renderWithUnitToken = async (token?: string) => {

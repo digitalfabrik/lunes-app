@@ -55,13 +55,13 @@ type MainLogoProps = {
 const MainLogo = ({ contentArea }: MainLogoProps): ReactElement => {
   const [hasLoadingFailed, setHasLoadingFailed] = useState<boolean>(false)
 
-  if (contentArea?.logoUrl === undefined || hasLoadingFailed) {
+  if (contentArea?.branding?.logoUrl === undefined || hasLoadingFailed) {
     return <LunesIcon testID='lunes-logo' width={MAIN_LOGO_SIZE} height={MAIN_LOGO_SIZE} />
   }
   return (
     <MainLogoImage
       testID='main-logo'
-      source={{ uri: contentArea.logoUrl }}
+      source={{ uri: contentArea.branding.logoUrl }}
       resizeMode='contain'
       accessibilityRole='image'
       accessibilityLabel={contentArea.name}
@@ -78,13 +78,13 @@ type HomeScreenHeaderProps = {
 const HomeScreenHeader = ({ navigation, contentArea }: HomeScreenHeaderProps): ReactElement => (
   <Wrapper testID='header'>
     <MainLogoContainer>
-      <MainLogo key={contentArea?.logoUrl} contentArea={contentArea} />
+      <MainLogo key={contentArea?.branding?.logoUrl} contentArea={contentArea} />
     </MainLogoContainer>
     <TopRow>
-      {contentArea?.secondaryLogoUrl !== undefined && (
+      {contentArea?.branding?.secondaryLogoUrl !== undefined && (
         <SecondaryLogoImage
           testID='secondary-logo'
-          source={{ uri: contentArea.secondaryLogoUrl }}
+          source={{ uri: contentArea.branding.secondaryLogoUrl }}
           resizeMode='contain'
           accessible={false}
         />

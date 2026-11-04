@@ -108,7 +108,8 @@ describe('ContentAreaService', () => {
   })
 
   describe('refreshContentAreaBranding', () => {
-    const oldTelc = { ...telc, primaryColor: '#111111', logoUrl: 'https://lunes.example/old.png' }
+    const oldBranding = { primaryColor: '#111111', logoUrl: 'https://lunes.example/old.png' }
+    const oldTelc = { ...telc, branding: oldBranding }
 
     beforeEach(async () => {
       await storageCache.setItem('contentAreas', [oldTelc])
@@ -125,7 +126,10 @@ describe('ContentAreaService', () => {
 
       expect(getContentAreaBranding).toHaveBeenCalledWith('TELC2026')
       expect(storageCache.getItem('contentAreas')).toEqual([
-        { ...telc, logoUrl: 'https://lunes.example/new.png', primaryColor: '#a01915', learningColor: '#007dbe' },
+        {
+          ...telc,
+          branding: { logoUrl: 'https://lunes.example/new.png', primaryColor: '#a01915', learningColor: '#007dbe' },
+        },
       ])
     })
 
@@ -134,7 +138,7 @@ describe('ContentAreaService', () => {
 
       await refreshContentAreaBranding(storageCache)
 
-      expect(storageCache.getItem('contentAreas')[0]?.logoUrl).toBeUndefined()
+      expect(storageCache.getItem('contentAreas')[0]?.branding?.logoUrl).toBeUndefined()
     })
 
     it('should keep the stored branding if the CMS cannot be reached', async () => {
@@ -146,7 +150,7 @@ describe('ContentAreaService', () => {
     })
 
     it('should refresh the other areas if one cannot be reached', async () => {
-      const band = { id: 2, token: 'band_token', name: 'band', code: 'BAND1', primaryColor: '#222222' }
+      const band = { id: 2, token: 'band_token', name: 'band', code: 'BAND1', branding: { primaryColor: '#222222' } }
       await storageCache.setItem('contentAreas', [oldTelc, band])
       mocked(getContentAreaBranding).mockImplementation(async code => {
         if (code === 'TELC2026') {
@@ -157,13 +161,16 @@ describe('ContentAreaService', () => {
 
       await refreshContentAreaBranding(storageCache)
 
-      expect(storageCache.getItem('contentAreas')).toEqual([oldTelc, { ...band, primaryColor: '#333333' }])
+      expect(storageCache.getItem('contentAreas')).toEqual([
+        oldTelc,
+        { ...band, branding: { primaryColor: '#333333' } },
+      ])
     })
 
     it('should not write to the storage if the branding is unchanged', async () => {
       mocked(getContentAreaBranding).mockResolvedValue({
-        logoUrl: oldTelc.logoUrl,
-        primaryColor: oldTelc.primaryColor,
+        logoUrl: oldBranding.logoUrl,
+        primaryColor: oldBranding.primaryColor,
       })
       const contentAreasBefore = storageCache.getItem('contentAreas')
       const listener = jest.fn()

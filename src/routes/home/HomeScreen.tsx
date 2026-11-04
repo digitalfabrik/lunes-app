@@ -6,7 +6,7 @@ import styled, { ThemeProvider } from 'styled-components/native'
 import RouteWrapper from '../../components/RouteWrapper'
 import { ContentSecondary } from '../../components/text/Content'
 import { Heading } from '../../components/text/Heading'
-import useAreaTheme from '../../hooks/useAreaTheme'
+import getAreaTheme from '../../constants/theme/areaTheme'
 import useContentArea from '../../hooks/useContentArea'
 import useStorage from '../../hooks/useStorage'
 import Job, { StandardJob } from '../../models/Job'
@@ -37,7 +37,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps): ReactElement => {
   const [selectedJobs] = useStorage('selectedJobs')
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const contentArea = useContentArea(selectedJobs?.[currentIndex]?.token)
-  const areaTheme = useAreaTheme(contentArea)
+  const areaTheme = getAreaTheme(contentArea)
   const hasLightHeaderText = areaTheme.colors.textOnHeader !== areaTheme.colors.black
   const { welcome, welcomeContentArea } = getLabels().home
   const welcomeHeading = contentArea ? welcomeContentArea.replace('{}', contentArea.name) : welcome

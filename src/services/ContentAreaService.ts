@@ -27,10 +27,13 @@ const loadBranding = async ({ id, code }: ContentArea): Promise<LoadedBranding> 
   }
 }
 
-const BRANDING_KEYS = ['logoUrl', 'secondaryLogoUrl', 'primaryColor', 'learningColor', 'trainingColor'] as const
-
-const hasSameBranding = (contentArea: ContentArea, branding: ContentAreaBranding): boolean =>
-  BRANDING_KEYS.every(key => contentArea[key] === branding[key])
+const hasSameBranding = (branding: ContentAreaBranding | undefined, loadedBranding: ContentAreaBranding): boolean => {
+  const brandingValues: Record<string, string | undefined> = { ...branding }
+  const loadedBrandingValues: Record<string, string | undefined> = loadedBranding
+  return Object.keys({ ...brandingValues, ...loadedBrandingValues }).every(
+    key => brandingValues[key] === loadedBrandingValues[key],
+  )
+}
 
 export const refreshContentAreaBranding = async (storageCache: StorageCache): Promise<void> => {
   const loadedBrandings = await Promise.all(storageCache.getItem('contentAreas').map(loadBranding))
@@ -38,10 +41,10 @@ export const refreshContentAreaBranding = async (storageCache: StorageCache): Pr
   const storedContentAreas = storageCache.getItem('contentAreas')
   const refreshedContentAreas = storedContentAreas.map(contentArea => {
     const branding = loadedBrandings.find(({ id }) => id === contentArea.id)?.branding
-    if (branding === undefined || hasSameBranding(contentArea, branding)) {
+    if (branding === undefined || hasSameBranding(contentArea.branding, branding)) {
       return contentArea
     }
-    return { ...contentArea, ...branding }
+    return { ...contentArea, branding }
   })
   if (areItemsUnchanged(refreshedContentAreas, storedContentAreas)) {
     return

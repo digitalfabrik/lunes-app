@@ -5,9 +5,16 @@ export const mockTelcArea = (): ContentArea => ({
   token: 'telc_token',
   name: 'telc',
   code: 'TELC2026',
-  logoUrl: 'https://lunes.example/logo.png',
-  secondaryLogoUrl: 'https://lunes.example/secondary.png',
-  primaryColor: '#a01915',
-  learningColor: '#007dbe',
-  trainingColor: '#027b91',
+  branding: {
+    logoUrl: 'https://lunes.example/logo.png',
+    secondaryLogoUrl: 'https://lunes.example/secondary.png',
+    primaryColor: '#a01915',
+    learningColor: '#007dbe',
+    trainingColor: '#027b91',
+  },
+})
+
+export const mockLightTelcArea = (): ContentArea => ({
+  ...mockTelcArea(),
+  branding: { primaryColor: '#ffff00', learningColor: '#f0f0f0', trainingColor: '#cccccc' },
 })

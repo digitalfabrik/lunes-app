@@ -141,7 +141,7 @@ describe('CmsApi', () => {
         code: 'band-1',
         installation_id: 'installation-1',
       })
-      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1' })
+      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1', branding: {} })
     })
 
     it('should return the branding of the area', async () => {
@@ -149,7 +149,7 @@ describe('CmsApi', () => {
 
       const contentArea = await registerContentArea('band-1', 'installation-1')
 
-      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1', ...branding })
+      expect(contentArea).toEqual({ id: 1, token: 'telc_token', name: 'telc gGmbH', code: 'band-1', branding })
     })
 
     it('should leave out branding the CMS has not set', async () => {
@@ -162,11 +162,7 @@ describe('CmsApi', () => {
 
       const contentArea = await registerContentArea('band-1', 'installation-1')
 
-      expect(contentArea.logoUrl).toBeUndefined()
-      expect(contentArea.secondaryLogoUrl).toBeUndefined()
-      expect(contentArea.primaryColor).toBeUndefined()
-      expect(contentArea.learningColor).toBeUndefined()
-      expect(contentArea.trainingColor).toBe('#027b91')
+      expect(contentArea.branding).toEqual({ trainingColor: '#027b91' })
     })
 
     it('should ignore a color that is not a hex color', async () => {
@@ -176,8 +172,8 @@ describe('CmsApi', () => {
 
       const contentArea = await registerContentArea('band-1', 'installation-1')
 
-      expect(contentArea.primaryColor).toBeUndefined()
-      expect(contentArea.trainingColor).toBeUndefined()
+      expect(contentArea.branding?.primaryColor).toBeUndefined()
+      expect(contentArea.branding?.trainingColor).toBeUndefined()
     })
 
     it('should reject an unknown code as an invalid area code', async () => {

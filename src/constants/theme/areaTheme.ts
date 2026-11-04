@@ -7,11 +7,11 @@ const getReadableTextColor = (backgroundColor: string, lightTextColor: string): 
   getContrastRatio(lightTextColor, backgroundColor) >= MIN_CONTRAST_RATIO ? lightTextColor : theme.colors.black
 
 const getAreaTheme = (contentArea: ContentArea | undefined): Theme => {
-  if (contentArea === undefined) {
+  if (contentArea?.branding === undefined) {
     return theme
   }
 
-  const { primaryColor, learningColor, trainingColor } = contentArea
+  const { primaryColor, learningColor, trainingColor } = contentArea.branding
   const colors = { ...theme.colors }
 
   if (primaryColor !== undefined) {

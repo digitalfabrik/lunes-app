@@ -8,7 +8,7 @@ import { getJob, getUnitsOfJob, getWordsByUnit } from '../../../services/CmsApi'
 import { StorageCache } from '../../../services/Storage'
 import { getLabels } from '../../../services/helpers'
 import createNavigationMock from '../../../testing/createNavigationPropMock'
-import { mockTelcArea } from '../../../testing/mockContentArea'
+import { mockLightTelcArea, mockTelcArea } from '../../../testing/mockContentArea'
 import { mockJobs } from '../../../testing/mockJob'
 import { renderWithStorageCache } from '../../../testing/render'
 import HomeScreen from '../HomeScreen'
@@ -101,7 +101,7 @@ describe('HomeScreen branding', () => {
   })
 
   it('should keep a light area color and show dark text on it', async () => {
-    const light = { ...telc, primaryColor: '#ffff00', learningColor: '#f0f0f0', trainingColor: '#cccccc' }
+    const light = mockLightTelcArea()
 
     const { getByTestId, getByText, getAllByText } = await renderHome(
       [{ id: telcJob!.id.id, token: telc.token }],
