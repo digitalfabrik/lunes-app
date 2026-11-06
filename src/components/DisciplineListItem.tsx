@@ -144,7 +144,7 @@ export const JobListItem = ({
   const badgeLabel = job.numberOfUnits.toString()
   const description = pluralize(getLabels().general.unit, job.numberOfUnits)
   const contentArea = useContentArea(job.token)
-  const brandColor = contentArea?.primaryColor ?? theme.colors.textSecondary
+  const brandColor = contentArea?.branding?.primaryColor ?? theme.colors.textSecondary
   const icon = contentArea ? (
     <BrandedIconFrame brandColor={brandColor} testID='branded-icon-frame'>
       <Icon source={{ uri: job.icon ?? undefined }} />
