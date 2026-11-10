@@ -1,9 +1,17 @@
+export type ContentAreaBranding = {
+  logoUrl?: string
+  secondaryLogoUrl?: string
+  primaryColor?: string
+  learningColor?: string
+  trainingColor?: string
+}
+
 type ContentArea = {
   id: number
   token: string
   name: string
   code: string
-  primaryColor?: string
+  branding?: ContentAreaBranding
 }
 
 export type WithToken<Id> = {

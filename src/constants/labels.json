@@ -12,6 +12,7 @@
   },
   "home": {
     "welcome": "Willkommen bei Lunes!",
+    "welcomeContentArea": "Willkommen im {}-Bereich",
     "haveFun": "Viel Spaß beim Lernen",
     "start": "Starten",
     "continue": "Fortsetzen",

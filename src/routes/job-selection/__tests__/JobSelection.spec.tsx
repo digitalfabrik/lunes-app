@@ -223,7 +223,7 @@ describe('JobSelection', () => {
 
     it('should tint the badge with the content area brand color when the CMS provides one, keeping the text dark for contrast', async () => {
       await storageCache.setItem('contentAreas', [
-        { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', primaryColor: '#123456' },
+        { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', branding: { primaryColor: '#123456' } },
       ])
       const { getAllByText, getByTestId } = renderWithStorageCache(
         storageCache,
@@ -240,7 +240,7 @@ describe('JobSelection', () => {
 
     it('should lighten any color format the CMS provides, not only six digit hex colors', async () => {
       await storageCache.setItem('contentAreas', [
-        { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', primaryColor: 'rgb(18, 52, 86)' },
+        { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', branding: { primaryColor: 'rgb(18, 52, 86)' } },
       ])
       const { getByTestId } = renderWithStorageCache(
         storageCache,
@@ -285,7 +285,7 @@ describe('JobSelection', () => {
 
     it('should frame the job icon in the content area brand color, without the plain progress ring', async () => {
       await storageCache.setItem('contentAreas', [
-        { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', primaryColor: '#123456' },
+        { id: 1, token: 'telc_token', name: 'telc', code: 'TELC2026', branding: { primaryColor: '#123456' } },
       ])
       const { getByTestId, queryByTestId } = renderWithStorageCache(
         storageCache,
