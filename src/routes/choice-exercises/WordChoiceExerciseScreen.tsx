@@ -47,7 +47,7 @@ const WordChoiceExerciseScreen = ({ navigation, route }: WordChoiceExerciseScree
   }
 
   return (
-    <RouteWrapper shouldSetBottomInset>
+    <RouteWrapper>
       <WordChoiceExercise
         vocabularyItems={vocabularyItems}
         unitId={unitId}
