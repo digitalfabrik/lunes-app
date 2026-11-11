@@ -48,6 +48,7 @@ import { reportError } from '../../services/sentry'
 import RecordingButton from './components/RecordingButton'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
 import { evaluateSpeechMatch, SpeechFeedbackReason, SpeechMatch } from './services/SpeechMatchingService'
+import { getCheatResult, getNextExerciseIndex } from './shared/exerciseHelpers'
 
 const SPEECH_PERMISSIONS =
   Platform.OS === 'ios'
@@ -161,8 +162,10 @@ const stateReducer = (state: State, action: Action): State => {
     case 'retry':
       return { ...state, answerState: null, feedbackReason: null }
     case 'nextWord': {
-      const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
-      const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
+      const { nextIndex, completed } = getNextExerciseIndex(
+        state.currentVocabularyItemIndex,
+        state.vocabularyItems.length,
+      )
       const answeredCorrectlyFirstTry = state.incorrectAttemptsForCurrentWord === 0
       const correctAnswersCount = answeredCorrectlyFirstTry ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
@@ -177,6 +180,7 @@ const stateReducer = (state: State, action: Action): State => {
     }
     case 'skip': {
       const reorderedVocabularyItems = moveToEnd(state.vocabularyItems, state.currentVocabularyItemIndex)
+
       return {
         ...state,
         vocabularyItems: reorderedVocabularyItems,
@@ -186,11 +190,20 @@ const stateReducer = (state: State, action: Action): State => {
       }
     }
     case 'cheatAll': {
-      const correctAnswersCount = action.result === SIMPLE_RESULTS.correct ? state.vocabularyItems.length : 0
-      return { ...state, completed: true, correctAnswersCount }
+      const correctAnswersCount = getCheatResult(action.result, state.vocabularyItems.length)
+
+      return {
+        ...state,
+        completed: true,
+        correctAnswersCount,
+      }
     }
     case 'appBecameActive':
-      return { ...state, isRecognitionUnavailable: false, isLanguageUnavailable: false }
+      return {
+        ...state,
+        isRecognitionUnavailable: false,
+        isLanguageUnavailable: false,
+      }
     default: {
       const exhaustiveCheck: never = action
       return exhaustiveCheck
