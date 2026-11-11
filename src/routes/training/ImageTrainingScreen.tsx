@@ -41,6 +41,7 @@ import { hyphenated } from '../../services/hyphenation'
 import { reportError } from '../../services/sentry'
 import ImageGrid, { ImageGridItem, ImageGridItemState } from './components/ImageGrid'
 import TrainingExerciseContainer from './components/TrainingExerciseContainer'
+import { getCheatResult, getNextExerciseIndex } from './shared/exerciseHelpers'
 
 type State = {
   vocabularyItems: VocabularyItem[]
@@ -112,8 +113,10 @@ export const stateReducer = (state: State, action: Action): State => {
       }
     }
     case 'nextWord': {
-      const completed = state.currentVocabularyItemIndex + 1 >= state.vocabularyItems.length
-      const nextIndex = completed ? state.currentVocabularyItemIndex : state.currentVocabularyItemIndex + 1
+      const { nextIndex, completed } = getNextExerciseIndex(
+        state.currentVocabularyItemIndex,
+        state.vocabularyItems.length,
+      )
       let nextState: State = {
         ...state,
         currentVocabularyItemIndex: nextIndex,
@@ -128,21 +131,22 @@ export const stateReducer = (state: State, action: Action): State => {
     }
     case 'skip': {
       const reorderedVocabularyItems = moveToEnd(state.vocabularyItems, state.currentVocabularyItemIndex)
+
       const nextState: State = {
         ...state,
         vocabularyItems: reorderedVocabularyItems,
         answer: null,
         incorrectAttemptsForCurrentWord: 0,
       }
+
       return initializeChoices(nextState)
     }
-    case 'cheatAll': {
+    case 'cheatAll':
       return {
         ...state,
         completed: true,
-        correctAnswersCount: action.result === SIMPLE_RESULTS.correct ? state.vocabularyItems.length : 0,
+        correctAnswersCount: getCheatResult(action.result, state.vocabularyItems.length),
       }
-    }
   }
 }
 
