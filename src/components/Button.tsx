@@ -6,7 +6,6 @@ import styled, { css, useTheme } from 'styled-components/native'
 import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color } from '../constants/theme/colors'
 import { Subheading } from './text/Subheading'
-import { uppercase } from './text/uppercase'
 
 const BUTTON_WIDTH_RATIO = 0.7
 
@@ -52,7 +51,6 @@ const ThemedButton = styled.Pressable<ThemedButtonProps>`
 export const Label = styled(Subheading)<ThemedLabelProps>`
   color: ${props => props.color};
   text-align: center;
-  ${uppercase};
   padding: ${props => `0 ${props.theme.spacings.xs}`};
 `
 
@@ -127,7 +125,7 @@ const Button = (props: ButtonProps): ReactElement => {
       {props.iconLeft && (
         <props.iconLeft color={getTextColor()} testID='button-icon-left' width={iconSize} height={iconSize} />
       )}
-      <Label color={getTextColor()}>{label}</Label>
+      <Label color={getTextColor()}>{label.toUpperCase()}</Label>
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconRight && (
         <props.iconRight color={getTextColor()} testID='button-icon-right' width={iconSize} height={iconSize} />
