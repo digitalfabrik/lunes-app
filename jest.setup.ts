@@ -9,6 +9,11 @@ jest.mock('@notifee/react-native', () => require('@notifee/react-native/jest-moc
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
 jest.mock('react-native-device-info', () => mockRNDeviceInfo)
 
+jest.mock('./src/components/text/uppercase', () => ({
+  ...jest.requireActual('./src/components/text/uppercase'),
+  toButtonCase: jest.fn((label: string) => label),
+}))
+
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter')
 jest.mock('./src/hooks/useKeyboard', () => jest.fn(() => ({ isKeyboardVisible: false, keyboardHeight: 0 })))
 
