@@ -1,4 +1,5 @@
 import { fireEvent, RenderAPI } from '@testing-library/react-native'
+import { mocked } from 'jest-mock'
 import React, { ComponentProps } from 'react'
 
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../assets/images'
@@ -6,6 +7,7 @@ import { BUTTONS_THEME } from '../../constants/data'
 import { COLORS } from '../../constants/theme/colors'
 import render from '../../testing/render'
 import Button from '../Button'
+import { toButtonCase } from '../text/uppercase'
 
 type ButtonProps = ComponentProps<typeof Button>
 
@@ -37,6 +39,12 @@ describe('Button', () => {
     expect(getByText('Button label')).toBeDefined()
     expect(queryByTestId('button-icon-left')).toBeNull()
     expect(queryByTestId('button-icon-right')).toBeNull()
+  })
+
+  it('should render the label in uppercase', () => {
+    mocked(toButtonCase).mockImplementationOnce(jest.requireActual('../text/uppercase').toButtonCase)
+    const { getByText } = renderButton()
+    expect(getByText('BUTTON LABEL')).toBeVisible()
   })
 
   it('should call onClick', () => {

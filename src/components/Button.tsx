@@ -6,6 +6,7 @@ import styled, { css, useTheme } from 'styled-components/native'
 import { BUTTONS_THEME, ButtonTheme } from '../constants/data'
 import { Color } from '../constants/theme/colors'
 import { Subheading } from './text/Subheading'
+import { toButtonCase } from './text/uppercase'
 
 const BUTTON_WIDTH_RATIO = 0.7
 
@@ -125,7 +126,7 @@ const Button = (props: ButtonProps): ReactElement => {
       {props.iconLeft && (
         <props.iconLeft color={getTextColor()} testID='button-icon-left' width={iconSize} height={iconSize} />
       )}
-      <Label color={getTextColor()}>{label.toUpperCase()}</Label>
+      <Label color={getTextColor()}>{toButtonCase(label)}</Label>
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconRight && (
         <props.iconRight color={getTextColor()} testID='button-icon-right' width={iconSize} height={iconSize} />
