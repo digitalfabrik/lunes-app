@@ -67,6 +67,7 @@ type ButtonProps = {
   iconSize?: number
   testID?: string
   textColor?: Color
+  accessibilityRole?: 'button' | 'link'
 }
 
 const Button = (props: ButtonProps): ReactElement => {
@@ -83,6 +84,7 @@ const Button = (props: ButtonProps): ReactElement => {
     fitToContentWidth,
     testID = 'button',
     textColor,
+    accessibilityRole = 'button',
   } = props
   const buttonWidth = fitToContentWidth ? undefined : screenWidth * BUTTON_WIDTH_RATIO
 
@@ -120,7 +122,7 @@ const Button = (props: ButtonProps): ReactElement => {
       style={style}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
-      accessibilityRole='button'
+      accessibilityRole={accessibilityRole}
     >
       {/* eslint-disable-next-line react/destructuring-assignment */}
       {props.iconLeft && (

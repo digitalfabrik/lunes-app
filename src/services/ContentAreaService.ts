@@ -1,7 +1,7 @@
-import ContentArea, { ContentAreaBranding } from '../models/ContentArea'
+import ContentArea, { ContentAreaInfo } from '../models/ContentArea'
 import { SelectedJob } from '../models/Job'
 import { isConsentGiven } from './AnalyticsService'
-import { getContentAreaBranding, getJobs, registerContentArea } from './CmsApi'
+import { getContentAreaInfo, getJobs, registerContentArea } from './CmsApi'
 import { StorageCache } from './Storage'
 import { log } from './sentry'
 import { getInstallationId, saveContentArea } from './storageUtils'
@@ -16,35 +16,38 @@ export const redeemContentAreaCode = async (storageCache: StorageCache, code: st
 const areItemsUnchanged = <T>(items: readonly T[], previousItems: readonly T[]): boolean =>
   items.length === previousItems.length && items.every((item, index) => item === previousItems[index])
 
-type LoadedBranding = { id: number; branding: ContentAreaBranding | undefined }
+type LoadedInfo = { id: number; info: ContentAreaInfo | undefined }
 
-const loadBranding = async ({ id, code }: ContentArea): Promise<LoadedBranding> => {
+const loadInfo = async ({ id, code }: ContentArea): Promise<LoadedInfo> => {
   try {
-    return { id, branding: await getContentAreaBranding(code) }
+    return { id, info: await getContentAreaInfo(code) }
   } catch (error) {
-    log(`Could not refresh the branding of content area ${id}: ${String(error)}`, 'warning')
-    return { id, branding: undefined }
+    log(`Could not refresh the branding and hint of content area ${id}: ${String(error)}`, 'warning')
+    return { id, info: undefined }
   }
 }
 
-const hasSameBranding = (branding: ContentAreaBranding | undefined, loadedBranding: ContentAreaBranding): boolean => {
-  const brandingValues: Record<string, string | undefined> = { ...branding }
-  const loadedBrandingValues: Record<string, string | undefined> = loadedBranding
-  return Object.keys({ ...brandingValues, ...loadedBrandingValues }).every(
-    key => brandingValues[key] === loadedBrandingValues[key],
+const hasSameValues = (values: object | undefined, loadedValues: object | undefined): boolean => {
+  const valuesRecord: Record<string, unknown> = { ...values }
+  const loadedValuesRecord: Record<string, unknown> = { ...loadedValues }
+  return Object.keys({ ...valuesRecord, ...loadedValuesRecord }).every(
+    key => valuesRecord[key] === loadedValuesRecord[key],
   )
 }
 
-export const refreshContentAreaBranding = async (storageCache: StorageCache): Promise<void> => {
-  const loadedBrandings = await Promise.all(storageCache.getItem('contentAreas').map(loadBranding))
+const hasSameInfo = (contentArea: ContentArea, info: ContentAreaInfo): boolean =>
+  (Object.keys(info) as (keyof ContentAreaInfo)[]).every(key => hasSameValues(contentArea[key], info[key]))
+
+export const refreshContentAreaInfo = async (storageCache: StorageCache): Promise<void> => {
+  const loadedInfos = await Promise.all(storageCache.getItem('contentAreas').map(loadInfo))
   // Read after the requests finish, so an area redeemed in the meantime keeps its new token
   const storedContentAreas = storageCache.getItem('contentAreas')
   const refreshedContentAreas = storedContentAreas.map(contentArea => {
-    const branding = loadedBrandings.find(({ id }) => id === contentArea.id)?.branding
-    if (branding === undefined || hasSameBranding(contentArea.branding, branding)) {
+    const info = loadedInfos.find(({ id }) => id === contentArea.id)?.info
+    if (info === undefined || hasSameInfo(contentArea, info)) {
       return contentArea
     }
-    return { ...contentArea, branding }
+    return { ...contentArea, ...info }
   })
   if (areItemsUnchanged(refreshedContentAreas, storedContentAreas)) {
     return
