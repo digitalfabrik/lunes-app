@@ -7,7 +7,7 @@ export const mockTelcArea = (): ContentArea => ({
   code: 'TELC2026',
   branding: {
     logoUrl: 'https://lunes.example/logo.png',
-    secondaryLogoUrl: 'https://lunes.example/secondary.png',
+    secondaryLogoUrl: 'https://lunes.example/secondary.svg',
     primaryColor: '#a01915',
     learningColor: '#007dbe',
     trainingColor: '#027b91',
