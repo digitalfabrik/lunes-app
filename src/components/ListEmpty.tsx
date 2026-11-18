@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
-import { Subheading } from 'react-native-paper'
 import styled from 'styled-components/native'
 
 import { SadSmileyIcon } from '../../assets/images'
+import { Subheading } from './text/Subheading'
 
 const ListEmptyContainer = styled.View`
   align-items: center;
