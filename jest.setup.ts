@@ -40,6 +40,11 @@ jest.mock('react-native/Libraries/Image/ImageBackground', () => {
   return { __esModule: true, default: View }
 })
 
+jest.mock('react-native-svg/css', () => {
+  const { View } = require('react-native')
+  return { ...jest.requireActual('react-native-svg/css'), SvgCssUri: View }
+})
+
 jest.mock('@sentry/react-native', () => ({
   init: jest.fn(),
 }))
