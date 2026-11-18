@@ -9,6 +9,11 @@ jest.mock('@notifee/react-native', () => require('@notifee/react-native/jest-moc
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext)
 jest.mock('react-native-device-info', () => mockRNDeviceInfo)
 
+jest.mock('./src/components/text/uppercase', () => ({
+  ...jest.requireActual('./src/components/text/uppercase'),
+  toButtonCase: jest.fn((label: string) => label),
+}))
+
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter')
 jest.mock('./src/hooks/useKeyboard', () => jest.fn(() => ({ isKeyboardVisible: false, keyboardHeight: 0 })))
 
@@ -33,6 +38,11 @@ jest.mock('react-native-volume-manager', () => ({
 jest.mock('react-native/Libraries/Image/ImageBackground', () => {
   const { View } = require('react-native')
   return { __esModule: true, default: View }
+})
+
+jest.mock('react-native-svg/css', () => {
+  const { View } = require('react-native')
+  return { ...jest.requireActual('react-native-svg/css'), SvgCssUri: View }
 })
 
 jest.mock('@sentry/react-native', () => ({

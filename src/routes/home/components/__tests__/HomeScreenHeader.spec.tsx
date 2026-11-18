@@ -40,7 +40,7 @@ describe('HomeScreenHeader', () => {
       const { getByTestId } = renderHeader(telc)
 
       expect(getByTestId('main-logo').props.source).toEqual({ uri: 'https://lunes.example/logo.png' })
-      expect(getByTestId('secondary-logo').props.source).toEqual({ uri: 'https://lunes.example/secondary.png' })
+      expect(getByTestId('secondary-logo').props.uri).toBe('https://lunes.example/secondary.svg')
     })
 
     it('should keep the Lunes logo if the area has no main logo', () => {
