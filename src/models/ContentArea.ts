@@ -14,7 +14,7 @@ export type ContentAreaHint = {
 }
 
 export type ContentAreaInfo = {
-  branding: ContentAreaBranding
+  branding?: ContentAreaBranding
   hint?: ContentAreaHint
 }
 
@@ -23,7 +23,7 @@ type ContentArea = {
   token: string
   name: string
   code: string
-} & Partial<ContentAreaInfo>
+} & ContentAreaInfo
 
 export type WithToken<Id> = {
   id: Id
