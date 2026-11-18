@@ -1,8 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components/native'
 
 import { LunesIcon, MenuIcon } from '../../../../assets/images'
+import RemoteLogo from '../../../components/RemoteLogo'
 import ContentArea from '../../../models/ContentArea'
 import { RoutesParams } from '../../../navigation/NavigationTypes'
 import { getLabels } from '../../../services/helpers'
@@ -27,14 +28,7 @@ const MainLogoContainer = styled.Pressable`
   bottom: -${props => props.theme.spacings.xxl};
 `
 
-const MainLogoImage = styled.Image`
-  width: ${MAIN_LOGO_SIZE}px;
-  height: ${MAIN_LOGO_SIZE}px;
-`
-
-const SecondaryLogoImage = styled.Image`
-  width: ${SECONDARY_LOGO_WIDTH}px;
-  height: ${SECONDARY_LOGO_HEIGHT}px;
+const SecondaryLogo = styled(RemoteLogo)`
   margin-left: ${props => props.theme.spacings.md};
 `
 
@@ -53,19 +47,20 @@ type MainLogoProps = {
 }
 
 const MainLogo = ({ contentArea }: MainLogoProps): ReactElement => {
-  const [hasLoadingFailed, setHasLoadingFailed] = useState<boolean>(false)
+  const lunesLogo = <LunesIcon testID='lunes-logo' width={MAIN_LOGO_SIZE} height={MAIN_LOGO_SIZE} />
 
-  if (contentArea?.branding?.logoUrl === undefined || hasLoadingFailed) {
-    return <LunesIcon testID='lunes-logo' width={MAIN_LOGO_SIZE} height={MAIN_LOGO_SIZE} />
+  if (contentArea?.branding?.logoUrl === undefined) {
+    return lunesLogo
   }
   return (
-    <MainLogoImage
+    <RemoteLogo
       testID='main-logo'
-      source={{ uri: contentArea.branding.logoUrl }}
-      resizeMode='contain'
+      uri={contentArea.branding.logoUrl}
+      width={MAIN_LOGO_SIZE}
+      height={MAIN_LOGO_SIZE}
+      fallback={lunesLogo}
       accessibilityRole='image'
       accessibilityLabel={contentArea.name}
-      onError={() => setHasLoadingFailed(true)}
     />
   )
 }
@@ -78,14 +73,15 @@ type HomeScreenHeaderProps = {
 const HomeScreenHeader = ({ navigation, contentArea }: HomeScreenHeaderProps): ReactElement => (
   <Wrapper testID='header'>
     <MainLogoContainer>
-      <MainLogo key={contentArea?.branding?.logoUrl} contentArea={contentArea} />
+      <MainLogo contentArea={contentArea} />
     </MainLogoContainer>
     <TopRow>
       {contentArea?.branding?.secondaryLogoUrl !== undefined && (
-        <SecondaryLogoImage
+        <SecondaryLogo
           testID='secondary-logo'
-          source={{ uri: contentArea.branding.secondaryLogoUrl }}
-          resizeMode='contain'
+          uri={contentArea.branding.secondaryLogoUrl}
+          width={SECONDARY_LOGO_WIDTH}
+          height={SECONDARY_LOGO_HEIGHT}
           accessible={false}
         />
       )}
