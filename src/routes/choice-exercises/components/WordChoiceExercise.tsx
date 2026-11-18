@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Image, ScrollView } from 'react-native'
+import { Image } from 'react-native'
 import styled from 'styled-components/native'
 
 import { ArrowRightIcon } from '../../../../assets/images'
@@ -9,6 +9,7 @@ import AudioPlayer from '../../../components/AudioPlayer'
 import Button from '../../../components/Button'
 import CheatMode from '../../../components/CheatMode'
 import ExerciseHeader from '../../../components/ExerciseHeader'
+import InsetAwareScrollView from '../../../components/InsetAwareScrollView'
 import VocabularyItemImageSection from '../../../components/VocabularyItemImageSection'
 import WordResultIndicator from '../../../components/WordResultIndicator'
 import { ContentText } from '../../../components/text/Content'
@@ -233,7 +234,7 @@ const WordChoiceExercise = ({
         exerciseKey={StandardExerciseKeys.wordChoiceExercise}
       />
 
-      <ScrollView>
+      <InsetAwareScrollView>
         <VocabularyItemImageSection vocabularyItem={vocabularyItem} showAudioPlayer={false} />
         <SingleChoice answers={state.answers} onClick={onClickAnswer} selectedAnswer={selectedAnswer} />
         <ButtonContainer>
@@ -247,7 +248,7 @@ const WordChoiceExercise = ({
           )}
           <CheatMode cheat={onExerciseCheated} />
         </ButtonContainer>
-      </ScrollView>
+      </InsetAwareScrollView>
 
       <WordResultIndicator
         isVisible={selectedAnswer !== null}

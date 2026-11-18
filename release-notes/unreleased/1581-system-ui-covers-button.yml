@@ -1,0 +1,6 @@
+issue_key: 1581
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Anzeigefehler auf kleinen Geräten wurden behoben

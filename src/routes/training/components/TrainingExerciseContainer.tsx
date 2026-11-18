@@ -1,9 +1,10 @@
 import React, { ReactElement, ReactNode } from 'react'
 import styled from 'styled-components/native'
 
+import InsetAwareScrollView from '../../../components/InsetAwareScrollView'
 import { Heading } from '../../../components/text/Heading'
 
-const Root = styled.ScrollView`
+const Root = styled.View`
   padding: ${props => props.theme.spacings.md} 0;
   background: ${props => props.theme.colors.background};
 `
@@ -31,13 +32,15 @@ export type TrainingExerciseContainerProps = {
 }
 
 const TrainingExerciseContainer = ({ title, children, footer }: TrainingExerciseContainerProps): ReactElement => (
-  <Root>
-    <Header>
-      <Heading>{title}</Heading>
-    </Header>
-    <Content>{children}</Content>
-    <FooterContainer>{footer}</FooterContainer>
-  </Root>
+  <InsetAwareScrollView>
+    <Root>
+      <Header>
+        <Heading>{title}</Heading>
+      </Header>
+      <Content>{children}</Content>
+      <FooterContainer>{footer}</FooterContainer>
+    </Root>
+  </InsetAwareScrollView>
 )
 
 export default TrainingExerciseContainer
