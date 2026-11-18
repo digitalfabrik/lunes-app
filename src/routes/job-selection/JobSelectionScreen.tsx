@@ -43,6 +43,7 @@ const TextContainer = styled.View`
 
 const StyledText = styled(ContentSecondary)`
   text-align: center;
+  color: ${props => props.theme.colors.textOnHeader};
 `
 
 const ButtonContainer = styled(SafeAreaView)`
