@@ -1,11 +1,11 @@
 import { mocked } from 'jest-mock'
 
 import { mockJobs } from '../../testing/mockJob'
-import { getContentAreaBranding, getJobs, registerContentArea } from '../CmsApi'
+import { getContentAreaInfo, getJobs, registerContentArea } from '../CmsApi'
 import {
   redeemContentAreaCode,
   reattachSelectedJobsToContentAreas,
-  refreshContentAreaBranding,
+  refreshContentAreaInfo,
 } from '../ContentAreaService'
 import { StorageCache } from '../Storage'
 
@@ -107,44 +107,61 @@ describe('ContentAreaService', () => {
     })
   })
 
-  describe('refreshContentAreaBranding', () => {
+  describe('refreshContentAreaInfo', () => {
     const oldBranding = { primaryColor: '#111111', logoUrl: 'https://lunes.example/old.png' }
-    const oldTelc = { ...telc, branding: oldBranding }
+    const oldHint = { title: 'Passend zu Fach.Sprache', text: 'Alter Text', url: 'https://www.telc.net/' }
+    const oldTelc = { ...telc, branding: oldBranding, hint: oldHint }
 
     beforeEach(async () => {
       await storageCache.setItem('contentAreas', [oldTelc])
     })
 
     it('should update the branding and keep the token of a stored area', async () => {
-      mocked(getContentAreaBranding).mockResolvedValue({
-        logoUrl: 'https://lunes.example/new.png',
-        primaryColor: '#a01915',
-        learningColor: '#007dbe',
+      mocked(getContentAreaInfo).mockResolvedValue({
+        branding: { logoUrl: 'https://lunes.example/new.png', primaryColor: '#a01915', learningColor: '#007dbe' },
+        hint: oldHint,
       })
 
-      await refreshContentAreaBranding(storageCache)
+      await refreshContentAreaInfo(storageCache)
 
-      expect(getContentAreaBranding).toHaveBeenCalledWith('TELC2026')
+      expect(getContentAreaInfo).toHaveBeenCalledWith('TELC2026')
       expect(storageCache.getItem('contentAreas')).toEqual([
         {
-          ...telc,
+          ...oldTelc,
           branding: { logoUrl: 'https://lunes.example/new.png', primaryColor: '#a01915', learningColor: '#007dbe' },
         },
       ])
     })
 
     it('should drop branding the CMS no longer serves', async () => {
-      mocked(getContentAreaBranding).mockResolvedValue({ primaryColor: '#a01915', logoUrl: undefined })
+      mocked(getContentAreaInfo).mockResolvedValue({ branding: { primaryColor: '#a01915', logoUrl: undefined } })
 
-      await refreshContentAreaBranding(storageCache)
+      await refreshContentAreaInfo(storageCache)
 
       expect(storageCache.getItem('contentAreas')[0]?.branding?.logoUrl).toBeUndefined()
     })
 
-    it('should keep the stored branding if the CMS cannot be reached', async () => {
-      mocked(getContentAreaBranding).mockRejectedValue(new Error('Network Error'))
+    it('should update a changed hint', async () => {
+      const hint = { ...oldHint, text: 'Neuer Text' }
+      mocked(getContentAreaInfo).mockResolvedValue({ branding: oldBranding, hint })
 
-      await refreshContentAreaBranding(storageCache)
+      await refreshContentAreaInfo(storageCache)
+
+      expect(storageCache.getItem('contentAreas')).toEqual([{ ...oldTelc, hint }])
+    })
+
+    it('should drop a hint the CMS no longer serves', async () => {
+      mocked(getContentAreaInfo).mockResolvedValue({ branding: oldBranding, hint: undefined })
+
+      await refreshContentAreaInfo(storageCache)
+
+      expect(storageCache.getItem('contentAreas')[0]?.hint).toBeUndefined()
+    })
+
+    it('should keep the stored branding if the CMS cannot be reached', async () => {
+      mocked(getContentAreaInfo).mockRejectedValue(new Error('Network Error'))
+
+      await refreshContentAreaInfo(storageCache)
 
       expect(storageCache.getItem('contentAreas')).toEqual([oldTelc])
     })
@@ -152,14 +169,14 @@ describe('ContentAreaService', () => {
     it('should refresh the other areas if one cannot be reached', async () => {
       const band = { id: 2, token: 'band_token', name: 'band', code: 'BAND1', branding: { primaryColor: '#222222' } }
       await storageCache.setItem('contentAreas', [oldTelc, band])
-      mocked(getContentAreaBranding).mockImplementation(async code => {
+      mocked(getContentAreaInfo).mockImplementation(async code => {
         if (code === 'TELC2026') {
           throw new Error('Network Error')
         }
-        return { primaryColor: '#333333' }
+        return { branding: { primaryColor: '#333333' } }
       })
 
-      await refreshContentAreaBranding(storageCache)
+      await refreshContentAreaInfo(storageCache)
 
       expect(storageCache.getItem('contentAreas')).toEqual([
         oldTelc,
@@ -167,16 +184,13 @@ describe('ContentAreaService', () => {
       ])
     })
 
-    it('should not write to the storage if the branding is unchanged', async () => {
-      mocked(getContentAreaBranding).mockResolvedValue({
-        logoUrl: oldBranding.logoUrl,
-        primaryColor: oldBranding.primaryColor,
-      })
+    it('should not write to the storage if the branding and hint are unchanged', async () => {
+      mocked(getContentAreaInfo).mockResolvedValue({ branding: { ...oldBranding }, hint: { ...oldHint } })
       const contentAreasBefore = storageCache.getItem('contentAreas')
       const listener = jest.fn()
       storageCache.addListener('contentAreas', listener)
 
-      await refreshContentAreaBranding(storageCache)
+      await refreshContentAreaInfo(storageCache)
 
       expect(listener).not.toHaveBeenCalled()
       expect(storageCache.getItem('contentAreas')).toBe(contentAreasBefore)

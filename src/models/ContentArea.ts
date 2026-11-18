@@ -6,13 +6,24 @@ export type ContentAreaBranding = {
   trainingColor?: string
 }
 
+export type ContentAreaHint = {
+  title?: string
+  text: string
+  url?: string
+  urlLabel?: string
+}
+
+export type ContentAreaInfo = {
+  branding?: ContentAreaBranding
+  hint?: ContentAreaHint
+}
+
 type ContentArea = {
   id: number
   token: string
   name: string
   code: string
-  branding?: ContentAreaBranding
-}
+} & ContentAreaInfo
 
 export type WithToken<Id> = {
   id: Id

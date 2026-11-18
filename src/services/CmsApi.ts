@@ -3,7 +3,7 @@ import { isAxiosError } from 'axios'
 import { Article, ARTICLES } from '../constants/data'
 import { InvalidContentAreaCodeError, NetworkError } from '../constants/endpoints'
 import { isHexColor } from '../constants/theme/contrast'
-import ContentArea, { ContentAreaBranding, WithToken } from '../models/ContentArea'
+import ContentArea, { ContentAreaBranding, ContentAreaHint, ContentAreaInfo, WithToken } from '../models/ContentArea'
 import Feedback, { FeedbackTarget } from '../models/Feedback'
 import { JobId, StandardJob, StandardJobId } from '../models/Job'
 import Sponsor from '../models/Sponsor'
@@ -95,6 +95,10 @@ type AreaResponse = {
   primary_color?: string
   learning_color?: string
   training_color?: string
+  additional_information_title?: string
+  additional_information?: string
+  additional_information_url?: string
+  additional_information_url_label?: string
 }
 
 type RegisterAreaResponse = {
@@ -106,8 +110,8 @@ type AreaInfoResponse = {
   area: AreaResponse
 }
 
-const emptyToUndefined = (url: string | null | undefined): string | undefined =>
-  url === null || url === '' ? undefined : url
+const emptyToUndefined = (value: string | null | undefined): string | undefined =>
+  value === null || value === '' ? undefined : value
 
 const transformColor = (color: string | undefined): string | undefined =>
   color !== undefined && isHexColor(color) ? color : undefined
@@ -118,6 +122,24 @@ const transformAreaBranding = (area: AreaResponse): ContentAreaBranding => ({
   primaryColor: transformColor(area.primary_color),
   learningColor: transformColor(area.learning_color),
   trainingColor: transformColor(area.training_color),
+})
+
+const transformAreaHint = (area: AreaResponse): ContentAreaHint | undefined => {
+  const text = emptyToUndefined(area.additional_information?.trim())
+  if (text === undefined) {
+    return undefined
+  }
+  return {
+    title: emptyToUndefined(area.additional_information_title?.trim()),
+    text,
+    url: emptyToUndefined(area.additional_information_url),
+    urlLabel: emptyToUndefined(area.additional_information_url_label?.trim()),
+  }
+}
+
+const transformAreaInfo = (area: AreaResponse): ContentAreaInfo => ({
+  branding: transformAreaBranding(area),
+  hint: transformAreaHint(area),
 })
 
 export const registerContentArea = async (code: string, installationId?: string): Promise<ContentArea> => {
@@ -131,7 +153,7 @@ export const registerContentArea = async (code: string, installationId?: string)
       token: data.token,
       name: data.area.name,
       code,
-      branding: transformAreaBranding(data.area),
+      ...transformAreaInfo(data.area),
     }
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === HTTP_STATUS_CODE_BAD_REQUEST) {
@@ -141,11 +163,11 @@ export const registerContentArea = async (code: string, installationId?: string)
   }
 }
 
-export const getContentAreaBranding = async (code: string): Promise<ContentAreaBranding> => {
+export const getContentAreaInfo = async (code: string): Promise<ContentAreaInfo> => {
   const { data } = await postToEndpoint<AreaInfoRequest, AreaInfoResponse>(Endpoints.areaInfo, {
     code,
   })
-  return transformAreaBranding(data.area)
+  return transformAreaInfo(data.area)
 }
 
 export const getJob = async ({ id, token }: WithToken<JobId>): Promise<StandardJob> =>

@@ -33,9 +33,11 @@ describe('HomeScreen branding', () => {
 
   beforeEach(() => {
     storageCache = StorageCache.createDummy()
-    mocked(getJob).mockImplementation(async ({ id }) =>
-      id.type === 'standard' && id.id === lunesJob!.id.id ? lunesJob! : telcJob!,
-    )
+    // Like the real getJob, attach the token the job was loaded with
+    mocked(getJob).mockImplementation(async ({ id, token }) => ({
+      ...(id.type === 'standard' && id.id === lunesJob!.id.id ? lunesJob! : telcJob!),
+      token,
+    }))
     mocked(getUnitsOfJob).mockResolvedValue([])
     mocked(getWordsByUnit).mockResolvedValue([])
   })
@@ -51,6 +53,20 @@ describe('HomeScreen branding', () => {
     expect(getByTestId('start-training-button')).toHaveStyle({ backgroundColor: '#027b91' })
     expect(getByTestId('learning-progress-bar')).toHaveStyle({ backgroundColor: '#007dbe' })
     expect(getByText(telcJob!.name)).toBeDefined()
+  })
+
+  it('should show the hint of the area below the cards of a telc job', async () => {
+    const { getByTestId, getByText } = await renderHome([{ id: telcJob!.id.id, token: telc.token }], telcJob!.name)
+
+    expect(getByText(telc.hint!.title!)).toBeDefined()
+    expect(getByText(telc.hint!.text)).toBeDefined()
+    expect(getByTestId('content-area-hint')).toHaveStyle({ borderLeftColor: '#a01915' })
+  })
+
+  it('should not show a hint for a public job', async () => {
+    const { queryByTestId } = await renderHome([{ id: lunesJob!.id.id }], lunesJob!.name)
+
+    expect(queryByTestId('content-area-hint')).toBeNull()
   })
 
   it('should leave the Lunes look for a public job', async () => {

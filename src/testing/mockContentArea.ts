@@ -12,6 +12,12 @@ export const mockTelcArea = (): ContentArea => ({
     learningColor: '#007dbe',
     trainingColor: '#027b91',
   },
+  hint: {
+    title: 'Passend zu Fach.Sprache von telc',
+    text: 'Der Fachwortschatz in diesem Bereich passt genau zur telc Lehrwerksreihe Fach.Sprache für Ihren Beruf.',
+    url: 'https://www.telc.net/deutsch-fuer-fachkraefte/',
+    urlLabel: 'Mehr über unsere Angebote für Fachkräfte',
+  },
 })
 
 export const mockLightTelcArea = (): ContentArea => ({
