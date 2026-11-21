@@ -1,6 +1,7 @@
-import { MAX_TRAINING_REPETITIONS, SIMPLE_RESULTS, SimpleResult } from '../../../constants/data'
+import { MAX_TRAINING_REPETITIONS, SimpleResult } from '../../../constants/data'
 import { VocabularyItemId } from '../../../models/VocabularyItem'
 import { getAtIndex, moveToEnd, shuffleArray, shuffleIndexes } from '../../../services/helpers'
+import { getCheatResult, getNextExerciseIndex } from '../shared/exerciseHelpers'
 
 export type Sentence = {
   // The id of the vocabulary item this example sentence belongs to
@@ -90,8 +91,8 @@ export const stateReducer = (state: State, action: Action): State => {
       }
     }
     case 'nextSentence': {
-      const hasNextSentence = state.currentSentenceIndex + 1 < state.sentences.length
-      const nextIndex = hasNextSentence ? state.currentSentenceIndex + 1 : state.currentSentenceIndex
+      const { nextIndex, completed } = getNextExerciseIndex(state.currentSentenceIndex, state.sentences.length)
+      const hasNextSentence = !completed
       const sentence = getAtIndex(state.sentences, nextIndex)
       const correctAnswersCount = action.wasAnswerCorrect ? state.correctAnswersCount + 1 : state.correctAnswersCount
       return {
@@ -106,7 +107,9 @@ export const stateReducer = (state: State, action: Action): State => {
     }
     case 'skip': {
       const reorderedSentences = moveToEnd(state.sentences, state.currentSentenceIndex)
+
       const currentSentence = getAtIndex(reorderedSentences, state.currentSentenceIndex)
+
       return {
         ...state,
         sentences: reorderedSentences,
@@ -115,12 +118,11 @@ export const stateReducer = (state: State, action: Action): State => {
         attemptsForCurrentSentence: 0,
       }
     }
-    case 'cheatAll': {
+    case 'cheatAll':
       return {
         ...state,
         allSentencesFinished: true,
-        correctAnswersCount: action.result === SIMPLE_RESULTS.correct ? state.sentences.length : 0,
+        correctAnswersCount: getCheatResult(action.result, state.sentences.length),
       }
-    }
   }
 }
