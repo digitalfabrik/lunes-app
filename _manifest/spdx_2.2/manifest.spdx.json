@@ -3,14 +3,14 @@
  "dataLicense": "CC0-1.0",
  "SPDXID": "SPDXRef-DOCUMENT",
  "name": "lunes-app",
- "documentNamespace": "https://anchore.com/syft/dir/lunes-app-0866d678-e957-4aa9-9c4b-312fc9b6ee27",
+ "documentNamespace": "https://anchore.com/syft/dir/lunes-app-e812544b-db85-4ebe-b3a6-ee316a7f15a2",
  "creationInfo": {
   "licenseListVersion": "3.29",
   "creators": [
    "Organization: Anchore, Inc",
-   "Tool: syft-1.55.0"
+   "Tool: syft-1.57.2"
   ],
-  "created": "2026-11-02T11:32:16Z"
+  "created": "2026-11-18T20:59:09Z"
  },
  "packages": [
   {
@@ -3943,6 +3943,55 @@
    ]
   },
   {
+   "name": "@jest/diff-sequences",
+   "SPDXID": "SPDXRef-Package-npm--jest-diff-sequences-ecd638627cdee64a",
+   "versionInfo": "30.3.0",
+   "supplier": "NOASSERTION",
+   "downloadLocation": "NOASSERTION",
+   "filesAnalyzed": false,
+   "sourceInfo": "acquired package info from installed node module manifest file: /yarn.lock",
+   "licenseConcluded": "NOASSERTION",
+   "licenseDeclared": "NOASSERTION",
+   "copyrightText": "NOASSERTION",
+   "externalRefs": [
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/diff-sequences:\\@jest\\/diff-sequences:30.3.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/diff-sequences:\\@jest\\/diff_sequences:30.3.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/diff_sequences:\\@jest\\/diff-sequences:30.3.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/diff_sequences:\\@jest\\/diff_sequences:30.3.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/diff:\\@jest\\/diff-sequences:30.3.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/diff:\\@jest\\/diff_sequences:30.3.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "PACKAGE-MANAGER",
+     "referenceType": "purl",
+     "referenceLocator": "pkg:npm/%40jest/diff-sequences@30.3.0"
+    }
+   ]
+  },
+  {
    "name": "@jest/environment",
    "SPDXID": "SPDXRef-Package-npm--jest-environment-ce203e81f177f58c",
    "versionInfo": "29.7.0",
@@ -4012,6 +4061,55 @@
      "referenceCategory": "PACKAGE-MANAGER",
      "referenceType": "purl",
      "referenceLocator": "pkg:npm/%40jest/fake-timers@29.7.0"
+    }
+   ]
+  },
+  {
+   "name": "@jest/get-type",
+   "SPDXID": "SPDXRef-Package-npm--jest-get-type-e984014b07275330",
+   "versionInfo": "30.1.0",
+   "supplier": "NOASSERTION",
+   "downloadLocation": "NOASSERTION",
+   "filesAnalyzed": false,
+   "sourceInfo": "acquired package info from installed node module manifest file: /yarn.lock",
+   "licenseConcluded": "NOASSERTION",
+   "licenseDeclared": "NOASSERTION",
+   "copyrightText": "NOASSERTION",
+   "externalRefs": [
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/get-type:\\@jest\\/get-type:30.1.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/get-type:\\@jest\\/get_type:30.1.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/get_type:\\@jest\\/get-type:30.1.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/get_type:\\@jest\\/get_type:30.1.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/get:\\@jest\\/get-type:30.1.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:\\@jest\\/get:\\@jest\\/get_type:30.1.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "PACKAGE-MANAGER",
+     "referenceType": "purl",
+     "referenceLocator": "pkg:npm/%40jest/get-type@30.1.0"
     }
    ]
   },
@@ -23413,55 +23511,6 @@
    ]
   },
   {
-   "name": "diff-sequences",
-   "SPDXID": "SPDXRef-Package-npm-diff-sequences-798146055eb920be",
-   "versionInfo": "29.6.3",
-   "supplier": "NOASSERTION",
-   "downloadLocation": "NOASSERTION",
-   "filesAnalyzed": false,
-   "sourceInfo": "acquired package info from installed node module manifest file: /yarn.lock",
-   "licenseConcluded": "NOASSERTION",
-   "licenseDeclared": "NOASSERTION",
-   "copyrightText": "NOASSERTION",
-   "externalRefs": [
-    {
-     "referenceCategory": "SECURITY",
-     "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:diff-sequences:diff-sequences:29.6.3:*:*:*:*:*:*:*"
-    },
-    {
-     "referenceCategory": "SECURITY",
-     "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:diff-sequences:diff_sequences:29.6.3:*:*:*:*:*:*:*"
-    },
-    {
-     "referenceCategory": "SECURITY",
-     "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:diff_sequences:diff-sequences:29.6.3:*:*:*:*:*:*:*"
-    },
-    {
-     "referenceCategory": "SECURITY",
-     "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:diff_sequences:diff_sequences:29.6.3:*:*:*:*:*:*:*"
-    },
-    {
-     "referenceCategory": "SECURITY",
-     "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:diff:diff-sequences:29.6.3:*:*:*:*:*:*:*"
-    },
-    {
-     "referenceCategory": "SECURITY",
-     "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:diff:diff_sequences:29.6.3:*:*:*:*:*:*:*"
-    },
-    {
-     "referenceCategory": "PACKAGE-MANAGER",
-     "referenceType": "purl",
-     "referenceLocator": "pkg:npm/diff-sequences@29.6.3"
-    }
-   ]
-  },
-  {
    "name": "digest-crc",
    "SPDXID": "SPDXRef-Package-gem-digest-crc-34f1b3c9ba6cca9d",
    "versionInfo": "0.7.0",
@@ -31015,8 +31064,8 @@
   },
   {
    "name": "follow-redirects",
-   "SPDXID": "SPDXRef-Package-npm-follow-redirects-0e3a7382a72dea58",
-   "versionInfo": "1.16.1",
+   "SPDXID": "SPDXRef-Package-npm-follow-redirects-c959f4defb3c98e7",
+   "versionInfo": "1.16.2",
    "supplier": "NOASSERTION",
    "downloadLocation": "NOASSERTION",
    "filesAnalyzed": false,
@@ -31028,12 +31077,12 @@
     {
      "referenceCategory": "SECURITY",
      "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:follow-redirects:follow_redirects:1.16.1:*:*:*:*:node.js:*:*"
+     "referenceLocator": "cpe:2.3:a:follow-redirects:follow_redirects:1.16.2:*:*:*:*:node.js:*:*"
     },
     {
      "referenceCategory": "PACKAGE-MANAGER",
      "referenceType": "purl",
-     "referenceLocator": "pkg:npm/follow-redirects@1.16.1"
+     "referenceLocator": "pkg:npm/follow-redirects@1.16.2"
     }
    ]
   },
@@ -38386,8 +38435,8 @@
   },
   {
    "name": "ip-address",
-   "SPDXID": "SPDXRef-Package-npm-ip-address-c1a6107a4a6f6ddb",
-   "versionInfo": "10.7.5",
+   "SPDXID": "SPDXRef-Package-npm-ip-address-a3baccc14d76d42a",
+   "versionInfo": "10.7.6",
    "supplier": "NOASSERTION",
    "downloadLocation": "NOASSERTION",
    "filesAnalyzed": false,
@@ -38399,12 +38448,12 @@
     {
      "referenceCategory": "SECURITY",
      "referenceType": "cpe23Type",
-     "referenceLocator": "cpe:2.3:a:beaugunderson:ip-address:10.7.5:*:*:*:*:node.js:*:*"
+     "referenceLocator": "cpe:2.3:a:beaugunderson:ip-address:10.7.6:*:*:*:*:node.js:*:*"
     },
     {
      "referenceCategory": "PACKAGE-MANAGER",
      "referenceType": "purl",
-     "referenceLocator": "pkg:npm/ip-address@10.7.5"
+     "referenceLocator": "pkg:npm/ip-address@10.7.6"
     }
    ]
   },
@@ -45254,6 +45303,75 @@
      "referenceCategory": "PACKAGE-MANAGER",
      "referenceType": "purl",
      "referenceLocator": "pkg:npm/no-case@3.0.4"
+    }
+   ]
+  },
+  {
+   "name": "node-exports-info",
+   "SPDXID": "SPDXRef-Package-npm-node-exports-info-8dd3f58912c3d10a",
+   "versionInfo": "1.6.0",
+   "supplier": "NOASSERTION",
+   "downloadLocation": "NOASSERTION",
+   "filesAnalyzed": false,
+   "sourceInfo": "acquired package info from installed node module manifest file: /yarn.lock",
+   "licenseConcluded": "NOASSERTION",
+   "licenseDeclared": "NOASSERTION",
+   "copyrightText": "NOASSERTION",
+   "externalRefs": [
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node-exports-info:node-exports-info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node-exports-info:node_exports_info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node_exports_info:node-exports-info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node_exports_info:node_exports_info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node-exports:node-exports-info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node-exports:node_exports_info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node_exports:node-exports-info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node_exports:node_exports_info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node:node-exports-info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "SECURITY",
+     "referenceType": "cpe23Type",
+     "referenceLocator": "cpe:2.3:a:node:node_exports_info:1.6.0:*:*:*:*:*:*:*"
+    },
+    {
+     "referenceCategory": "PACKAGE-MANAGER",
+     "referenceType": "purl",
+     "referenceLocator": "pkg:npm/node-exports-info@1.6.0"
     }
    ]
   },
@@ -59509,10 +59627,13 @@
   {
    "name": "lunes-app",
    "SPDXID": "SPDXRef-DocumentRoot-Directory-lunes-app",
-   "versionInfo": "2026.11.1",
+   "versionInfo": "2026.11.2",
    "supplier": "NOASSERTION",
    "downloadLocation": "NOASSERTION",
-   "filesAnalyzed": false,
+   "filesAnalyzed": true,
+   "packageVerificationCode": {
+    "packageVerificationCodeValue": "5eb72e1a91502427260fe03ed7b8ee0805636d4c"
+   },
    "licenseConcluded": "NOASSERTION",
    "licenseDeclared": "NOASSERTION",
    "copyrightText": "NOASSERTION",
@@ -59640,11 +59761,11 @@
    "checksums": [
     {
      "algorithm": "SHA1",
-     "checksumValue": "eaec51a57290ae468276cce5ecdcd499b15acc2c"
+     "checksumValue": "62f527ba3e090e9f274a8b070498faba11163412"
     },
     {
      "algorithm": "SHA256",
-     "checksumValue": "ce34cbea2c36c1e0a867c37f1bf6e6ad55260b948d6a7bcfa0e5a1596e6d5a36"
+     "checksumValue": "a5d9b7b2a7343cb83e6b51ea50d9e5ae7cd7ea01db53aa078cf51d2b4179e5b2"
     }
    ],
    "licenseConcluded": "NOASSERTION",
@@ -60371,11 +60492,6 @@
    "relationshipType": "DEPENDENCY_OF"
   },
   {
-   "spdxElementId": "SPDXRef-Package-npm-follow-redirects-0e3a7382a72dea58",
-   "relatedSpdxElement": "SPDXRef-Package-npm-axios-a51fb140568d8cfb",
-   "relationshipType": "DEPENDENCY_OF"
-  },
-  {
    "spdxElementId": "SPDXRef-Package-npm-open-0e770d056bcf7e49",
    "relatedSpdxElement": "SPDXRef-Package-npm--react-native-dev-middleware-728e0cb53854def1",
    "relationshipType": "DEPENDENCY_OF"
@@ -60623,6 +60739,11 @@
   {
    "spdxElementId": "SPDXRef-Package-npm-semver-1677715a726dc236",
    "relatedSpdxElement": "SPDXRef-Package-npm--babel-helper-compilation-targets-8d4d0667d4f46e67",
+   "relationshipType": "DEPENDENCY_OF"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-semver-1677715a726dc236",
+   "relatedSpdxElement": "SPDXRef-Package-npm-node-exports-info-8dd3f58912c3d10a",
    "relationshipType": "DEPENDENCY_OF"
   },
   {
@@ -61053,6 +61174,11 @@
   {
    "spdxElementId": "SPDXRef-Package-npm-es-errors-230550386340790f",
    "relatedSpdxElement": "SPDXRef-Package-npm-call-bind-apply-helpers-8a35d9e106217c18",
+   "relationshipType": "DEPENDENCY_OF"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-es-errors-230550386340790f",
+   "relatedSpdxElement": "SPDXRef-Package-npm-node-exports-info-8dd3f58912c3d10a",
    "relationshipType": "DEPENDENCY_OF"
   },
   {
@@ -64641,6 +64767,11 @@
    "relationshipType": "DEPENDENCY_OF"
   },
   {
+   "spdxElementId": "SPDXRef-Package-npm-ip-address-a3baccc14d76d42a",
+   "relatedSpdxElement": "SPDXRef-Package-npm-socks-28c54c1f6e371807",
+   "relationshipType": "DEPENDENCY_OF"
+  },
+  {
    "spdxElementId": "SPDXRef-Package-npm-svgo-a3d8895589cc2593",
    "relatedSpdxElement": "SPDXRef-Package-npm--svgr-plugin-svgo-b3f74f691afafe4e",
    "relationshipType": "DEPENDENCY_OF"
@@ -65292,6 +65423,11 @@
   },
   {
    "spdxElementId": "SPDXRef-Package-npm-semver-b54471ac58a69a1a",
+   "relatedSpdxElement": "SPDXRef-Package-npm-node-exports-info-8dd3f58912c3d10a",
+   "relationshipType": "DEPENDENCY_OF"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-semver-b54471ac58a69a1a",
    "relatedSpdxElement": "SPDXRef-Package-npm--react-native-community-cli-plugin-9a23f21db48d01d7",
    "relationshipType": "DEPENDENCY_OF"
   },
@@ -65487,6 +65623,11 @@
   },
   {
    "spdxElementId": "SPDXRef-Package-npm-semver-bdccbab7217e22a9",
+   "relatedSpdxElement": "SPDXRef-Package-npm-node-exports-info-8dd3f58912c3d10a",
+   "relationshipType": "DEPENDENCY_OF"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-semver-bdccbab7217e22a9",
    "relatedSpdxElement": "SPDXRef-Package-npm--react-native-community-cli-plugin-9a23f21db48d01d7",
    "relationshipType": "DEPENDENCY_OF"
   },
@@ -65543,11 +65684,6 @@
   {
    "spdxElementId": "SPDXRef-Package-npm-p-map-c16e34827b1ea13c",
    "relatedSpdxElement": "SPDXRef-Package-npm-cacache-dcd9ae5c600cc06b",
-   "relationshipType": "DEPENDENCY_OF"
-  },
-  {
-   "spdxElementId": "SPDXRef-Package-npm-ip-address-c1a6107a4a6f6ddb",
-   "relatedSpdxElement": "SPDXRef-Package-npm-socks-28c54c1f6e371807",
    "relationshipType": "DEPENDENCY_OF"
   },
   {
@@ -65683,6 +65819,11 @@
   {
    "spdxElementId": "SPDXRef-Package-npm--egjs-hammerjs-c8f3f79891702c99",
    "relatedSpdxElement": "SPDXRef-Package-npm-react-native-gesture-handler-d9835b31718a08c2",
+   "relationshipType": "DEPENDENCY_OF"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-follow-redirects-c959f4defb3c98e7",
+   "relatedSpdxElement": "SPDXRef-Package-npm-axios-a51fb140568d8cfb",
    "relationshipType": "DEPENDENCY_OF"
   },
   {
@@ -67435,12 +67576,6 @@
   },
   {
    "spdxElementId": "SPDXRef-Package-npm--babel-helper-split-export-declaration-0e264b9f7f84a54f",
-   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
-   "relationshipType": "OTHER",
-   "comment": "evident-by: indicates the package's existence is evident by the given file"
-  },
-  {
-   "spdxElementId": "SPDXRef-Package-npm-follow-redirects-0e3a7382a72dea58",
    "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
    "comment": "evident-by: indicates the package's existence is evident by the given file"
@@ -70242,12 +70377,6 @@
    "comment": "evident-by: indicates the package's existence is evident by the given file"
   },
   {
-   "spdxElementId": "SPDXRef-Package-npm-diff-sequences-798146055eb920be",
-   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
-   "relationshipType": "OTHER",
-   "comment": "evident-by: indicates the package's existence is evident by the given file"
-  },
-  {
    "spdxElementId": "SPDXRef-Package-npm--sentry-cli-darwin-79b4fd6b72328be2",
    "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
@@ -70808,6 +70937,12 @@
   {
    "spdxElementId": "SPDXRef-Package-pod-FBLazyVector-8d8d1028cace0d6a",
    "relatedSpdxElement": "SPDXRef-File-ios-Podfile.lock-32a16ddd146a71f1",
+   "relationshipType": "OTHER",
+   "comment": "evident-by: indicates the package's existence is evident by the given file"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-node-exports-info-8dd3f58912c3d10a",
+   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
    "comment": "evident-by: indicates the package's existence is evident by the given file"
   },
@@ -71377,6 +71512,12 @@
   },
   {
    "spdxElementId": "SPDXRef-Package-npm-isexe-a3379944b8f4f6ba",
+   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
+   "relationshipType": "OTHER",
+   "comment": "evident-by: indicates the package's existence is evident by the given file"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-ip-address-a3baccc14d76d42a",
    "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
    "comment": "evident-by: indicates the package's existence is evident by the given file"
@@ -72126,12 +72267,6 @@
    "comment": "evident-by: indicates the package's existence is evident by the given file"
   },
   {
-   "spdxElementId": "SPDXRef-Package-npm-ip-address-c1a6107a4a6f6ddb",
-   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
-   "relationshipType": "OTHER",
-   "comment": "evident-by: indicates the package's existence is evident by the given file"
-  },
-  {
    "spdxElementId": "SPDXRef-Package-npm-exponential-backoff-c1ba1db413ad9499",
    "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
@@ -72284,6 +72419,12 @@
   {
    "spdxElementId": "SPDXRef-Package-gem-google-apis-core-c94b4c5f8b3a6529",
    "relatedSpdxElement": "SPDXRef-File-ios-Gemfile.lock-dc68859e6edb542d",
+   "relationshipType": "OTHER",
+   "comment": "evident-by: indicates the package's existence is evident by the given file"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm-follow-redirects-c959f4defb3c98e7",
+   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
    "comment": "evident-by: indicates the package's existence is evident by the given file"
   },
@@ -73170,6 +73311,12 @@
    "comment": "evident-by: indicates the package's existence is evident by the given file"
   },
   {
+   "spdxElementId": "SPDXRef-Package-npm--jest-get-type-e984014b07275330",
+   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
+   "relationshipType": "OTHER",
+   "comment": "evident-by: indicates the package's existence is evident by the given file"
+  },
+  {
    "spdxElementId": "SPDXRef-Package-npm-mime-types-e99873a0a3d4a106",
    "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
@@ -73249,6 +73396,12 @@
   },
   {
    "spdxElementId": "SPDXRef-Package-npm-dot-case-ec9d4a16ea8b28c4",
+   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
+   "relationshipType": "OTHER",
+   "comment": "evident-by: indicates the package's existence is evident by the given file"
+  },
+  {
+   "spdxElementId": "SPDXRef-Package-npm--jest-diff-sequences-ecd638627cdee64a",
    "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "OTHER",
    "comment": "evident-by: indicates the package's existence is evident by the given file"
@@ -74095,12 +74248,22 @@
   },
   {
    "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-Package-npm--jest-diff-sequences-ecd638627cdee64a",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
    "relatedSpdxElement": "SPDXRef-Package-npm--jest-environment-ce203e81f177f58c",
    "relationshipType": "CONTAINS"
   },
   {
    "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
    "relatedSpdxElement": "SPDXRef-Package-npm--jest-fake-timers-4b38be67da2f1db5",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-Package-npm--jest-get-type-e984014b07275330",
    "relationshipType": "CONTAINS"
   },
   {
@@ -76170,11 +76333,6 @@
   },
   {
    "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
-   "relatedSpdxElement": "SPDXRef-Package-npm-diff-sequences-798146055eb920be",
-   "relationshipType": "CONTAINS"
-  },
-  {
-   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
    "relatedSpdxElement": "SPDXRef-Package-gem-digest-crc-34f1b3c9ba6cca9d",
    "relationshipType": "CONTAINS"
   },
@@ -76740,7 +76898,7 @@
   },
   {
    "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
-   "relatedSpdxElement": "SPDXRef-Package-npm-follow-redirects-0e3a7382a72dea58",
+   "relatedSpdxElement": "SPDXRef-Package-npm-follow-redirects-c959f4defb3c98e7",
    "relationshipType": "CONTAINS"
   },
   {
@@ -77240,7 +77398,7 @@
   },
   {
    "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
-   "relatedSpdxElement": "SPDXRef-Package-npm-ip-address-c1a6107a4a6f6ddb",
+   "relatedSpdxElement": "SPDXRef-Package-npm-ip-address-a3baccc14d76d42a",
    "relationshipType": "CONTAINS"
   },
   {
@@ -77946,6 +78104,11 @@
   {
    "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
    "relatedSpdxElement": "SPDXRef-Package-npm-no-case-c6f803989e440fab",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-Package-npm-node-exports-info-8dd3f58912c3d10a",
    "relationshipType": "CONTAINS"
   },
   {
@@ -79376,6 +79539,36 @@
   {
    "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
    "relatedSpdxElement": "SPDXRef-Package-npm-yocto-queue-e6ddc8e902bd6778",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-File-Gemfile.lock-dc1740ee8051eff5",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-File-android-Gemfile.lock-2e4ff6152ea8c45b",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-File-...gradle-wrapper-gradle-wrapper.jar-27ecce54b99a7090",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-File-ios-Gemfile.lock-dc68859e6edb542d",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-File-ios-Podfile.lock-32a16ddd146a71f1",
+   "relationshipType": "CONTAINS"
+  },
+  {
+   "spdxElementId": "SPDXRef-DocumentRoot-Directory-lunes-app",
+   "relatedSpdxElement": "SPDXRef-File-yarn.lock-dcee26e98fae7b36",
    "relationshipType": "CONTAINS"
   },
   {

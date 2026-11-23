@@ -9,9 +9,11 @@ import { Heading } from '../../../components/text/Heading'
 import { BUTTONS_THEME } from '../../../constants/data'
 import { Color } from '../../../constants/theme/colors'
 import { darkenUntilContrast, MIN_CONTRAST_RATIO } from '../../../constants/theme/contrast'
+import useContentArea from '../../../hooks/useContentArea'
 import useLoadProgress from '../../../hooks/useLoadProgress'
 import Job from '../../../models/Job'
 import { getLabels, pluralize } from '../../../services/helpers'
+import ContentAreaHint from './ContentAreaHint'
 
 // TODO: Remove SHOW_NEW_BADGE_UNTIL and isNewBadgeVisible after 2026-06-01
 const SHOW_NEW_BADGE_UNTIL = new Date('2026-06-01')
@@ -205,12 +207,14 @@ const ModeSelection = ({
   navigateToTrainingExerciseSelection,
 }: ModeSelectionProps): ReactElement => {
   const { data: progress } = useLoadProgress(job)
+  const hint = useContentArea(job.token)?.hint
   const completedUnits = Math.floor((progress ?? 0) * job.numberOfUnits)
 
   return (
     <Container>
       <LearningCard numberUnits={job.numberOfUnits} unitsCompleted={completedUnits} onPress={navigateToJob} />
       <TrainingCard onPress={navigateToTrainingExerciseSelection} />
+      {hint !== undefined && <ContentAreaHint hint={hint} />}
     </Container>
   )
 }
