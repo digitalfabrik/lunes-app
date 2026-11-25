@@ -1,0 +1,6 @@
+issue_key: 1608
+show_in_stores: true
+platforms:
+  - android
+  - ios
+de: Ein Anzeigefehler in der Home-Ansicht wurde behoben.

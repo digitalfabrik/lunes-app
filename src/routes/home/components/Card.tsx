@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../../assets/images'
 import PressableOpacity from '../../../components/PressableOpacity'
@@ -66,6 +66,7 @@ const Card = (props: CardProps): ReactElement => {
     width,
     children,
   } = props
+  const theme = useTheme()
   return (
     <Box onPress={onPress} width={width}>
       {(!!icon || !!heading) && (
@@ -76,7 +77,7 @@ const Card = (props: CardProps): ReactElement => {
               testID='navigate-left'
               accessibilityLabel={onPressLeftAccessibilityLabel}
             >
-              <ArrowLeftIcon />
+              <ArrowLeftIcon color={theme.colors.text} />
             </PressableOpacity>
           )}
           <HeadingContent>
@@ -89,7 +90,7 @@ const Card = (props: CardProps): ReactElement => {
               testID='navigate-right'
               accessibilityLabel={onPressRightAccessibilityLabel}
             >
-              <ArrowRightIcon />
+              <ArrowRightIcon color={theme.colors.text} />
             </PressableOpacity>
           )}
         </BoxHeading>
