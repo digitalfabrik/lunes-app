@@ -22,6 +22,7 @@ const Container = styled.View`
 
 const LinkButton = styled(Button)`
   align-self: flex-start;
+  border-color: ${props => props.theme.colors.backgroundHeader};
 `
 
 type ContentAreaHintProps = {
